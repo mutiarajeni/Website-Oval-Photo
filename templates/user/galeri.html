@@ -1,0 +1,83 @@
+{% extends "user/base_user.html" %}{% block content %}
+<!-- Header -->
+<header class="header">
+  <div class="header-content text-center">
+    <h1>Galeri Oval Photo</h1>
+    <p>Abadikan momen istimewa kamu dan lihatlah karya foto kami di Galeri Oval!</p>
+  </div>
+</header>
+
+<!-- Filters -->
+<section class="filters" aria-label="Filter selection">
+  <div>
+    <label for="kategori">Kategori</label>
+    <select id="kategori" name="kategori" aria-describedby="kategoriHelp">
+      <option>Select Item</option>
+    </select>
+  </div>
+  <div>
+    <label for="pilihan-kategori">Pilihan Kategori</label>
+    <select id="pilihan-kategori" name="pilihan-kategori" disabled aria-describedby="pilihanKategoriHelp">
+      <option>Select Item</option>
+    </select>
+  </div>
+</section>
+
+<!-- Description Box -->
+<section class="description" aria-label="Description details">
+  <h2>Deskripsi</h2>
+  
+  <div class="desc-grid">
+    <div>Nama Layanan</div><div>:</div>
+    <div>Lokasi</div><div>:</div>
+    <div>Maps</div><div>:</div>
+    <div>Biaya</div><div>:</div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<div class="gallery">
+  <div class="gallery-grid">
+    <img
+      src="static/img/G1.jpg"
+      alt="Couple posing in front of a flower wall"
+    />
+    <img
+      src="static/img/G3.jpg"
+      alt="Two children wearing white headscarves and smiling"
+    />
+    <img
+      src="static/img/G5.jpg"
+      alt="Bride and groom in traditional red attire"
+    />
+    <img
+      src="static/img/G7.jpg"
+      alt="Woman posing in front of decorative flowers"
+    />
+    <img
+      src="static/img/G2.jpg"
+      alt="Couple posing in front of a flower wall side view"
+    />
+    <img
+      src="static/img/G4.jpg"
+      alt="Couple posing under tree branches"
+    />
+    <img
+      src="static/img/G6.jpg"
+      alt="Group posing in traditional attire with decorations"
+    />
+    <img
+      src="static/img/G8.jpg"
+      alt="Couple posing in front of decorative flowers"
+    />
+    <img
+      src="static/img/G9.jpg"
+      alt="Group posing indomaret"
+    />
+    <img
+      src="static/img/G10.jpg"
+      alt="Couple wedding"
+    />
+  </div>
+</div>
+{% endblock %}

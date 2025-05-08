@@ -1,0 +1,27 @@
+{% extends "user/base_user.html" %}
+
+{% block title %}
+Beri Ulasan | Oval Photo
+{% endblock %}
+
+{% block content %}
+<h1>Beri Ulasan</h1>
+<p>Terima kasih telah menggunakan layanan kami. Berikan ulasan Anda.</p>
+<form action="/riwayat-pemesanan" method="post">
+    <div class="form-group">
+        <label for="rating">Rating</label>
+        <select class="form-control" id="rating" name="rating" required>
+            <option value="5">5 - Sangat Baik</option>
+            <option value="4">4 - Baik</option>
+            <option value="3">3 - Cukup</option>
+            <option value="2">2 - Buruk</option>
+            <option value="1">1 - Sangat Buruk</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="komentar">Komentar</label>
+        <textarea class="form-control" id="komentar" name="komentar" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Kirim Ulasan</button>
+</form>
+{% endblock %}

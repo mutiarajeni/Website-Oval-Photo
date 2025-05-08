@@ -1,0 +1,38 @@
+<nav class="navbar fixed-top navbar-expand-lg">
+  <a href="#" class="navbar-logo"
+    ><img src="static/img/logo.png" alt="Logo" height="50" />&nbsp;Oval Photo
+  </a>
+
+  <div class="navbar-nav">
+    <a
+      class="nav-link {{ 'active' if request.endpoint == 'beranda' else '' }}"
+      href="/"
+      >Beranda</a
+    >
+    <a
+      class="nav-link {{ 'active' if request.endpoint == 'galeri' else '' }}"
+      href="/galeri"
+      >Galeri</a
+    >
+    <a
+      class="nav-link {{ 'active' if request.endpoint == 'katalog' else '' }}"
+      href="/katalog_layanan"
+      >Katalog Layanan</a
+    >
+    <a
+      class="nav-link {{ 'active' if request.endpoint == 'tentang_kami' else '' }}"
+      href="/tentang-kami"
+      >Tentang Kami</a
+    >
+    <a
+      class="nav-link {{ 'active' if request.endpoint == 'kontak' else '' }}"
+      href="/kontak"
+      >Kontak</a
+    >
+  </div>
+
+  <div class="navbar-extra">
+    <a href="/masuk" id="user-icon"><i class="bi bi-person-circle"></i></a>
+    <a href="#" id="hamburger-menu"><i class="bi bi-list"></i></a>
+  </div>
+</nav>

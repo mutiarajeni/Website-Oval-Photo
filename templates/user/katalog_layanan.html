@@ -1,0 +1,133 @@
+{% extends "user/base_user.html" %}{% block content %}
+<!-- Header -->
+<header class="header">
+  <div class="header-content text-center">
+    <h1>Katalog Layanan</h1>
+    <p>Mengabadikan setiap momen dengan sempurna</p>
+  </div>
+</header>
+
+<!--Jadwal-->
+<div class="tulisan">
+  <h2>Jadwal</h2>
+</div>
+
+<section>
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <button class="view-btn">Lihat</button>
+
+      <button class="nav-left">&#9664;</button>
+      <h3>Februari 2025</h3>
+      <button class="nav-right">&#9654;</button>
+    </div>
+    <table class="calendar-table">
+      <thead>
+        <tr>
+          <th>SEN</th>
+          <th>SEL</th>
+          <th>RAB</th>
+          <th>KAM</th>
+          <th>JUM</th>
+          <th>SAB</th>
+          <th>MIN</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>27</td><td>28</td><td>29</td><td>30</td><td>31</td><td>1</td><td class="sunday">2</td>
+        </tr>
+        <tr>
+          <td>3</td><td>4</td><td>5</td><td class="today">6</td><td>7</td><td>8</td><td class="sunday">9</td>
+        </tr>
+        <tr>
+          <td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td class="sunday">16</td>
+        </tr>
+        <tr>
+          <td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td class="sunday">23</td>
+        </tr>
+        <tr>
+          <td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>1</td><td class="sunday">2</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!--Layanan Tersedia-->
+<div class="tulisan">
+  <h2>Layanan Tersedia</h2>
+</div>
+
+<section class="service-section">
+  <div class="service-container">
+    <div class="service">
+      <div class="service-content">
+        <img src="static/img/katalog1.jpg" alt="Engagement">
+        <div class="text-box">
+          <h3>Engagement</h3>
+          <p>Abadikan momen pertunangan kamu dan pasangan dengan hasil foto yang romantis dan penuh cerita.</p>
+          <div class="btn-wrapper">
+            <a class="btn-katalog" href="/engagement">Lihat Paket</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="service">
+      <div class="service-content reverse">
+        <img src="static/img/katalog2.jpg" alt="Prewedding">
+        <div class="text-box">
+          <h3>Prewedding</h3>
+          <p>Ciptakan kenangan indah sebelum pernikahan dengan konsep foto yang unik, personal dan penuh makna.</p>
+          <div class="btn-wrapper">
+            <a class="btn-katalog" href="/prewedding">Lihat Paket</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="service">
+      <div class="service-content">
+        <img src="static/img/katalog3.jpg" alt="Wedding">
+        <div class="text-box">
+          <h3>Wedding</h3>
+          <p>Kami mengabadikan setiap detil pernikahan kamu dan pasanganmu, dari persiapan hingga resepsi, dengan kualitas foto terbaik.</p>
+          <div class="btn-wrapper">
+            <a class="btn-katalog" href="/wedding">Lihat Paket</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--Tahapan-->
+<div class="tahapan">
+  <h2>Tahapan Pemesanan</h2>
+  <div class="timeline-wrapper">
+
+    <!-- Baris atas -->
+    <div class="timeline-row row-top">
+      <div class="step"><span class="circle">1</span><p>Pilih layanan fotografi yang kamu inginkan</p></div>
+      <div class="step"><span class="circle">2</span><p>Pilih paket layanan sesuai dengan kebutuhan kamu</p></div>
+      <div class="step"><span class="circle">3</span><p>Lakukan pengisian formulir pemesanan </p></div>
+      <div class="step step-down"><span class="circle">4</span><p>Tunggu selama 1x24 jam untuk dikonfirmasi</p></div>
+    </div>
+
+    <!-- Baris bawah -->
+    <div class="timeline-row row-bottom">
+      <div class="step"><span class="circle">5</span><p>Lakukan pembayaran deposit </p></div>
+      <div class="step"><span class="circle">6</span><p>Sesi pemotretan dan pembayaran pelunasan</p></div>
+      <div class="step"><span class="circle">7</span><p>Menerima hasil foto dan keuntungan lainnya sesuai dengan paket layanan yang dipesan</p></div>
+      <div class="step"><span class="circle">8</span><p>Memberikan penilaian dan ulasan terhadap layanan yang diberikan</p></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="jarak-section">
+  
+</section>
+
+{% endblock %}

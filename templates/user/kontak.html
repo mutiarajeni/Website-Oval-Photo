@@ -1,0 +1,74 @@
+{% extends "user/base_user.html" %}{% block content %}
+<!-- Header -->
+<header class="header">
+  <div class="header-content text-center">
+    <h1>Kontak</h1>
+    <p>Hubungi kami untuk informasi lebih lanjut. Kami siap membantu kamu!</p>
+  </div>
+</header>
+
+<!--Isi Kontak-->
+
+<div class="container-kontak">
+  <h2 class="kontak-title1">Hubungi Kami</h2>
+  <p class="kontak-title3">
+    Butuh informasi lebih lanjut? Tim Oval Photo siap membantu kamu dengan
+    senang hati akan informasi lengkap untuk semua kebutuhan fotografi kamu.
+  </p>
+
+  <div class="contact-section">
+    <div class="contact-item">
+      <i class="fas fa-envelope"></i>
+      <a href="mailto:ovalphotosupport@gmail.com">ovalphotosupport@gmail.com</a>
+    </div>
+    <div class="contact-item">
+      <i class="fas fa-phone"></i>
+      <a href="https://wa.me/6281262338286">+62 812-6233-8286</a>
+    </div>
+    <div class="contact-item">
+      <i class="fas fa-map-marker-alt"></i>
+      <span
+        >Jl. Lintas Sumatera Cikampek, Aek Bulu, Kec. Torgamba, Kab. Labuhanbatu
+        Selatan, Sumatera Utara</span
+      >
+    </div>
+  </div>
+
+  <div class="map-container">
+    <iframe
+      src="https://www.google.com/maps?q=Apotek+Farma+Aek+Bulu,+Jl.+Lintas+Sumatera,+Aek+Bulu,+Torgamba,+Labuhanbatu+Selatan,+Sumatera+Utara&output=embed"
+      allowfullscreen=""
+      loading="lazy"
+    >
+    </iframe>
+  </div>
+
+  <div class="social-buttons">
+    <a
+      href="https://www.instagram.com/ovalphoto?igsh=N2tzZG9pZHd3YXNm"
+      aria-label="Instagram"
+      ><i class="bi bi-instagram social-icon"></i
+    ></a>
+    <a
+      href="https://www.facebook.com/yudaza?mibextid=ZbWKwL"
+      aria-label="Facebook"
+      ><i class="bi bi-facebook social-icon"></i
+    ></a>
+    <a href="https://wa.me/+6281362338236" aria-label="WhatsApp"
+      ><i class="bi bi-whatsapp social-icon"></i
+    ></a>
+  </div>
+
+  <div class="faq-section">
+    <h3 class="kontak-title2">Kamu Punya Pertanyaan?</h3>
+    <p class="kontak-title3">
+      Kami telah merangkum pertanyaan yang sering diajukan agar kamu bisa
+      menemukan informasi dengan mudah dan cepat. Jika kamu memiliki pertanyaan
+      lainnya, jangan ragu untuk menghubungi kami lagi! Klik "FAQ" untuk melihat
+      selengkapnya.
+    </p>
+    <a href="/faq" class="faq-button">FAQ (Frequently Asked Questions)</a>
+  </div>
+</div>
+
+{% endblock %}
