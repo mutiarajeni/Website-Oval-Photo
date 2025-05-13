@@ -95,38 +95,105 @@ def lupa_kataSandi():
 def admin_dashboard():
     return render_template('admin/dashboard.html')
 
+# Layanan Fotografi
 @app.route('/admin_layananFotografi')
 def admin_layananFotogafi():
     return render_template('admin/layananFotografi.html')
 
+@app.route('/admin_layananFotografi_tambah')
+def admin_layananFotografi_tambah():
+    return render_template('admin/layananFotografi_tambah.html')
+
+@app.route('/admin_layananFotografi_ubah')
+def admin_layananFotografi_ubah():
+    return render_template('admin/layananFotografi_ubah.html')
+
+
+# Paket Fotografi
 @app.route('/admin_paketFotografi')
 def admin_paketFotografi():
     return render_template('admin/paketFotografi.html')
 
+@app.route('/admin_paketFotografi_tambah')
+def admin_paketFotografi_tambah():
+    return render_template('admin/paketFotografi_tambah.html')
+
+@app.route('/admin_paketFotografi_ubah')
+def admin_paketFotografi_ubah():
+    return render_template('admin/paketFotografi_ubah.html')
+
+
+# Galeri
 @app.route('/admin_galeri')
 def admin_galeri():
     return render_template('admin/galeri.html')
 
+@app.route('/admin_galeri_tambah')
+def admin_galeri_tambah():
+    return render_template('admin/galeri_tambah.html')
+
+@app.route('/admin_galeri_ubah')
+def admin_galeri_ubah():
+    return render_template('admin/galeri_ubah.html')
+
+# Lokasi
 @app.route('/admin_lokasi')
 def admin_lokasi():
     return render_template('admin/lokasi.html')
 
+@app.route('/admin_lokasi_tambah')
+def admin_lokasi_tambah():
+    return render_template('admin/lokasi_tambah.html')
+
+@app.route('/admin_lokasi_ubah')
+def admin_lokasi_ubah():
+    return render_template('admin/lokasi_ubah.html')
+
+# Jadwal
 @app.route('/admin_jadwal')
 def admin_jadwal():
     return render_template('admin/Jadwal.html')
 
+@app.route('/admin_jadwal_ubah')
+def admin_jadwal_ubah():
+    return render_template('admin/jadwal_ubah.html')
+
+# Pesanan
 @app.route('/admin_pesanan')
 def admin_pesanan():
     return render_template('admin/Pesanan.html')
 
+@app.route('/admin_pesanan_tambah')
+def admin_pesanan_tambah():
+    return render_template('admin/lokasi_pesanan.html')
+
+# Tim Fotografi
 @app.route('/admin_timFotografi')
 def admin_timFotografi():
     return render_template('admin/timFotografi.html')
 
+@app.route('/admin_timFotografi_tambah')
+def admin_timFotografi_tambah():
+    return render_template('admin/timFotografi_tambah.html')
+
+@app.route('/admin_timFotografi_ubah')
+def admin_timFotografi_ubah():
+    return render_template('admin/timFotografi_ubah.html')
+
+# FAQ
 @app.route('/admin_faq')
 def admin_faq():
     return render_template('admin/faq.html')
 
+@app.route('/admin_faq_tambah')
+def admin_faq_tambah():
+    return render_template('admin/faq_tambah.html')
+
+@app.route('/admin_faq_ubah')
+def admin_faq_ubah():
+    return render_template('admin/faq_ubah.html')
+
+# Akun Klien
 @app.route('/admin_akunKlien')
 def admin_akunKlien():
     return render_template('admin/akunKlien.html')

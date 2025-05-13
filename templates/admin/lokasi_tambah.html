@@ -1,0 +1,174 @@
+{% extends "admin/base_admin.html" %} {% block title %} Dashboard Admin | Oval
+Photo {% endblock %} {% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-admin shadow-success border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Tambah Lokasi</h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+          <div class="container mt-5">
+            {% if product_exists %}
+            <div
+              class="alert alert-danger alert-dismissible text-white"
+              role="alert"
+            >
+              <span class="text-sm">
+                Lokasi sudah ada
+                <a href="#lokasi_nama" class="alert-link text-white"
+                  >Nama Lokasi</a
+                >. Mohon gunakan nama lokasi yang berbeda.
+              </span>
+              <button
+                type="button"
+                class="btn-close text-lg py-3 opacity-10"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            {% endif %}
+
+            <form
+              id="addProductForm"
+              method="POST"
+              action="/admin_paketFotografi_tambah"
+              enctype="multipart/form-data"
+            >
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td><label for="lokasi_nama">Nama Lokasi</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <label class="form-label"></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="lokasi_nama"
+                          name="nama"
+                          required
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="alamat">Alamat</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <label class="form-label"></label>
+                        <textarea
+                          class="form-control"
+                          id="alamat"
+                          name="alamat"
+                          rows="5"
+                        ></textarea>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="link_maps">Link Maps</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <label class="form-label"></label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="link_maps"
+                          name="link_maps"
+                          required
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="harga">Biaya</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <label class="form-label"></label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="harga"
+                          name="harga"
+                          required
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-end mt-3">
+                <a href="/admin_lokasi" class="btn btn-outline-dark me-2"
+                  >Kembali</a
+                >
+                <button
+                  type="submit"
+                  class="btn btn-dark"
+                  id="submitButton"
+                  disabled
+                >
+                  Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function checkFormFilled() {
+    const nama = document.getElementById("lokasi_nama").value.trim();
+    const alamat = document.getElementById("alamat").value.trim();
+    const linkMaps = document.getElementById("link_maps").value.trim();
+    const harga = document.getElementById("harga").value.trim();
+
+    const submitButton = document.getElementById("submitButton");
+    submitButton.disabled = !(nama && alamat && linkMaps && harga);
+  }
+
+  document
+    .querySelectorAll("#lokasi_nama, #alamat, #link_maps, #harga")
+    .forEach((input) => {
+      input.addEventListener("input", checkFormFilled);
+    });
+
+  document
+    .getElementById("addProductForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      var form = this;
+
+      Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Lokasi akan ditambahkan.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Berhasil!",
+            text: "Paket fotografi berhasil ditambahkan.",
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            willClose: () => {
+              form.submit();
+            },
+          });
+        }
+      });
+    });
+</script>
+{% endblock %}

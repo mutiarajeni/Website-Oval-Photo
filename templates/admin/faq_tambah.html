@@ -1,0 +1,126 @@
+{% extends "admin/base_admin.html" %} {% block title %} Dashboard Admin | Oval
+Photo {% endblock %} {% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-admin shadow-success border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Tambah FAQ</h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+          <div class="container mt-5">
+            {% if product_exists %}
+            <div
+              class="alert alert-danger alert-dismissible text-white"
+              role="alert"
+            >
+              Pertanyaan sudah ada.
+              <button
+                type="button"
+                class="btn-close text-lg py-3 opacity-10"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            {% endif %}
+
+            <form id="addProductForm" method="POST" action="/admin_faq_tambah">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td><label for="pertanyaan">Pertanyaan</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <textarea
+                          class="form-control"
+                          id="pertanyaan"
+                          name="pertanyaan"
+                          rows="5"
+                        ></textarea>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="jawaban">Jawaban</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <textarea
+                          class="form-control"
+                          id="jawaban"
+                          name="jawaban"
+                          rows="5"
+                        ></textarea>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-end mt-3">
+                <a href="/admin_faq" class="btn btn-outline-dark me-2"
+                  >Kembali</a
+                >
+                <button
+                  type="submit"
+                  class="btn btn-dark"
+                  id="submitButton"
+                  disabled
+                >
+                  Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function checkFormFilled() {
+    const pertanyaan = document.getElementById("pertanyaan").value.trim();
+    const jawaban = document.getElementById("jawaban").value.trim();
+    const submitButton = document.getElementById("submitButton");
+    submitButton.disabled = !(pertanyaan && jawaban);
+  }
+
+  document.querySelectorAll("#pertanyaan, #jawaban").forEach((input) => {
+    input.addEventListener("input", checkFormFilled);
+  });
+
+  document
+    .getElementById("addProductForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      var form = this;
+
+      Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "FAQ akan ditambahkan.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Berhasil!",
+            text: "FAQ berhasil ditambahkan.",
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            willClose: () => {
+              form.submit();
+            },
+          });
+        }
+      });
+    });
+</script>
+{% endblock %}

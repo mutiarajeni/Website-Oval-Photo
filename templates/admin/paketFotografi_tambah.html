@@ -1,0 +1,230 @@
+{% extends "admin/base_admin.html" %} {% block title %} Dashboard Admin | Oval
+Photo {% endblock %} {% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-admin shadow-success border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">
+            Tambah Paket Fotografi
+          </h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+          <div class="container mt-5">
+            {% if product_exists %}
+            <div
+              class="alert alert-danger alert-dismissible text-white"
+              role="alert"
+            >
+              <span class="text-sm">
+                Paket fotografi sudah ada
+                <a href="#paket_nama" class="alert-link text-white"
+                  >Nama Paket</a
+                >. Mohon gunakan nama paket yang berbeda.
+              </span>
+              <button
+                type="button"
+                class="btn-close text-lg py-3 opacity-10"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            {% endif %}
+
+            <form
+              id="addProductForm"
+              method="POST"
+              action="/admin_paketFotografi_tambah"
+              enctype="multipart/form-data"
+            >
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td><label for="paket_nama">Nama Paket</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="paket_nama"
+                          name="nama"
+                          required
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="layanan">Layanan</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <select
+                          class="form-control"
+                          id="layanan"
+                          name="satuan"
+                          required
+                        >
+                          <option value="Kg">Kg</option>
+                          <option value="Buah">Buah</option>
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="harga">Harga</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="harga"
+                          name="harga"
+                          required
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="deposit">Deposit</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="deposit"
+                          name="deposit"
+                          required
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="keuntungan">Keuntungan</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <textarea
+                          class="form-control"
+                          id="keuntungan"
+                          name="deskripsi"
+                          rows="5"
+                        ></textarea>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="tim_kerja">Tim Kerja</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <textarea
+                          class="form-control"
+                          id="tim_kerja"
+                          name="tim_kerja"
+                          rows="5"
+                        ></textarea>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="periode">Periode Paket</label></td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="periode"
+                          name="periode"
+                          required
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-end mt-3">
+                <a
+                  href="/admin_paketFotografi"
+                  class="btn btn-outline-dark me-2"
+                  >Kembali</a
+                >
+                <button
+                  type="submit"
+                  class="btn btn-dark"
+                  id="submitButton"
+                  disabled
+                >
+                  Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function checkFormFilled() {
+    const nama = document.getElementById("paket_nama").value.trim();
+    const layanan = document.getElementById("layanan").value.trim();
+    const harga = document.getElementById("harga").value.trim();
+    const deposit = document.getElementById("deposit").value.trim();
+    const keuntungan = document.getElementById("keuntungan").value.trim();
+    const tim = document.getElementById("tim_kerja").value.trim();
+    const periode = document.getElementById("periode").value.trim();
+
+    const submitButton = document.getElementById("submitButton");
+    submitButton.disabled = !(
+      nama &&
+      layanan &&
+      harga &&
+      deposit &&
+      keuntungan &&
+      tim &&
+      periode
+    );
+  }
+
+  document
+    .querySelectorAll(
+      "#paket_nama, #layanan, #harga, #deposit, #keuntungan, #tim_kerja, #periode"
+    )
+    .forEach((input) => {
+      input.addEventListener("input", checkFormFilled);
+    });
+
+  document
+    .getElementById("addProductForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      var form = this;
+
+      Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Paket fotografi akan ditambahkan.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Berhasil!",
+            text: "Paket fotografi berhasil ditambahkan.",
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            willClose: () => {
+              form.submit();
+            },
+          });
+        }
+      });
+    });
+</script>
+{% endblock %}
