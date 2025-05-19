@@ -1,5 +1,5 @@
 <nav class="navbar fixed-top navbar-expand-lg">
-  <a href="#" class="navbar-logo"
+  <a href="/masuk" class="navbar-logo"
     ><img src="static/img/logo.png" alt="Logo" height="50" />&nbsp;Oval Photo
   </a>
 
@@ -32,7 +32,65 @@
   </div>
 
   <div class="navbar-extra">
-    <a href="/masuk" id="user-icon"><i class="bi bi-person-circle"></i></a>
+    <a  href="#"
+      aria-label="User menu"
+      class="user-icon"
+      id="user-icon"
+      aria-expanded="false"
+      aria-haspopup="true"
+      onclick="navbarToggle(event)"
+    >
+      <i class="bi bi-person-circle"></i>
+    </a>
+     
+    <!--Navbar Garis 3-->
     <a href="#" id="hamburger-menu"><i class="bi bi-list"></i></a>
   </div>
+
+<!--Navbar dropdown dari logo profil-->
+  <div 
+      id="navbar-dropdown"
+      class="navbar-dropdown"
+      role="menu"
+      aria-orientation="vertical"
+      aria-labelledby="navbar-extra"
+    >
+      <a href="/profil" class="navbar-item" role="menuitem">
+        <i class="bi bi-person navbar-icon"></i>
+        Profil
+      </a>
+      <a href="/ripe_menunggukonfirmasi" class="navbar-item" role="menuitem">
+        <i class="bi bi-card-list navbar-icon"></i>
+        Riwayat Pemesanan
+      </a>
+      <a href="#" class="navbar-item" role="menuitem">
+        <i class="bi bi-box-arrow-right navbar-icon"></i>
+        Keluar
+      </a>
+  </div>
+
+  <script>
+    function navbarToggle(event) {
+      event.preventDefault();
+      const menu = document.getElementById('navbar-dropdown');
+      const button = document.getElementById('navbar-extra');
+      if (menu.classList.contains('show')) {
+        menu.classList.remove('show');
+        button.setAttribute('aria-expanded', 'false');
+      } else {
+        menu.classList.add('show');
+        button.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('navbar-dropdown');
+      const button = document.getElementById('navbar-extra');
+      if (!button.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('show');
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+
 </nav>

@@ -1,31 +1,463 @@
-{% extends "user/base_user.html" %}
+{% extends "user/base_user.html" %}{% block content %}
+<!-- Header -->
+<header class="header">
+  <div class="header-content text-center">
+    <h1>Formulir Pemesanan</h1>
+    <p>
+      <i class="bi bi-headset" style="margin-right: 5px;"></i>
+      Butuh Bantuan? Hubungi Kita Sekarang!
+    </p>
+    <p style="margin-left: 80px;">
+      <span style="color: #b9d3fa; font-weight:600;">+62 813-6233-8236</span> (Telepon atau WhatsApp)
+    </p>
 
-{% block title %}
-Booking | Oval Photo
-{% endblock %}
+  </div>
+</header>
 
-{% block content %}
-<h1>Booking</h1>
-<form action="/pembayaran" method="post">
-    <div class="form-group">
-        <label for="nama">Nama Lengkap</label>
-        <input type="text" class="form-control" id="nama" name="nama" required>
+
+<!--Isi Formulir-->
+<div class="subutama-container" role="main">
+  <p class="formlayanan-text-center">
+    Silahkan isi formulir pemesanan di bawah ini untuk melakukan pemesanan layanan
+    <span class="formlayanan-text-highlight">paket diamond</span> dengan harga
+    <span class="formlayanan-text-highlight">Rp7.299.000</span> dengan
+    <span class="formlayanan-text-highlight">pembayaran deposit</span> sebesar
+    <span class="formlayanan-text-highlight">Rp500.000</span> di setiap layanan pilihan kamu
+  </p>
+
+  <form class="formlayanan-form" id="formlayanan" action="#" method="POST" novalidate>
+    <div class="formlayanan-row">
+      
+      <div>
+        <label for="formlayanan-nama-klien" class="formlayanan-label">
+          Nama lengkap klien<span class="formlayanan-required">*</span>
+        </label>
+        <input
+          type="text"
+          id="formlayanan-nama-klien"
+          name="nama-klien"
+          placeholder="Masukkan nama lengkap klien"
+          class="formlayanan-input formlayanan-required"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="formlayanan-nama-orang-tua" class="formlayanan-label">
+          Nama orang tua klien<span class="formlayanan-required">*</span>
+        </label>
+        <input
+          type="text"
+          id="formlayanan-nama-orang-tua"
+          name="nama-orang-tua"
+          placeholder="Masukkan nama orang tua klien"
+          class="formlayanan-input formlayanan-required"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="formlayanan-email" class="formlayanan-label">
+          Email<span class="formlayanan-required">*</span>
+        </label>
+        <input
+          type="email"
+          id="formlayanan-email"
+          name="email"
+          placeholder="Masukkan email klien"
+          class="formlayanan-input formlayanan-required"
+          required
+        />
+        <p class="formlayanan-text-xs">Contoh: ovalphoto@gmail.com</p>
+      </div>
+
+      <div>
+        <label for="formlayanan-nomor-orang-tua" class="formlayanan-label">
+          Nomor telepon orang tua klien<span class="formlayanan-required">*</span>
+        </label>
+        <input
+          type="tel"
+          id="formlayanan-nomor-orang-tua"
+          name="nomor-orang-tua"
+          placeholder="Masukkan nomor telepon orang tua klien"
+          class="formlayanan-input formlayanan-required"
+          required
+        />
+        <p class="formlayanan-text-xs">Contoh: +62-861-3409-8790</p>
+      </div>
+
+      <div>
+        <label for="formlayanan-nomor-aktif" class="formlayanan-label">
+          Nomor telepon aktif<span class="formlayanan-required">*</span>
+        </label>
+        <input
+          type="tel"
+          id="formlayanan-nomor-aktif"
+          name="nomor-aktif"
+          placeholder="Masukkan nomor telepon aktif klien"
+          class="formlayanan-input formlayanan-required"
+          required
+        />
+        <p class="formlayanan-text-xs">Contoh: +62-861-3409-8790</p>
+      </div>
+
+      <div>
+        <label for="formlayanan-whatsapp" class="formlayanan-label">
+          WhatsApp<span class="formlayanan-required">*</span>
+        </label>
+        <input
+          type="tel"
+          id="formlayanan-whatsapp"
+          name="whatsapp"
+          placeholder="Masukkan nomor WhatsApp klien"
+          class="formlayanan-input formlayanan-required"
+          required
+        />
+        <p class="formlayanan-text-xs">Contoh: +62-861-3409-8790</p>
+      </div>
+
+      <div>
+        <label for="formlayanan-instagram" class="formlayanan-label">Instagram</label>
+        <input
+          type="text"
+          id="formlayanan-instagram"
+          name="instagram"
+          placeholder="Masukkan akun instagram klien"
+          class="formlayanan-input"
+        />
+        <p class="formlayanan-text-xs">Contoh: @ovalphoto</p>
+      </div>
+
+      <div>
+        <label for="formlayanan-facebook" class="formlayanan-label">Facebook</label>
+        <input
+          type="text"
+          id="formlayanan-facebook"
+          name="facebook"
+          placeholder="Masukkan akun facebook klien"
+          class="formlayanan-input"
+        />
+        <p class="formlayanan-text-xs">Contoh: Oval Photo</p>
+      </div>
+
+      <div>
+        <label for="formlayanan-tanggal-acara" class="formlayanan-label">
+          Tanggal acara/pemotretan<span class="formlayanan-required">*</span>
+        </label>
+        <div style="position: relative;">
+          <input
+            type="date"
+            id="formlayanan-tanggal-acara"
+            name="tanggal-acara"
+            class="formlayanan-input formlayanan-required"
+            autocomplete="off"
+            required
+            
+          />
+        </div>
+        <p class="formlayanan-text-xs">
+          Contoh: 11 Februari 2025 atau 11 Februari 2025 - 14 Februari 2025
+        </p>
+        <p class="formlayanan-text-green">Biaya tambah hari: –</p>
+      </div>
+
+      <div>
+        <label for="formlayanan-jam-acara" class="formlayanan-label">
+          Jam acara/pemotretan<span class="formlayanan-required">*</span>
+        </label>
+        <input
+          type="text"
+          id="formlayanan-jam-acara"
+          name="jam-acara"
+          placeholder="Masukkan jam pemotretan/acara klien"
+          class="formlayanan-input formlayanan-required"
+          required
+        />
+        <p class="formlayanan-text-xs">Contoh: 12:30 WIB</p>
+      </div>
+
+      <div class="formlayanan-radio-group">
+        <p class="formlayanan-label">
+          Apakah lokasi acara/pemotretan kamu berada di luar Kab. Labuhanbatu Selatan?
+          <span class="formlayanan-required">*</span>
+        </p>
+        <label class="formlayanan-radio-label">
+          <input
+            type="radio"
+            name="lokasi-luar"
+            value="iya"
+            class="formlayanan-required"
+            required
+          />
+          <div>
+            <span class="formlayanan-text-bold">Iya, berada di luar</span><br />
+            <span class="formlayanan-radio-desc">
+              Ket: ada biaya tambahan transportasi dan akomodasi yang akan diinformasikan melalui telepon atau WhatsApp kamu
+            </span>
+          </div>
+        </label>
+
+        <label class="formlayanan-radio-label">
+          <input
+            type="radio"
+            name="lokasi-luar"
+            value="tidak"
+            class="formlayanan-required"
+            required
+          />
+          <div>
+            <span class="formlayanan-text-bold">Tidak</span><br />
+            <span class="formlayanan-radio-desc">
+              Ket: tidak ada biaya tambahan transportasi dan akomodasi
+            </span>
+          </div>
+        </label>
+
+      </div>
+
     </div>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-    </div>
-    <div class="form-group">
-        <label for="paket">Pilih Paket</label>
-        <select class="form-control" id="paket" name="paket" required>
-            <option value="gold">Paket Gold</option>
-            <!-- Tambah opsi paket lainnya -->
+
+    <div class="formlayanan-row">
+      <div>
+        <label for="formlayanan-lokasi-acara" class="formlayanan-label">
+        Lokasi acara/pemotretan<span class="formlayanan-required">*</span>
+        </label>
+        <select
+          id="formlayanan-lokasi-acara"
+          name="lokasi-acara"
+          class="formlayanan-select formlayanan-required"
+          required
+        >
+          <option value="" disabled>Pilihan saya sendiri</option>
+          <option value="pilihan-saya-sendiri" selected>Pilihan saya sendiri</option>
         </select>
+        <p class="formlayanan-text-green">Biaya lokasi (biaya tambahan): –</p>
+      </div>
     </div>
-    <div class="form-group">
-        <label for="tanggal">Tanggal Acara</label>
-        <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+
+    
+    <div class="formlayanan-row">
+      <div>
+        <label for="formlayanan-alamat-lokasi" class="formlayanan-label">
+          Alamat lokasi acara/pemotretan<span class="formlayanan-required">*</span>
+        </label>
+        <textarea
+          id="formlayanan-alamat-lokasi"
+          name="alamat-lokasi"
+          rows="5"
+          placeholder="Masukan alamat lokasi pemotretan/acara kamu"
+          class="formlayanan-textarea formlayanan-required"
+          required
+        ></textarea>
+        <p class="formlayanan-text-xs">Isikan alamat dengan lengkap</p>
+      </div>
+      
+      <div>
+        <label for="formlayanan-link-maps" class="formlayanan-label">Link maps</label>
+        <textarea
+          id="formlayanan-link-maps"
+          name="link-maps"
+          rows="5"
+          placeholder="Masukan link maps dari lokasi pemotretan/acara kamu"
+          class="formlayanan-textarea"
+        ></textarea>
+        <p class="formlayanan-text-xs">
+          Contoh: https://maps.app.goo.gl/F28Y86DMYdHLySvT7
+        </p>
+      </div>
+
+      <div>
+      <p class="formlayanan-label" style="margin-bottom: 12px;">Unggah surat perizinan lokasi acara/pemotretan kamu!</p>
+      <label for="formlayanan-upload-perizinan" class="formlayanan-upload-label">
+        <i class="bi bi-upload"></i> Tambahkan surat perizinan lokasi kamu di sini
+      </label>
+      <input
+        type="file"
+        id="formlayanan-upload-perizinan"
+        name="upload-perizinan"
+        accept=".doc,.docx,.pdf,image/jpeg,image/jpg,image/png"
+        class="formlayanan-upload-input"
+      />
+      <p class="formlayanan-text-xs" style="margin-top: 0.25rem;">
+        Upload 1 file yang didukung: doc, docx, pdf, gambar (JPEG, JPG dan PNG)
+      </p>
     </div>
-    <button type="submit" class="btn btn-primary">Lanjutkan ke Pembayaran</button>
-</form>
+    </div>
+
+    
+  </form>
+
+ 
+</div>
+
+
+<!--Catatan Penting-->
+<div class="subutama-container" >
+  <main class="container-catatan" role="main" aria-label="Catatan Penting">
+    <div class="header-label-catatan" aria-label="Catatan Penting">
+      Catatan Penting<span class="text-red-catatan">!!</span>
+    </div>
+
+      <ol class="catatan">
+    <li class="catatan">
+      Simbol bintang (<span class="text-red-catatan">*</span>) menandakan bahwa kolom isian wajib diisikan.
+    </li>
+
+    <li class="catatan">
+      Lokasi pemotretan/acara yang direkomendasikan oleh Oval Photo memiliki biaya tambahan, kecuali untuk lokasi ‘Pilihan Saya Sendiri’.
+    </li>
+
+    <li class="catatan">
+      Pesanan yang berhasil terkirim akan dilakukan pemeriksaan selama 1 x 24 jam. Pastikan selalu memeriksa riwayat pesanan kamu dan lakukan pembayaran deposit setelah pesanan kamu dikonfirmasi.
+    </li>
+    
+    <li class="catatan" >
+      Klien wajib membayar deposit sebagai tanda jadi atas layanan dan paket yang dipilih, sebesar:
+      <ul class="catatan">
+        <li class="catatan">Rp500.000 untuk layanan paket enggagement I, semua paket layanan prewedding, dan semua paket layanan wedding, atau</li>
+        <li class="catatan">Rp200.000 untuk layanan paket enggagement II</li>
+      </ul>
+      Sisa pembayaran (pelunasan) dapat dibayar setelah sesi pemotretan selesai atau setelah pembayaran deposit melalui menu ‘Riwayat Pemesanan’.
+    </li>
+
+    <li class="catatan">
+      Link Google Drive yang berisi
+      <span class="text-red-catatan">file foto hasil edit akan dikirim dalam 3-5 hari</span>
+      setelah hari pemotretan yang dapat diakses melalui menu ‘Riwayat Pemesanan’, email, dan WhatsApp.
+      <span class="text-red-catatan">Album foto akan diproduksi dalam 2-3 minggu</span>
+      dan akan dikirimkan melalui jasa pengiriman.
+    </li>
+
+    <li class="catatan">
+      Jadwal pemotretan dapat diubah melalui menu ‘Riwayat Pemesanan’ dengan memilih opsi ‘Ubah Jadwal’. Pastikan jadwal yang diinginkan masih tersedia dengan memeriksa ketersediaan jadwal di menu ‘Katalog Layanan’.
+    </li>
+
+    <li class="catatan">
+      Tambah hari dapat dilakukan melalui menu ‘Riwayat Pemesanan’ dengan memilih opsi ‘Ubah Jadwal’ dan
+      <span class="text-red-catatan">akan dikenakan biaya tambahan sebesar Rp500.000 untuk setiap 1 (satu) tambahan hari.</span>
+    </li>
+
+    <li class="catatan">
+      Lokasi acara/pemotretan yang berada di luar Kab. Labuhanbatu Selatan akan dikenakan biaya tambahan untuk transportasi dan akomodasi. Oval Photo akan menginformasikan biaya tambahan ini melalui telepon atau WhatsApp sebelum klien melakukan pembayaran deposit (pastikan nomor yang kamu isikan bisa dihubungi ya!). Jika klien menyetujui biaya tambahan tersebut, maka jumlahnya akan tercantum pada rincian pembayaran di menu 'Riwayat Pemesanan'. Namun, jika tidak disetujui, maka pemesanan akan dibatalkan.
+    </li>
+
+    <li class="catatan">
+      Lokasi acara/pemotretan yang memerlukan perizinan, diharapkan untuk mengunggah surat perizinan pada formulir pesanan atau pada menu ‘Riwayat Pemesanan’ sebelum dilakukan sesi pemotretan.
+    </li>
+
+    <li class="catatan">
+      Jika kamu memiliki pertanyaan lain seputar layanan fotografi Oval Photo, kamu dapat meng-klik 
+      <a href="/formfaq" class="faq-btn-catatan" role="button" aria-label="FAQ">
+        <i class="bi bi-question-circle-fill" aria-hidden="true"></i>FAQ
+      </a>
+      untuk melihat pertanyaan yang serupa dengan yang ingin kamu tanyakan. Jika tidak menemukan pertanyaan serupa, maka kamu dapat menanyakannya melalui tempat yang sudah disediakan pada halaman ‘FAQ’.
+    </li>
+
+    <li class="catatan">
+      Jika mengalami kendala yang belum terselesaikan atau membutuhkan bantuan serta konsultasi, maka kamu dapat menghubungi nomor +62 813-6233-8236 (via telepon) atau meng–klik
+      <a href="https://wa.me/+6281362338236" class="whatsapp-btn-catatan" role="button" aria-label="Konsultasi Sekarang">
+        <i class="bi bi-whatsapp" aria-hidden="true"></i>Konsultasi Sekarang
+      </a>
+    </li>
+    
+  </ol>
+  </main>
+</div>
+
+<!--Button Pesan & Kembali-->
+<div class="subutama-container" role="main">
+  <div class="formlayanan-buttons">
+    <button
+      type="button"
+      class="formlayanan-btn formlayanan-btn-kembali"
+      onclick="window.location.href='/katalog_layanan'"
+    >
+      Kembali
+    </button>
+
+    <button
+      type="submit"
+      id="formlayanan-submitBtn"
+      class="formlayanan-btn formlayanan-btn-pesan"
+      disabled
+    >
+      Pesan
+    </button>
+
+  </div>
+  
+  <script>
+    (() => {
+      const form = document.getElementById('formlayanan');
+      const submitBtn = document.getElementById('formlayanan-submitBtn');
+      const requiredFields = form.querySelectorAll('.formlayanan-required');
+
+      function checkRequiredFields() {
+        let allFilled = true;
+
+        // For radio groups, track names checked
+        const radioNames = new Set();
+        requiredFields.forEach(field => {
+          if (field.type === 'radio') {
+            radioNames.add(field.name);
+          }
+        });
+
+        // Check radios by group name
+        for (const name of radioNames) {
+          const radios = form.querySelectorAll(`input[name="${name}"]`);
+          const isChecked = Array.from(radios).some(radio => radio.checked);
+          if (!isChecked) {
+            allFilled = false;
+            break;
+          }
+        }
+
+        if (allFilled) {
+          // Check other fields except radios
+          requiredFields.forEach(field => {
+            if (field.type !== 'radio') {
+              if (field.tagName === 'SELECT') {
+                if (!field.value || field.value === "") {
+                  allFilled = false;
+                }
+              } else if (field.tagName === 'TEXTAREA' || field.tagName === 'INPUT') {
+                if (!field.value.trim()) {
+                  allFilled = false;
+                }
+              }
+            }
+          });
+        }
+
+        if (allFilled) {
+          submitBtn.disabled = false;
+          submitBtn.classList.add('active');
+        } else {
+          submitBtn.disabled = true;
+          submitBtn.classList.remove('active');
+        }
+      }
+
+      requiredFields.forEach(field => {
+        if (field.type === 'radio') {
+          const radios = form.querySelectorAll(`input[name="${field.name}"]`);
+          radios.forEach(radio => {
+            radio.addEventListener('change', checkRequiredFields);
+          });
+        } else {
+          field.addEventListener('input', checkRequiredFields);
+          field.addEventListener('change', checkRequiredFields);
+        }
+      });
+
+      checkRequiredFields();
+    })();
+
+  </script>
+
+</div>
+
+
+
 {% endblock %}

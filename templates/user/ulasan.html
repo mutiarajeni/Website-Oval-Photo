@@ -1,27 +1,91 @@
-{% extends "user/base_user.html" %}
+{% extends "user/base_user.html" %}{% block content %}
+<!-- Header -->
+<header class="header">
+  <div class="header-content text-center">
+    <h1>Penilaian dan Ulasan</h1>
+    <p>Bagikan pengalaman kamu untuk membantu kami meningkatkan layanan fotografi</p>
+  </div>
+</header>
 
-{% block title %}
-Beri Ulasan | Oval Photo
-{% endblock %}
+<!--Button kembali-->
+<div class="triutama-container">
+    <button class="back-btn" type="button" onclick="window.location.href='/formulasan'">
+    <i class="bi bi-arrow-left"></i>
+    Kembali
+    </button>
+</div>
 
-{% block content %}
-<h1>Beri Ulasan</h1>
-<p>Terima kasih telah menggunakan layanan kami. Berikan ulasan Anda.</p>
-<form action="/riwayat-pemesanan" method="post">
-    <div class="form-group">
-        <label for="rating">Rating</label>
-        <select class="form-control" id="rating" name="rating" required>
-            <option value="5">5 - Sangat Baik</option>
-            <option value="4">4 - Baik</option>
-            <option value="3">3 - Cukup</option>
-            <option value="2">2 - Buruk</option>
-            <option value="1">1 - Sangat Buruk</option>
-        </select>
+<div class="subutama-container" role="main">
+  <!--Keterangan-->
+  <p style="text-align: center;  font-size: 14px;  line-height: 20px; margin-bottom: 30px; margin-top:-20px; font-weight: 400">
+    Kami akan sangat menghargai jika kamu dapat memberikan penilaian dan ulasan tentang pengalaman kamu bersama Oval Photo. Ulasan kamu akan membantu kami untuk terus memberikan pelayanan terbaik!   
+  </p>
+
+  <!-- Review 1 -->
+  <article class="Kulasan-review">
+    <div class="Kulasan-review-header">
+      <div class="formulasan-reviewer">
+        <img src="https://storage.googleapis.com/a1aa/image/109cacdc-e7a8-4e87-b952-90d5cbb1f2e3.jpg" alt="Foto profil Rina Wijaya, wanita dengan rambut coklat dan tersenyum" width="40" height="40" />
+        <span class="formulasan-reviewer-name">Rina Wijaya</span>
+      </div>
+      <span class="formulasan-review-date">12/02/2025</span>
     </div>
-    <div class="form-group">
-        <label for="komentar">Komentar</label>
-        <textarea class="form-control" id="komentar" name="komentar" rows="3" required></textarea>
+    <div class="formulasan-review-stars" aria-label="Rating bintang 5">
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
     </div>
-    <button type="submit" class="btn btn-primary">Kirim Ulasan</button>
-</form>
+    <p class="formulasan-review-package">Paket Indoor (Studio) - Layanan Prewedding</p>
+    <p class="formulasan-review-text" style="margin-right: 40px;">"Saya memesan layanan pre-wedding di Oval Photo, dan hasilnya di luar ekspektasi! Fotografernya sangat kreatif dalam memilih konsep. Kami tidak hanya mendapatkan foto yang indah, tetapi juga pengalaman yang menyenangkan selama sesi pemotretan. Benar-benar worth it!"
+    </p>
+  </article>
+
+  <!-- Review 2 -->
+  <article class="Kulasan-review">
+    <div class="Kulasan-review-header">
+      <div class="formulasan-reviewer">
+        <img src="https://storage.googleapis.com/a1aa/image/5053ad46-e9f4-4e3a-ea7d-ea5a4f635cbc.jpg" alt="Foto profil Dimas Pratama" width="40" height="40" />
+        <span class="formulasan-reviewer-name">Dimas Pratama</span>
+      </div>
+      <span class="formulasan-review-date">08/02/2025</span>
+    </div>
+    <div class="formulasan-review-stars" aria-label="Rating bintang 5">
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star" style="color:#bfdbfe;" aria-hidden="true"></i>
+    </div>
+    <p class="formulasan-review-package">Paket Silver - Layanan Wedding</p>
+    <p class="formulasan-review-text" style="margin-right: 40px;">"Kami sangat terkesan dengan hasil kerja Oval Photo. Video dan foto pernikahan kami terlihat seperti film romantis dengan kualitas sinematik yang luar biasa. Timnya bekerja dengan sangat baik di hari yang sibuk, memastikan setiap detail tertangkap dengan indah. Ada sedikit keterlambatan dalam pengiriman hasil akhir, tetapi semuanya sepadan dengan kualitas yang diberikan."
+    </p>
+  </article>
+
+  <!-- Review 3 -->
+  <article class="Kulasan-review">
+    <div class="Kulasan-review-header">
+      <div class="formulasan-reviewer">
+        <img src="https://storage.googleapis.com/a1aa/image/635de375-9140-44ca-9bd5-8b81c1264153.jpg" alt="Foto profil Tania Prasetya" width="40" height="40" />
+        <span class="formulasan-reviewer-name">Tania Prasetya</span>
+      </div>
+      <span class="formulasan-review-date">04/02/2025</span>
+    </div>
+    <div class="formulasan-review-stars" aria-label="Rating bintang 5">
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+      <i class="bi bi-star-fill" aria-hidden="true"></i>
+    </div>
+    <p class="formulasan-review-package">Paket Engagement II - Layanan Engagement</p>
+    <p class="formulasan-review-text" style="margin-right: 40px;">"Oval Photo berhasil mengabadikan momen sakral pertunangan kami dengan begitu sempurna. Setiap detail dari dekorasi hingga ekspresi keluarga kami tertangkap dengan sangat indah. Timnya benar-benar memahami kebutuhan kami dan bekerja dengan sangat profesional. Hasil fotonya juga cepat selesai tanpa mengurangi kualitas. Terima kasih banyak, Oval Photo!"
+    </p>
+  </article>
+
+</div>
+
+
+
 {% endblock %}

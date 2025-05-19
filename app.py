@@ -74,7 +74,7 @@ def tentang_kami():
 def kontak():
     return render_template('user/kontak.html')
 
-@app.route('/faq')
+@app.route('/faqbb')
 def faq():
     return render_template('user/faq.html')
 
@@ -89,6 +89,35 @@ def daftar():
 @app.route('/lupa_kataSandi')
 def lupa_kataSandi():
     return render_template('user/lupa_kataSandi.html')
+
+@app.route('/ripe_diproses')
+def ripe_diproses():
+    return render_template('user/ripe_diproses.html')
+
+@app.route('/ripe_selesai')
+def ripe_selesai():
+    return render_template('user/ripe_selesai.html')
+
+@app.route('/ripe_menunggukonfirmasi')
+def ripe_menunggukonfirmasi():
+    return render_template('user/ripe_menunggu-konfirmasi.html')
+
+@app.route('/formfaq')
+def formfaq():
+    return render_template('user/faq_form.html')
+
+@app.route('/formulasan')
+def formulasan():
+    return render_template('user/ulasan_form.html')
+
+@app.route('/profiledit')
+def profiledit():
+    return render_template('user/profil_edit.html')
+
+
+
+
+
 
 # Route untuk halaman admin
 @app.route('/admin_dashboard')

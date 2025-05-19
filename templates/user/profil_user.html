@@ -1,23 +1,24 @@
-{% extends "user/base_user.html" %}
-
-{% block title %}
-Profil Pengguna | Oval Photo
-{% endblock %}
-
-{% block content %}
-<div class="header-profile">
-    <div class="profile-pic-wrapper">
-      <img
-        src="https://storage.googleapis.com/a1aa/image/1a04022f-3f24-4631-c626-d9df0888aefb.jpg"
-        alt="User profile icon silhouette in black on light blue circular background"
-        class="profile-pic"
-      />
+{% extends "user/base_user.html" %}{% block content %}
+ <header class="profil-header">
+    <div class="profil-avatar-wrapper">
+      <div class="profil-avatar">
+        <i class="bi bi-person-fill"></i>
+      </div>
     </div>
-  </div>
-  <div class="content-profile">
-    <p class="name-profile">Serini Dewi Lestari</p>
-    <p class="username-profile">FutureBride_77</p>
-    <p class="email-profile">dewiserinilestari@gmail.com</p>
-    <button class="btn-profile" type="button">Ubah Profil</button>
-  </div>
+  </header>
+
+  <main class="profil-content">
+    
+    <h2 class="profil-name">Serini Dewi Lestari</h2>
+    <p class="profil-username">FutureBride _77</p>
+    <p class="profil-email">dewiserinilestari@gmail.com</p>
+    <div class = "profil-button-wrapper">
+      <button class="profil-button" type="button"  onclick="document.getElementById('editprofilModal').classList.add('show')">Ubah Profil</button>
+    </div>
+
+  </main>
+
+  
+  
+
 {% endblock %}

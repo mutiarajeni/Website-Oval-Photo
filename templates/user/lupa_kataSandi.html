@@ -1,0 +1,59 @@
+{% extends "user/base_user.html" %} {% block title %} Login | Oval Photo 
+{%endblock %} {% block content %}
+
+
+<div class="container-login">
+  <!-- Logo-->
+  <div class="login-logo">
+    <img src="static/img/logo.png" alt="Logo">
+    <h2 class="mb-0">Oval Photo</h2>
+  </div>
+    
+  <!-- Lupa Card -->
+  <div class="login-card">
+    <form id="loginForm">
+      <h2 class="login-title">Lupa Kata Sandi?</h2>
+      <p class="login-subtitle">
+        Tidak perlu khawatir! Masukkan alamat email yang kamu gunakan untuk membuat akun ini. Kami akan mengirimkan email dengan tautan untuk mengubah kata sandi kamu.
+      </p>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Alamat Email</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          placeholder="Masukkan alamat email kamu"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn-masuk" id="masukButton" disabled>
+        Kirim
+      </button>
+
+    </form>
+  </div>
+</div>
+    
+
+<!-- Scripts -->
+<script>
+  const username = document.getElementById("username");
+  const masukButton = document.getElementById("masukButton");
+
+  function validateForm() {
+    masukButton.disabled = !(username.value.trim());
+    masukButton.style.cursor = masukButton.disabled ? "not-allowed" : "pointer";
+    masukButton.style.backgroundColor = masukButton.disabled
+      ? "#d1d5db"
+      : "#2563eb";
+  }
+
+  username.addEventListener("input", validateForm);
+</script>
+    
+
+
+{% endblock %}
+    

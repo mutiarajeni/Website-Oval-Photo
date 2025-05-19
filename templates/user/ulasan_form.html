@@ -1,0 +1,233 @@
+{% extends "user/base_user.html" %}{% block content %}
+<!-- Header -->
+<header class="header">
+  <div class="header-content text-center">
+    <h1>Penilaian dan Ulasan</h1>
+    <p>Bagikan pengalaman kamu untuk membantu kami meningkatkan layanan fotografi</p>
+  </div>
+</header>
+
+<main class="subutama-container">
+  <!--Keterangan-->
+  <p style="text-align: center;  font-size: 14px;  line-height: 20px; margin-bottom: 60px; margin-top: 40px; font-weight: 400">
+      Kami akan sangat menghargai jika kamu dapat memberikan penilaian dan ulasan tentang pengalaman kamu bersama Oval Photo. Ulasan kamu akan membantu kami untuk terus memberikan pelayanan terbaik!   
+  </p>
+
+  <!--Isi-->
+  <div class="formulasan-flex">
+    <!-- Left side -->
+    <section class="formulasan-left" aria-label="Formulasan Penilaian dan Ulasan">
+      <div>
+        <!--Section Penilaian-->
+        <h2>Penilaian</h2>
+        <p>Berikan rating kamu untuk layanan Oval Photo! Kami ingin tahu seberapa puas kamu dengan layanan yang kami berikan.</p>
+        <div class="formulasan-stars" role="radiogroup" aria-label="Rating bintang">
+          <i class="bi bi-star formulasan-star" role="radio" aria-checked="false" tabindex="0" data-value="1" aria-label="1 bintang"></i>
+          <i class="bi bi-star formulasan-star" role="radio" aria-checked="false" tabindex="-1" data-value="2" aria-label="2 bintang"></i>
+          <i class="bi bi-star formulasan-star" role="radio" aria-checked="false" tabindex="-1" data-value="3" aria-label="3 bintang"></i>
+          <i class="bi bi-star formulasan-star" role="radio" aria-checked="false" tabindex="-1" data-value="4" aria-label="4 bintang"></i>
+          <i class="bi bi-star formulasan-star" role="radio" aria-checked="false" tabindex="-1" data-value="5" aria-label="5 bintang"></i>
+        </div>
+        <div class="formulasan-star-labels">
+          <span>Buruk</span>
+          <span>Sangat Terbaik</span>
+        </div>
+      </div>
+      
+      <!--Section Ulasan-->
+      <div>
+        <h3>Ulasan</h3>
+        <p>Ceritakan pengalaman dan kesan kamu selama menggunakan layanan kamu.</p>
+        <textarea class="formulasan-textarea" placeholder="Ceritakan pengalaman kamu di sini!" rows="12" aria-label="Tulis ulasan"></textarea>
+      </div>
+      <div class="formulasan-buttons">
+        <button type="button" class="formulasan-btn-back" onclick="window.location.href='/ripe_selesai'">Kembali</button>
+        <button type="button" class="formulasan-btn-send" disabled>Kirim</button>
+      </div>
+
+    </section>
+
+    <!-- Right side -->
+    <section class="formulasan-right" aria-label="Formulasan Penilaian dan Ulasan dari Klien">
+      <h2>Penilaian dan ulasan dari klien</h2>
+      <p>Penilaian dan ulasan dari klien yang sudah menggunakan layanan fotografi Oval Photo</p>
+
+      <!-- Review 1 -->
+      <article class="formulasan-review">
+        <div class="formulasan-review-header">
+          <div class="formulasan-reviewer">
+            <img src="https://storage.googleapis.com/a1aa/image/109cacdc-e7a8-4e87-b952-90d5cbb1f2e3.jpg" alt="Foto profil Rina Wijaya" width="40" height="40" />
+            <span class="formulasan-reviewer-name">Rina Wijaya</span>
+          </div>
+          <span class="formulasan-review-date">12/02/2025</span>
+        </div>
+        <div class="formulasan-review-stars" aria-label="Rating bintang 5">
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+        </div>
+        <p class="formulasan-review-package">Paket Indoor (Studio) - Layanan Prewedding</p>
+        <p class="formulasan-review-text">"Saya memesan layanan pre-wedding di Oval Photo, dan hasilnya di luar ekspektasi! Fotografernya sangat kreatif dalam memilih konsep. Kami tidak hanya mendapatkan foto yang indah, tetapi juga pengalaman yang menyenangkan selama sesi pemotretan. Benar-benar worth it!"
+        </p>
+      </article>
+
+      <!-- Review 2 -->
+      <article class="formulasan-review">
+        <div class="formulasan-review-header">
+          <div class="formulasan-reviewer">
+            <img src="https://storage.googleapis.com/a1aa/image/5053ad46-e9f4-4e3a-ea7d-ea5a4f635cbc.jpg" alt="Foto profil Dimas Pratama" width="40" height="40" />
+            <span class="formulasan-reviewer-name">Dimas Pratama</span>
+          </div>
+          <span class="formulasan-review-date">08/02/2025</span>
+        </div>
+        <div class="formulasan-review-stars" aria-label="Rating bintang 4">
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star" style="color:#bfdbfe;" aria-hidden="true"></i>
+        </div>
+        <p class="formulasan-review-package">Paket Silver - Layanan Wedding</p>
+        <p class="formulasan-review-text">"Kami sangat terkesan dengan hasil kerja Oval Photo. Video dan foto pernikahan kami terlihat seperti film romantis dengan kualitas sinematik yang luar biasa. Timnya bekerja dengan sangat baik di hari yang sibuk, memastikan setiap detail tertangkap dengan indah. Ada sedikit keterlambatan dalam pengiriman hasil akhir, tetapi semuanya sepadan dengan kualitas yang diberikan."
+        </p>
+      </article>
+
+      <!-- Review 3 -->
+      <article class="formulasan-review">
+        <div class="formulasan-review-header">
+          <div class="formulasan-reviewer">
+            <img src="https://storage.googleapis.com/a1aa/image/635de375-9140-44ca-9bd5-8b81c1264153.jpg" alt="Foto profil Tania Prasetya" width="40" height="40" />
+            <span class="formulasan-reviewer-name">Tania Prasetya</span>
+          </div>
+          <span class="formulasan-review-date">04/02/2025</span>
+        </div>
+        <div class="formulasan-review-stars" aria-label="Rating bintang 5">
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
+        </div>
+        <p class="formulasan-review-package">Paket Engagement II - Layanan Engagement</p>
+        <p class="formulasan-review-text">"Oval Photo berhasil mengabadikan momen sakral pertunangan kami dengan begitu sempurna. Setiap detail dari dekorasi hingga ekspresi keluarga kami tertangkap dengan sangat indah. Timnya benar-benar memahami kebutuhan kami dan bekerja dengan sangat profesional. Hasil fotonya juga cepat selesai tanpa mengurangi kualitas. Terima kasih banyak, Oval Photo!"
+        </p>
+      </article>
+
+      <!--Button Selengkapnya-->
+      <div class="formulasan-more-btn-container">
+        <button type="button" class="formulasan-more-btn" onclick="window.location.href='/ulasan'">Selengkapnya</button>
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<script>
+  (() => {
+    const starsContainer = document.querySelector('.formulasan-stars');
+    const stars = starsContainer.querySelectorAll('.formulasan-star');
+    const textarea = document.querySelector('.formulasan-textarea');
+    const sendBtn = document.querySelector('.formulasan-btn-send');
+
+    let currentRating = 0;
+
+    // Perbarui tampilan bintang berdasarkan peringkat
+    function updateStars(rating) {
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('filled');
+          star.setAttribute('aria-checked', 'true');
+          star.tabIndex = 0;
+          star.classList.remove('bi-star');
+          star.classList.add('bi-star-fill');
+        } else {
+          star.classList.remove('filled');
+          star.setAttribute('aria-checked', 'false');
+          star.tabIndex = -1;
+          star.classList.remove('bi-star-fill');
+          star.classList.add('bi-star');
+        }
+      });
+    }
+
+    // Mengaktifkan atau menonaktifkan tombol kirim berdasarkan peringkat dan konten textarea
+    function updateSendButton() {
+      if (currentRating > 0 && textarea.value.trim().length > 0) {
+        sendBtn.disabled = false;
+        sendBtn.classList.add('enabled');
+      } else {
+        sendBtn.disabled = true;
+        sendBtn.classList.remove('enabled');
+      }
+    }
+
+    // Handle klik bintang
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        currentRating = parseInt(star.dataset.value);
+        updateStars(currentRating);
+        updateSendButton();
+      });
+
+      star.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          currentRating = parseInt(star.dataset.value);
+          updateStars(currentRating);
+          updateSendButton();
+        }
+        // Navigasi keyboard dgn arrow keys
+        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          let nextIndex = (Array.from(stars).indexOf(star) + 1) % stars.length;
+          stars[nextIndex].focus();
+        }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          let prevIndex = (Array.from(stars).indexOf(star) - 1 + stars.length) % stars.length;
+          stars[prevIndex].focus();
+        }
+      });
+
+      star.addEventListener('mouseenter', () => {
+        const hoverValue = parseInt(star.dataset.value);
+        stars.forEach((s, i) => {
+          if (i < hoverValue) {
+            s.classList.add('filled');
+            s.classList.remove('bi-star');
+            s.classList.add('bi-star-fill');
+          } else {
+            s.classList.remove('filled');
+            s.classList.remove('bi-star-fill');
+            s.classList.add('bi-star');
+          }
+        });
+      });
+
+      star.addEventListener('mouseleave', () => {
+        updateStars(currentRating);
+      });
+    });
+
+    // Reset bintang saat mouse meninggalkan container
+    starsContainer.addEventListener('mouseleave', () => {
+      updateStars(currentRating);
+    });
+
+    // Enable button kirim jika textarea dan bintang peringkat sudah dipilih
+    textarea.addEventListener('input', () => {
+      updateSendButton();
+    });
+
+    // Initialize bintang dan button
+    updateStars(currentRating);
+    updateSendButton();
+  })();
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "user/base_user.html" %}{% block content %}
+
+<!-- Header -->
+<header class="header">
+  <div class="header-content text-center">
+    <h1>FAQ <br>(Frequently Asked Questions)</h1>
+    <p>
+      <i class="bi bi-headset" style="margin-right: 5px;"></i>
+      Butuh Bantuan? Hubungi Kita Sekarang!
+    </p>
+    <p style="margin-left: 80px;">
+      <span style="color: #b9d3fa; font-weight:600;">+62 813-6233-8236</span> (Telepon atau WhatsApp)
+    </p>
+  </div>
+</header>
+
+<!--Isi-->
+<div class="subutama-container" role="main">
+  <h1 class="formfaq-title">Formulir Pertanyaan</h1>
+    <p class="formfaq-description">
+      Silahkan isikan formulir pemesanan di bawah ini untuk mengirimkan pertanyaan kamu. Harap tunggu 1x24 jam untuk mendapatkan jawaban dari pertanyaan tersebut. Pastikan untuk selalu melihat perbaruan 'FAQ' terbaru di halaman ini.
+    </p>
+
+
+  <form class="formlayanan-form" id="formlayanan" action="#" method="POST" novalidate>
+    <div class="formlayanan-row">
+      
+      <div>
+        <label for="formlayanan-nama-klien" class="formlayanan-label">
+          Nama<span class="formlayanan-required">*</span>
+        </label>
+        <input
+          type="text"
+          id="formlayanan-nama-klien"
+          name="nama-klien"
+          placeholder="Masukkan nama lengkap kamu"
+          class="formlayanan-input formlayanan-required"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="formlayanan-email" class="formlayanan-label">
+          Email<span class="formlayanan-required">*</span>
+        </label>
+        <input
+          type="email"
+          id="formlayanan-email"
+          name="email"
+          placeholder="Masukkan email klien"
+          class="formlayanan-input formlayanan-required"
+          required
+        />
+        <p class="formlayanan-text-xs">Contoh: ovalphoto@gmail.com</p>
+      </div>
+
+      <div style ="grid-column: 1 / -1;">
+        <label for="formlayanan-alamat-lokasi" class="formlayanan-label">
+          Pertanyaan<span class="formlayanan-required">*</span>
+        </label>
+        <textarea
+          id="formlayanan-alamat-lokasi"
+          name="alamat-lokasi"
+          rows="5"
+          placeholder="Masukan pertanyaan kamu di sini"
+          class="formlayanan-textarea formlayanan-required"
+          required
+        ></textarea>
+    </div>
+
+    </div>
+
+  </form>
+
+</div>
+
+
+<!--Button Pesan & Kembali-->
+<div class="subutama-container" role="main">
+  <div class="formlayanan-buttons">
+    <button
+      type="button"
+      class="formlayanan-btn formlayanan-btn-kembali"
+      onclick="window.location.href='/faqbb'"
+    >
+      Kembali
+    </button>
+
+    <button
+      type="submit"
+      id="formlayanan-submitBtn"
+      class="formlayanan-btn formlayanan-btn-pesan"
+      disabled
+    >
+      Kirim
+    </button>
+
+  </div>
+  
+  <script>
+    (() => {
+      const form = document.getElementById('formlayanan');
+      const submitBtn = document.getElementById('formlayanan-submitBtn');
+      const requiredFields = form.querySelectorAll('.formlayanan-required');
+
+      function checkRequiredFields() {
+        let allFilled = true;
+
+        // For radio groups, track names checked
+        const radioNames = new Set();
+        requiredFields.forEach(field => {
+          if (field.type === 'radio') {
+            radioNames.add(field.name);
+          }
+        });
+
+        // Check radios by group name
+        for (const name of radioNames) {
+          const radios = form.querySelectorAll(`input[name="${name}"]`);
+          const isChecked = Array.from(radios).some(radio => radio.checked);
+          if (!isChecked) {
+            allFilled = false;
+            break;
+          }
+        }
+
+        if (allFilled) {
+          // Check other fields except radios
+          requiredFields.forEach(field => {
+            if (field.type !== 'radio') {
+              if (field.tagName === 'SELECT') {
+                if (!field.value || field.value === "") {
+                  allFilled = false;
+                }
+              } else if (field.tagName === 'TEXTAREA' || field.tagName === 'INPUT') {
+                if (!field.value.trim()) {
+                  allFilled = false;
+                }
+              }
+            }
+          });
+        }
+
+        if (allFilled) {
+          submitBtn.disabled = false;
+          submitBtn.classList.add('active');
+        } else {
+          submitBtn.disabled = true;
+          submitBtn.classList.remove('active');
+        }
+      }
+
+      requiredFields.forEach(field => {
+        if (field.type === 'radio') {
+          const radios = form.querySelectorAll(`input[name="${field.name}"]`);
+          radios.forEach(radio => {
+            radio.addEventListener('change', checkRequiredFields);
+          });
+        } else {
+          field.addEventListener('input', checkRequiredFields);
+          field.addEventListener('change', checkRequiredFields);
+        }
+      });
+
+      checkRequiredFields();
+    })();
+
+  </script>
+
+</div>
+
+
+{% endblock %}
