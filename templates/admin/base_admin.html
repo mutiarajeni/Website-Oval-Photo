@@ -19,11 +19,17 @@
     <title>
       {% if request.path == '/login' %} Login | Oval Photo {% elif request.path
       == '/register' %} Mendaftar di Oval Photo {% elif request.path ==
-      '/loginAdmin' %} Login Admin | Oval Photo {% else %} Material Admin Oval
-      Photo {% endif %}
+      '/loginAdmin' %} Login Admin | Oval Photo {% else %} Admin Oval Photo {%
+      endif %}
     </title>
     <!-- MY CSS -->
     <link rel="stylesheet" href="static/css/admin.css" />
+
+    <!-- Flatpickr CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
 
     <!-- Boostrap -->
     <link

@@ -4,7 +4,7 @@ Photo {% endblock %} {% block content %}
   <div class="col-12">
     <div class="card my-4">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-        <div class="bg-admin shadow-success border-radius-lg pt-4 pb-3">
+        <div class="bg-admin shadow-dark border-radius-lg pt-4 pb-3">
           <h6 class="text-white text-capitalize ps-3">
             Tambah Layanan Fotografi
           </h6>
@@ -40,7 +40,7 @@ Photo {% endblock %} {% block content %}
               action="/admin_layananFotografi_tambah"
               enctype="multipart/form-data"
             >
-              <table class="table">
+              <table class="table table-no-border">
                 <tbody>
                   <tr>
                     <td><label for="nama">Nama Layanan</label></td>
@@ -61,23 +61,25 @@ Photo {% endblock %} {% block content %}
                     <td><label for="gambar">Foto</label></td>
                     <td>
                       <div class="input-group input-group-outline">
-                        <div class="card w-100">
+                        <div class="card">
                           <div class="card-body">
                             <div
                               id="drop-area"
-                              class="border rounded d-flex justify-content-center align-items-center flex-column p-4 cursor-pointer"
-                              onclick="document.getElementById('gambar').click()"
+                              class="border rounded d-flex justify-content-center align-items-center"
                             >
-                              <i
-                                class="bi bi-cloud-arrow-up-fill text-primary"
-                                style="font-size: 48px"
-                              ></i>
-                              <p class="mt-3 mb-0">Upload Foto</p>
+                              <div class="content">
+                                <i
+                                  class="bi bi-cloud-arrow-up-fill text-primary"
+                                  style="font-size: 48px"
+                                ></i>
+                                <p class="mt-3">Upload Foto</p>
+                              </div>
                             </div>
                             <input
                               type="file"
                               id="gambar"
                               name="gambar"
+                              multiple
                               accept="image/*"
                               class="d-none"
                               required
@@ -108,12 +110,14 @@ Photo {% endblock %} {% block content %}
               <div class="text-end mt-3">
                 <a
                   href="/admin_layananFotografi"
-                  class="btn btn-outline-dark me-2"
+                  class="btn btn-outline-dark me-2 fw-normal"
+                  style="text-transform: none; font-size: 1rem"
                   >Kembali</a
                 >
                 <button
                   type="submit"
-                  class="btn btn-dark"
+                  class="btn btn-dark fw-normal"
+                  style="text-transform: none; font-size: 1rem"
                   id="submitButton"
                   disabled
                 >
