@@ -118,6 +118,9 @@ Photo {% endblock %} {% block content %}
                           <option value="Buah">Buah</option>
                         </select>
                       </div>
+                      <div>
+                        <small style="color: green">Harga paket:</small>
+                      </div>
                     </td>
                   </tr>
 
@@ -230,7 +233,12 @@ Photo {% endblock %} {% block content %}
                   </tr>
 
                   <tr>
-                    <td><label for="nama">Instagram</label></td>
+                    <td>
+                      <label for="nama"
+                        >Instagram<br />
+                        <small style="color: orange">(Opsional)</small></label
+                      >
+                    </td>
                     <td>
                       <div
                         class="input-group input-group-outline"
@@ -248,7 +256,12 @@ Photo {% endblock %} {% block content %}
                   </tr>
 
                   <tr>
-                    <td><label for="nama">Facebook</label></td>
+                    <td>
+                      <label for="nama"
+                        >Facebook<br />
+                        <small style="color: orange">(Opsional)</small></label
+                      >
+                    </td>
                     <td>
                       <div
                         class="input-group input-group-outline"
@@ -284,7 +297,7 @@ Photo {% endblock %} {% block content %}
                           class="form-control"
                           id="periode"
                           name="periode"
-                          placeholder="Pilih tanggal pemesanan"
+                          placeholder="Pilih tanggal acara"
                           required
                         />
                         <span
@@ -304,31 +317,35 @@ Photo {% endblock %} {% block content %}
                           ></i>
                         </span>
                       </div>
+                      <div>
+                        <small style="color: green">Biaya tambah hari:</small>
+                      </div>
                     </td>
                   </tr>
 
                   <tr>
                     <td>
-                      <label for="satuan"
-                        >Lokasi acara berada di luar Kab. Labuhanbatu
+                      <label
+                        >Lokasi Acara berada di luar<br />Kab. Labuhanbatu
                         Selatan</label
                       >
                     </td>
                     <td>
                       <div
-                        class="input-group input-group-outline"
-                        style="max-width: 500px"
+                        style="display: flex; gap: 20px; align-items: center"
                       >
-                        <label class="form-label"></label>
-                        <select
-                          class="form-control"
-                          id="satuan"
-                          name="satuan"
-                          required
-                        >
-                          <option value="Kg">Kg</option>
-                          <option value="Buah">Buah</option>
-                        </select>
+                        <label>
+                          <input type="radio" name="lokasi_luar" value="iya" />
+                          Iya, berada di luar
+                        </label>
+                        <label>
+                          <input
+                            type="radio"
+                            name="lokasi_luar"
+                            value="tidak"
+                          />
+                          Tidak
+                        </label>
                       </div>
                     </td>
                   </tr>
@@ -351,66 +368,101 @@ Photo {% endblock %} {% block content %}
                           <option value="Buah">Buah</option>
                         </select>
                       </div>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td><label for="nama">Alamat Lokasi</label></td>
-                    <td>
-                      <div
-                        class="input-group input-group-outline"
-                        style="max-width: 500px"
-                      >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="nama"
-                          name="nama"
-                          required
-                        />
+                      <div>
+                        <small style="color: green">Biaya lokasi:</small>
                       </div>
                     </td>
                   </tr>
 
                   <tr>
-                    <td><label for="nama">Link Maps</label></td>
+                    <td><label for="deskripsi">Alamat Lokasi</label></td>
                     <td>
-                      <div
-                        class="input-group input-group-outline"
-                        style="max-width: 500px"
-                      >
-                        <input
-                          type="text"
+                      <div class="input-group input-group-outline">
+                        <textarea
                           class="form-control"
-                          id="nama"
-                          name="nama"
+                          id="deskripsi"
+                          name="deskripsi"
+                          rows="5"
                           required
-                        />
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td><label for="nama">Surat Izin Lokasi</label></td>
-                    <td>
-                      <div
-                        class="input-group input-group-outline"
-                        style="max-width: 500px"
-                      >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="nama"
-                          name="nama"
-                          required
-                        />
+                        ></textarea>
                       </div>
                     </td>
                   </tr>
 
                   <tr>
                     <td>
-                      <label for="nama">Biaya Transportasi & Akomodasi</label>
+                      <label for="deskripsi"
+                        >Link Maps<br />
+                        <small style="color: orange">(Opsional)</small></label
+                      >
+                    </td>
+                    <td>
+                      <div class="input-group input-group-outline">
+                        <textarea
+                          class="form-control"
+                          id="deskripsi"
+                          name="deskripsi"
+                          rows="5"
+                          required
+                        ></textarea>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <label for="surat_izin">
+                        Surat Izin Lokasi<br />
+                        <small style="color: orange">(Opsional)</small>
+                      </label>
+                    </td>
+                    <td>
+                      <div style="max-width: 500px">
+                        <label
+                          for="surat_izin"
+                          style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 8px;
+                            border: 1px solid #ccc;
+                            border-radius: 8px;
+                            padding: 10px;
+                            cursor: pointer;
+                          "
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M.5 9.9V14a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V9.9a.5.5 0 0 0-1 0V14a.5.5 0 0 1-.5.5H1.5a.5.5 0 0 1-.5-.5V9.9a.5.5 0 0 0-1 0z"
+                            />
+                            <path
+                              d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 1 1-.708.708L8.5 2.707V10.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"
+                            />
+                          </svg>
+                          Upload Surat Izin
+                        </label>
+                        <input
+                          type="file"
+                          id="surat_izin"
+                          name="surat_izin"
+                          style="display: none"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <label for="nama"
+                        >Biaya Transportasi & Akomodasi<br />
+                        <small style="color: orange">(Opsional)</small></label
+                      >
                     </td>
                     <td>
                       <div
