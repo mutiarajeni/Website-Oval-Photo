@@ -4,7 +4,7 @@ Photo {% endblock %} {% block content %}
   <div class="col-12">
     <div class="card my-4">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-        <div class="bg-admin shadow-success border-radius-lg pt-4 pb-3">
+        <div class="bg-admin shadow-dark border-radius-lg pt-4 pb-3">
           <h6 class="text-white text-capitalize ps-3">
             Tambah Paket Fotografi
           </h6>
@@ -41,7 +41,7 @@ Photo {% endblock %} {% block content %}
               action="/admin_paketFotografi_tambah"
               enctype="multipart/form-data"
             >
-              <table class="table">
+              <table class="table table-no-border">
                 <tbody>
                   <tr>
                     <td><label for="paket_nama">Nama Paket</label></td>
@@ -130,14 +130,34 @@ Photo {% endblock %} {% block content %}
                   <tr>
                     <td><label for="periode">Periode Paket</label></td>
                     <td>
-                      <div class="input-group input-group-outline">
+                      <div
+                        class="input-group input-group-outline"
+                        style="max-width: 400px; border-radius: 5px"
+                      >
                         <input
                           type="text"
                           class="form-control"
                           id="periode"
                           name="periode"
+                          placeholder="Pilih rentang tanggal"
                           required
                         />
+                        <span
+                          id="calendar-icon"
+                          style="
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            padding-left: 8px;
+                            color: #000000;
+                            position: relative;
+                          "
+                        >
+                          <i
+                            class="bi bi-calendar3"
+                            style="font-size: 1.5rem"
+                          ></i>
+                        </span>
                       </div>
                     </td>
                   </tr>
@@ -146,12 +166,14 @@ Photo {% endblock %} {% block content %}
               <div class="text-end mt-3">
                 <a
                   href="/admin_paketFotografi"
-                  class="btn btn-outline-dark me-2"
+                  class="btn btn-outline-dark me-2 fw-normal"
+                  style="text-transform: none; font-size: 1rem"
                   >Kembali</a
                 >
                 <button
                   type="submit"
-                  class="btn btn-dark"
+                  class="btn btn-dark fw-normal"
+                  style="text-transform: none; font-size: 1rem"
                   id="submitButton"
                   disabled
                 >
@@ -165,6 +187,48 @@ Photo {% endblock %} {% block content %}
     </div>
   </div>
 </div>
+
+<!-- Flatpickr CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+/>
+
+<!-- Flatpickr JS dan Locale -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+
+<script>
+  const flatpickrInstance = flatpickr("#periode", {
+    mode: "range",
+    dateFormat: "d F Y",
+    locale: "id",
+    allowInput: true,
+    onOpen: function (selectedDates, dateStr, instance) {
+      setTimeout(() => {
+        const calendarIcon = document.getElementById("calendar-icon");
+        const calendar = document.querySelector(".flatpickr-calendar");
+        const iconRect = calendarIcon.getBoundingClientRect();
+
+        calendar.style.position = "absolute";
+        calendar.style.top = iconRect.bottom + window.scrollY + "px";
+        calendar.style.left = iconRect.right + 10 + "px";
+        calendar.style.zIndex = 9999;
+      }, 10);
+    },
+  });
+
+  // Klik ikon untuk membuka kalender
+  document
+    .getElementById("calendar-icon")
+    .addEventListener("click", function () {
+      flatpickrInstance.open();
+    });
+</script>
 
 <script>
   function checkFormFilled() {

@@ -4,7 +4,7 @@ Photo {% endblock %} {% block content %}
   <div class="col-12">
     <div class="card my-4">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-        <div class="bg-admin shadow-success border-radius-lg pt-4 pb-3">
+        <div class="bg-admin shadow-dark border-radius-lg pt-4 pb-3">
           <h6 class="text-white text-capitalize ps-3">Tambah FAQ</h6>
         </div>
       </div>
@@ -29,7 +29,7 @@ Photo {% endblock %} {% block content %}
             {% endif %}
 
             <form id="addProductForm" method="POST" action="/admin_faq_tambah">
-              <table class="table">
+              <table class="table table-no-border">
                 <tbody>
                   <tr>
                     <td><label for="pertanyaan">Pertanyaan</label></td>
@@ -60,12 +60,16 @@ Photo {% endblock %} {% block content %}
                 </tbody>
               </table>
               <div class="text-end mt-3">
-                <a href="/admin_faq" class="btn btn-outline-dark me-2"
+                <a
+                  href="/admin_faq"
+                  class="btn btn-outline-dark me-2 fw-normal"
+                  style="text-transform: none; font-size: 1rem"
                   >Kembali</a
                 >
                 <button
                   type="submit"
-                  class="btn btn-dark"
+                  class="btn btn-dark fw-normal"
+                  style="text-transform: none; font-size: 1rem"
                   id="submitButton"
                   disabled
                 >

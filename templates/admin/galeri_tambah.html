@@ -4,14 +4,17 @@ Photo {% endblock %} {% block content %}
   <div class="col-12">
     <div class="card my-4">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-        <div class="bg-admin shadow-success border-radius-lg pt-4 pb-3">
+        <div class="bg-admin shadow-dark border-radius-lg pt-4 pb-3">
           <h6 class="text-white text-capitalize ps-3">Tambah Galeri</h6>
         </div>
       </div>
-      <div class="card-body px-0 pb-2">
-        <div class="table-responsive p-0">
-          <div class="container mt-5">
-            {% if product_exists %}
+
+<div class="card-body px-4 pb-4">
+        <div class="row">
+          <!-- Kolom Form (kiri) -->
+          <div class="col-md-8">
+            <form id="addProductForm" method="POST" action="/admin_layananFotografi_tambah" enctype="multipart/form-data">
+              {% if product_exists %}
             <div
               class="alert alert-danger alert-dismissible text-white"
               role="alert"
@@ -38,12 +41,13 @@ Photo {% endblock %} {% block content %}
               action="/admin_layananFotografi_tambah"
               enctype="multipart/form-data"
             >
-              <table class="table">
+              <table class="table table-no-border">
                 <tbody>
                   <tr>
                     <td><label for="satuan">Kategori</label></td>
                     <td>
-                      <div class="input-group input-group-outline">
+                      <div class="input-group input-group-outline"
+                        style="max-width: 500px">
                         <label class="form-label"></label>
                         <select
                           class="form-control"
@@ -60,7 +64,8 @@ Photo {% endblock %} {% block content %}
                   <tr>
                     <td><label for="satuan">Layanan</label></td>
                     <td>
-                      <div class="input-group input-group-outline">
+                      <div class="input-group input-group-outline"
+                      style="max-width: 500px">
                         <label class="form-label"></label>
                         <select
                           class="form-control"
@@ -77,7 +82,8 @@ Photo {% endblock %} {% block content %}
                   <tr>
                     <td><label for="satuan">Lokasi</label></td>
                     <td>
-                      <div class="input-group input-group-outline">
+                      <div class="input-group input-group-outline"
+                      style="max-width: 500px">
                         <label class="form-label"></label>
                         <select
                           class="form-control"
@@ -95,7 +101,8 @@ Photo {% endblock %} {% block content %}
                   <tr>
                     <td><label for="gambar"> </label></td>
                     <td>
-                      <div class="input-group input-group-outline">
+                      <div class="input-group input-group-outline"
+                      style="max-width: 500px">
                         <div class="card">
                           <div class="card-body">
                             <div
@@ -126,15 +133,57 @@ Photo {% endblock %} {% block content %}
                   </tr>
                 </tbody>
               </table>
-              <a href="/admin_galeri" class="btn btn-secondary">Kembali</a>
-              <button type="submit" class="btn btn-primary">Simpan</button>
+
+              <div class="text-end mt-3">
+                <a
+                  href="/admin_galeri"
+                  class="btn btn-outline-dark me-2 fw-normal"
+                  style="text-transform: none; font-size: 1rem"
+                  >Kembali</a
+                >
+                <button
+                  type="submit"
+                  class="btn btn-dark fw-normal"
+                  style="text-transform: none; font-size: 1rem"
+                  id="submitButton"
+                  disabled
+                >
+                  Simpan
+                </button>
+              </div>
             </form>
           </div>
+
+          <!-- Kolom Preview (kanan) -->
+          <div class="col-md-4 d-flex align-items-center justify-content-center bg-light rounded">
+            <div id="preview" class="text-muted text-center">Foto akan tampil disini</div>
+          </div>
         </div>
+      </div>
+
       </div>
     </div>
   </div>
 </div>
+
+<!-- Script Preview -->
+<script>
+  function previewFoto(event) {
+    const preview = document.getElementById("preview");
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="max-height: 300px;" />`;
+        document.getElementById("submitButton").disabled = false;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      preview.innerHTML = "Foto akan tampil disini";
+      document.getElementById("submitButton").disabled = true;
+    }
+  }
+</script>
 
 <script>
   document

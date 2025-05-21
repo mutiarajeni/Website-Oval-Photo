@@ -194,7 +194,7 @@ def admin_pesanan():
 
 @app.route('/admin_pesanan_tambah')
 def admin_pesanan_tambah():
-    return render_template('admin/lokasi_pesanan.html')
+    return render_template('admin/pesanan_tambah.html')
 
 # Tim Fotografi
 @app.route('/admin_timFotografi')
