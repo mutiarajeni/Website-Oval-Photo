@@ -196,6 +196,10 @@ def admin_pesanan():
 def admin_pesanan_tambah():
     return render_template('admin/pesanan_tambah.html')
 
+@app.route('/admin_pesanan_detail')
+def admin_pesanan_detail():
+    return render_template('admin/pesanan_detail.html')
+
 # Tim Fotografi
 @app.route('/admin_timFotografi')
 def admin_timFotografi():
