@@ -166,8 +166,10 @@ body {
 
 /* tulisan dashboard */
 .card-body,
+.card-body h2,
 .card-body h4,
 .card-body h5,
+.card-body h6,
 .card-body p,
 .card-body a,
 .card-body i {
