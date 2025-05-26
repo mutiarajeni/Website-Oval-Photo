@@ -133,43 +133,71 @@ body {
 }
   
 /* Desain Panah di Pojok Kanan Atas */
+.navbar-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  padding: 0.5rem 0;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  z-index: 10;
+  margin-top: 10px;
+  margin-right: -90px;
+}
+
+/* Bubble tail */
 .navbar-dropdown::before {
   content: "";
   position: absolute;
   top: -6px;
-  right: 12px;
+  right: 16px;
   width: 12px;
   height: 12px;
   background: white;
   transform: rotate(45deg);
   box-shadow: -1px -1px 1px rgba(0,0,0,0.05);
-  z-index: 11;
+  z-index: -1; /* so it blends with dropdown */
 }
+
 .navbar-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  border-radius: 0.375rem; 
-  color: rgb(0, 0, 0);
+  border-radius: 0.375rem;
   font-size: 14px;
 }
-.navbar-item:hover {
-  background-color: #86ade8; 
+
+.navbar-item span {
+  color: black;
+  font-size: 12px;
+  opacity: 1;
+  display: inline;
+}
+
+.navbar-item:hover{
+  background-color: #86ade8;
   color: white;
   text-decoration: none;
-
 }
+
 .navbar-icon {
-  color: #9ca3af; 
-  min-width: 20px; 
+  color: #9ca3af;
+  min-width: 20px;
   text-align: center;
   font-size: 20px;
 }
 
-.navbar-item:hover .navbar-icon {
+.navbar-item:hover .navbar-icon{
   color: white;
 }
+
+.navbar-item:hover span{
+  color: white;
+}
+
 
 /*Navbar Garis 3*/
 #hamburger-menu {
@@ -229,7 +257,7 @@ body {
   }
 
   .navbar-dropdown{
-    right: -43px;
+    right: 43px;
   }
 }
 
@@ -2608,7 +2636,7 @@ ul .catatan > li {
 }
 
 .profil-content {
-  margin-top: 80px;
+  margin-top: 100px;
   margin-bottom: 100px;
   text-align: center;
 }
@@ -2671,27 +2699,85 @@ ul .catatan > li {
 
 
 /* ============================================= PROFILE EDIT ======================================= */
-/* EditProfil modal custom styles */
-    .editprofil-modal {
-      background-color: rgba(0, 0, 0, 0.5);
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
-    .editprofil-modal.show {
-      display: flex;
-    }
-    .editprofil-modal-content {
-      background-color: white;
-      border-radius: 0.5rem;
-      width: 90%;
-      max-width: 28rem;
-      padding: 1.5rem;
-      position: relative;
-    }
+
+#editprofil-photoInput { /* input file untuk upload foto */
+  display: none;
+}
+.editprofil-profile-image-wrapper { /* wrapper untuk foto profil */
+  position: relative;
+  display: inline-block;
+}
+.editprofil-camera-label { /* label untuk input file yang button gambar kamera */
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background-color: #7da4e8;
+  border: 2px solid white;
+  border-radius: 9999px;
+  padding: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.editprofil-camera-label:hover {
+  background-color: #36455D;
+}
+.editprofil-camera-icon {
+  color: white;
+  font-size: 12px;
+}
+
+.editprofil-reponsiflabel { /* label input text */
+  font-size: clamp(10px, 1.2vw, 12px);
+  font-weight: 500;
+}
+
+.editprofil-reponsifinputtext { /* input text */
+  font-size: clamp(10px, 1vw, 12px);
+}
+
+.editprofil-btneditbatal { /* button batal */
+  font-weight: 600;
+  font-size: clamp(10px, 1.2vw, 12px);
+  padding: 6px 10px;
+  min-width: 100px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #86ade8;
+  border: 1px solid #7da6db;
+  border-radius: 9999px;
+   background-color: transparent;
+  
+}
+
+.editprofil-btneditbatal:hover {
+  transform: scale(0.98);
+  background-color: #86ade8;
+  color: #fff;
+}
+
+.editprofil-btneditsimpan { /* button simpan */
+  font-weight: 600;
+  font-size: clamp(10px, 1.2vw, 12px);
+  padding: 6px 10px;
+  min-width: 100px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #ffffff;
+  border: 1px solid #7da6db;
+  border-radius: 9999px;
+  background-color: #86ade8;
+  
+}
+
+.editprofil-btneditsimpan:hover { 
+  transform: scale(0.98);
+  background-color: #5b90ed;
+  color: #ffffff;
+}
+
 
 
 /* =============================== LOGIN - LUPA KATA SANDI - DAFTAR ================================= */

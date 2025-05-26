@@ -1,26 +1,146 @@
 {% extends "user/base_user.html" %}{% block content %}
- <header class="profil-header">
-    <div class="profil-avatar-wrapper">
-      <div class="profil-avatar">
-        <i class="bi bi-person-fill"></i>
+
+  <!--Tampilan Luar-->
+  <div class="profil-header"> <!--background biru-->
+    <div class="profil-avatar-wrapper"> <!--Gambar Profil-->
+      <div class="editprofil-profile-image-wrapper" style="top:20px">
+        <img src="https://storage.googleapis.com/a1aa/image/10b4ac45-2b8b-450f-888c-bd7182757e8a.jpg" alt="Profile" class="rounded-circle" width="150" height="150" id="editprofil-profileImage">
       </div>
     </div>
-  </header>
+  </div>
 
-  <main class="profil-content">
-    
-    <h2 class="profil-name">Serini Dewi Lestari</h2>
-    <p class="profil-username">FutureBride _77</p>
-    <p class="profil-email">dewiserinilestari@gmail.com</p>
+  <div class="profil-content"> <!--Tulisan Container-->
+    <p class="profil-name" id="editprofil-displayName">Serini Dewi Lestari</p>
+    <p class="profil-username" id="editprofil-displayUsername">FutureBride_77</p>
+    <p class="profil-email" id="editprofil-displayEmail">dewiserinilestari@gmail.com</p>
     <div class = "profil-button-wrapper">
-      <button class="profil-button" type="button"  onclick="window.location.href='/profiledit'">Ubah Profil</button>
+      <button class="profil-button" id="editprofil-editBtn" type="button">Ubah Profil</button>
+    </div>
+    
+  </div>
+
+  <!-- Tampilan Halaman Popup -->
+  <!-- Modal Popup Edit Profil -->
+  <div class="modal fade" id="editprofil-editModal" tabindex="-1" role="dialog" aria-labelledby="editprofilModalLabel" aria-hidden="true">
+  
+    <div class="modal-dialog modal-dialog-centered" role="document" 
+    style="max-width: 400px; width: 90vw; margin: auto;">
+    
+      <div class="modal-content" style="border-radius: 12px; max-height: 90vh; overflow-y: auto;">
+        
+        <!-- Modal Header -->
+        <div class="modal-header" style="background-color: #7da3e0; border-radius: 0.75rem; height: 10rem; width: 352px; margin: 20px 20px 0 20px; position: relative;">
+          
+          <!-- Judul dibagian atas di lingkup warna biru 'Ubah Profil' (sebelah kiri) + Button Silang/tutup (sebelah kanan)
+          <h5 class="modal-title" id="editprofilModalLabel">Ubah Profil</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position: absolute; right: 1rem; top: 1rem;">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+          
+        </div>
+
+          <!-- Form Container -->  
+          <form id="editprofil-editForm" >
+            <div class="modal-body" style="margin: 20px">
+
+              <!-- Foto Profil -->
+              <div class="text-center mb-4">
+                <div class="editprofil-profile-image-wrapper" style="position: absolute; top: -8%; left: 50%; transform: translate(-50%, -50%); z-index: 10; text-align: center;">
+                  <img src="https://storage.googleapis.com/a1aa/image/10b4ac45-2b8b-450f-888c-bd7182757e8a.jpg" alt="Profile" class="rounded-circle bg-light p-1.5" width="80" height="80" id="editprofil-editProfileImage">
+                  <label for="editprofil-photoInput" class="editprofil-camera-label" title="Ubah Foto Profil">
+                    <i class="bi bi-camera editprofil-camera-icon"></i>
+                  </label>
+                  <input type="file" accept="image/*" id="editprofil-photoInput" name="photo">
+                </div>
+              </div>
+
+              <!-- Input Form -->
+              <div class="form-group">
+                <label for="editprofil-nameInput" class="editprofil-reponsiflabel">Nama Pengguna</label>
+                <input type="text" class="form-control form-control-sm editprofil-reponsifinputtext" id="editprofil-nameInput" name="name" value="Serini Dewi Lestari">
+              </div>
+              <div class="form-group">
+                <label for="editprofil-usernameInput" class="editprofil-reponsiflabel">Username</label>
+                <input type="text" class="form-control form-control-sm editprofil-reponsifinputtext" id="editprofil-usernameInput" name="username" value="FutureBride_77">
+              </div>
+              <div class="form-group">
+                <label for="editprofil-emailInput" class="editprofil-reponsiflabel">Email</label>
+                <input type="email" class="form-control form-control-sm editprofil-reponsifinputtext" id="editprofil-emailInput" name="email" value="dewiserinilestari@gmail.com">
+              </div>
+
+            </div>
+
+          <!-- Modal Footer -->
+            <div class="modal-footer" style="padding: 16px; gap: 12px;">
+              <button type="button" class="editprofil-btneditbatal"   data-dismiss="modal" id="editprofil-cancelBtn">Batal</button>
+              <button type="submit" class="editprofil-btneditsimpan">Simpan</button>
+            </div>
+
+          </form>
+          
+      </div>
+
     </div>
 
-  </main>
+  </div>
 
-  
+  <!-- JS Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  
-  
+  <script>
+    const editprofil_editBtn = document.getElementById('editprofil-editBtn');
+    const editprofil_editModal = new bootstrap.Modal(document.getElementById('editprofil-editModal'));
+    const editprofil_editForm = document.getElementById('editprofil-editForm');
+
+    const editprofil_displayName = document.getElementById('editprofil-displayName');
+    const editprofil_displayUsername = document.getElementById('editprofil-displayUsername');
+    const editprofil_displayEmail = document.getElementById('editprofil-displayEmail');
+    const editprofil_profileImage = document.getElementById('editprofil-profileImage');
+    const editprofil_editProfileImage = document.getElementById('editprofil-editProfileImage');
+    const editprofil_photoInput = document.getElementById('editprofil-photoInput');
+
+    editprofil_editBtn.addEventListener('click', () => {
+      editprofil_editForm.name.value = editprofil_displayName.textContent;
+      editprofil_editForm.username.value = editprofil_displayUsername.textContent;
+      editprofil_editForm.email.value = editprofil_displayEmail.textContent;
+      editprofil_editProfileImage.src = editprofil_profileImage.src;
+      editprofil_editModal.show();
+    });
+
+    document.getElementById('editprofil-cancelBtn').addEventListener('click', () => {
+      editprofil_photoInput.value = '';
+    });
+
+    editprofil_photoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          editprofil_editProfileImage.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    editprofil_editForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      editprofil_displayName.textContent = editprofil_editForm.name.value.trim();
+      editprofil_displayUsername.textContent = editprofil_editForm.username.value.trim();
+      editprofil_displayEmail.textContent = editprofil_editForm.email.value.trim();
+
+      if (editprofil_photoInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          editprofil_profileImage.src = event.target.result;
+        };
+        reader.readAsDataURL(editprofil_photoInput.files[0]);
+      }
+
+      editprofil_editModal.hide();
+      editprofil_photoInput.value = '';
+    });
+  </script>
 
 {% endblock %}
