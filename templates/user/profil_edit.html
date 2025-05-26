@@ -1,26 +1,21 @@
- <div id="editprofilModal" class="editprofil-modal">
-    <div class="editprofil-card">
-      <div class="editprofil-header"></div>
-      <div class="editprofil-avatar">
-        <i class="bi bi-camera-fill"></i>
+{% extends "user/base_user.html" %}{% block content %}
+ <header class="profil-header">
+    <div class="profil-avatar-wrapper">
+      <div class="profil-avatar">
+        <i class="bi bi-person-fill"></i>
       </div>
-      <form>
-        <div class="mb-3 mt-5">
-          <label for="editprofil-nama" class="form-label">Nama Lengkap</label>
-          <input type="text" class="form-control" id="editprofil-nama" value="Serini Dewi Lestari">
-        </div>
-        <div class="mb-3">
-          <label for="editprofil-username" class="form-label">Nama Pengguna</label>
-          <input type="text" class="form-control" id="editprofil-username" value="FutureBride_77">
-        </div>
-        <div class="mb-3">
-          <label for="editprofil-email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="editprofil-email" value="dewiserinilestari@gmail.com">
-        </div>
-        <div class="editprofil-btn-group">
-          <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('editprofilModal').classList.remove('show')">Batal</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-      </form>
     </div>
-  </div>
+  </header>
+
+  <main class="profil-content">
+    
+    <h2 class="profil-name">Serini Dewi Lestari</h2>
+    <p class="profil-username">FutureBride _77</p>
+    <p class="profil-email">dewiserinilestari@gmail.com</p>
+    <div class = "profil-button-wrapper">
+      <button class="profil-button" type="button"  onclick="window.location.href='/profiledit'">Ubah Profil</button>
+    </div>
+
+  </main>
+  
+{% endblock %}

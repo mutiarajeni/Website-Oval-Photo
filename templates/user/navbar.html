@@ -32,7 +32,9 @@
   </div>
 
   <div class="navbar-extra">
-    <a  href="#"
+    <!-- Tombol ikon user -->
+    <a 
+      href="#"
       aria-label="User menu"
       class="user-icon"
       id="user-icon"
@@ -42,50 +44,48 @@
     >
       <i class="bi bi-person-circle"></i>
     </a>
-     
-    <!--Navbar Garis 3-->
-    <a href="#" id="hamburger-menu"><i class="bi bi-list"></i></a>
-  </div>
 
-<!--Navbar dropdown dari logo profil-->
-  <div 
+    <!-- Hamburger Menu -->
+    <a href="#" id="hamburger-menu"><i class="bi bi-list"></i></a>
+
+    <!-- Dropdown dari ikon profil -->
+    <div 
       id="navbar-dropdown"
       class="navbar-dropdown"
       role="menu"
       aria-orientation="vertical"
-      aria-labelledby="navbar-extra"
+      aria-labelledby="user-icon"
     >
       <a href="/profil" class="navbar-item" role="menuitem">
         <i class="bi bi-person navbar-icon"></i>
-        Profil
+        <span>Profil</span>
       </a>
       <a href="/ripe_menunggukonfirmasi" class="navbar-item" role="menuitem">
         <i class="bi bi-card-list navbar-icon"></i>
-        Riwayat Pemesanan
+        <span>Riwayat Pemesanan</span>
       </a>
       <a href="#" class="navbar-item" role="menuitem">
         <i class="bi bi-box-arrow-right navbar-icon"></i>
-        Keluar
+        <span>Keluar</span>
       </a>
+    </div>
   </div>
 
   <script>
     function navbarToggle(event) {
       event.preventDefault();
+      event.stopPropagation(); // agar tidak tertutup langsung
       const menu = document.getElementById('navbar-dropdown');
-      const button = document.getElementById('navbar-extra');
-      if (menu.classList.contains('show')) {
-        menu.classList.remove('show');
-        button.setAttribute('aria-expanded', 'false');
-      } else {
-        menu.classList.add('show');
-        button.setAttribute('aria-expanded', 'true');
-      }
+      const button = document.getElementById('user-icon');
+      const isShown = menu.classList.contains('show');
+      menu.classList.toggle('show', !isShown);
+      button.setAttribute('aria-expanded', String(!isShown));
     }
 
+    // Klik di luar menu dan ikon = tutup dropdown
     document.addEventListener('click', (e) => {
       const menu = document.getElementById('navbar-dropdown');
-      const button = document.getElementById('navbar-extra');
+      const button = document.getElementById('user-icon');
       if (!button.contains(e.target) && !menu.contains(e.target)) {
         menu.classList.remove('show');
         button.setAttribute('aria-expanded', 'false');
