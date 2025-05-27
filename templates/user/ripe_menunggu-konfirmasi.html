@@ -19,6 +19,7 @@
 <div class="subutama-container">
   <main class="riwayatpemesanan-container" role="main" aria-label="Riwayat Pemesanan">
     <header class="riwayat-header">
+      <!-- Judul paket -->
       <div class="riwayat-header-left">
         <h2>
           Layanan Fotografi <span class="riwayat-blue">Wedding</span>
@@ -27,12 +28,15 @@
           Paket Diamond
         </div>
       </div>
+
+      <!-- Status pesanan -->
       <div class="riwayat-status" aria-label="Riwayat status Belum Bayar Deposit">
         <div class="riwayat-status-dot" aria-hidden="true"></div>
           Menunggu Konfrimasi
       </div>
     </header>
 
+    <!-- Rincian pesanan -->
     <section>
       <h2 class="riwayatpemesanan-section-title riwayatpemesanan-expanded" tabindex="0" aria-expanded="true" aria-controls="riwayatpemesanan-pesanan-details" id="riwayatpemesanan-pesanan-label">
         Rincian Pesanan
@@ -90,6 +94,7 @@
       </div>
     </section>
 
+    <!-- Rincian Pembayaran -->
     <section>
       <h2 class="riwayatpemesanan-section-title riwayatpemesanan-expanded" tabindex="0" aria-expanded="true" aria-controls="riwayatpemesanan-pembayaran-details" id="riwayatpemesanan-pembayaran-label">
         Rincian Pembayaran
@@ -120,6 +125,7 @@
       </div>
     </section>
 
+    <!-- Upload surat izin -->
     <section class="riwayatpemesanan-file-sesction">
       <h2 class="riwayatpemesanan-section-title riwayatpemesanan-expanded" tabindex="0" aria-expanded="true" aria-controls="riwayatpemesanan-pembayaran-details" id="riwayatpemesanan-pembayaran-label">
       Surat perizinan lokasi kamu
@@ -137,6 +143,7 @@
       />
     </section>
 
+    <!-- button -->
     <section class="riwayatpemesanan-buttons" role="group" aria-label="Action buttons">
       <div class="riwayatpemesanan-left-buttons">
         <button class="riwayatpemesanan-btn-outline" type="button">Batalkan Pesanan</button>
@@ -145,7 +152,7 @@
       <button class="riwayatpemesanan-btn-primary" type="button">Ubah Pesanan</button>
     </section>
 
-
+    <!-- catatan -->
      <section class="riwayatpemesanan-notes" aria-live="polite" aria-atomic="true">
       Catatan: -
     </section>
@@ -153,7 +160,7 @@
   </main>
 
   <script>
-    // Interactive arrow toggle for sections
+    // Tombol panah interaktif untuk sections
     document.querySelectorAll('h2.riwayatpemesanan-section-title').forEach((header) => {
       header.addEventListener('click', () => {
         const expanded = header.getAttribute('aria-expanded') === 'true';
@@ -172,7 +179,7 @@
         }
       });
 
-      // Keyboard accessibility: toggle on Enter or Space
+      // Aksesibilitas keyboard: aktifkan Enter atau Spasi
       header.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
