@@ -13,28 +13,6 @@ Photo {% endblock %} {% block content %}
       <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
           <div class="container mt-5">
-            {% if product_exists %}
-            <div
-              class="alert alert-danger alert-dismissible text-white"
-              role="alert"
-            >
-              <span class="text-sm">
-                Paket fotografi sudah ada
-                <a href="#paket_nama" class="alert-link text-white"
-                  >Nama Paket</a
-                >. Mohon gunakan nama paket yang berbeda.
-              </span>
-              <button
-                type="button"
-                class="btn-close text-lg py-3 opacity-10"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            {% endif %}
-
             <form
               id="addProductForm"
               method="POST"
@@ -44,31 +22,42 @@ Photo {% endblock %} {% block content %}
               <table class="table table-no-border">
                 <tbody>
                   <tr>
-                    <td><label for="paket_nama">Nama Paket</label></td>
+                    <td><label for="nama">Nama Paket</label></td>
                     <td>
                       <div class="input-group input-group-outline">
                         <input
                           type="text"
                           class="form-control"
-                          id="paket_nama"
+                          id="nama"
                           name="nama"
                           required
                         />
                       </div>
+                      <small
+                        class="text-danger"
+                        id="nameError"
+                        style="display: none"
+                        >Nama paket sudah ada</small
+                      >
                     </td>
                   </tr>
                   <tr>
-                    <td><label for="layanan">Layanan</label></td>
+                    <td><label for="layananSelect">Layanan</label></td>
                     <td>
                       <div class="input-group input-group-outline">
                         <select
                           class="form-control"
-                          id="layanan"
-                          name="satuan"
+                          id="layananSelect"
+                          name="layanan"
+                          onchange="fetchLayananDetails()"
                           required
                         >
-                          <option value="Kg">Kg</option>
-                          <option value="Buah">Buah</option>
+                          <option value="">Pilih Layanan</option>
+                          {% for layanan in layanan %}
+                          <option value="{{ layanan._id }}">
+                            {{ layanan.nama }}
+                          </option>
+                          {% endfor %}
                         </select>
                       </div>
                     </td>
@@ -231,8 +220,11 @@ Photo {% endblock %} {% block content %}
 </script>
 
 <script>
+  let isNameDuplicate = false;
+
+  // Memeriksa apakah form sudah diisi semua
   function checkFormFilled() {
-    const nama = document.getElementById("paket_nama").value.trim();
+    const nama = document.getElementById("nama").value.trim();
     const layanan = document.getElementById("layanan").value.trim();
     const harga = document.getElementById("harga").value.trim();
     const deposit = document.getElementById("deposit").value.trim();
@@ -241,6 +233,7 @@ Photo {% endblock %} {% block content %}
     const periode = document.getElementById("periode").value.trim();
 
     const submitButton = document.getElementById("submitButton");
+
     submitButton.disabled = !(
       nama &&
       layanan &&
@@ -248,23 +241,68 @@ Photo {% endblock %} {% block content %}
       deposit &&
       keuntungan &&
       tim &&
-      periode
+      periode &&
+      !isNameDuplicate
     );
   }
 
-  document
-    .querySelectorAll(
-      "#paket_nama, #layanan, #harga, #deposit, #keuntungan, #tim_kerja, #periode"
-    )
-    .forEach((input) => {
-      input.addEventListener("input", checkFormFilled);
-    });
+  // Validasi nama paket
+  function checkNameAvailability() {
+    const namaInput = document.getElementById("nama");
+    const nameError = document.getElementById("nameError");
+    const nama = namaInput.value.trim();
 
+    if (nama === "") {
+      nameError.style.display = "none";
+      isNameDuplicate = false;
+      checkFormFilled();
+      return;
+    }
+
+    fetch("/check_nama_paket", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ nama: nama }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.exists) {
+          nameError.style.display = "block";
+          isNameDuplicate = true;
+        } else {
+          nameError.style.display = "none";
+          isNameDuplicate = false;
+        }
+        checkFormFilled();
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document
+      .querySelectorAll(
+        "#nama, #layananSelect, #harga, #deposit, #keuntungan, #tim_kerja, #periode"
+      )
+      .forEach((input) => {
+        input.addEventListener("input", () => {
+          if (input.id === "nama") {
+            checkNameAvailability();
+          } else {
+            checkFormFilled();
+          }
+        });
+      });
+
+    checkFormFilled();
+  });
+
+  // Konfirmasi sebelum submit form
   document
-    .getElementById("addProductForm")
+    .getElementById("tambahPaketForm")
     .addEventListener("submit", function (event) {
       event.preventDefault();
-      var form = this;
+      const form = this;
 
       Swal.fire({
         title: "Apakah kamu yakin?",
@@ -273,8 +311,8 @@ Photo {% endblock %} {% block content %}
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Ya",
-        cancelButtonText: "Tidak",
+        confirmButtonText: "Ya, simpan!",
+        cancelButtonText: "Batal",
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire({
