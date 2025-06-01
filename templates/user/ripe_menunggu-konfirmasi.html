@@ -25,21 +25,20 @@
     aria-label="Riwayat Pemesanan"
   >
     <header class="riwayat-header">
+      <!-- Judul paket -->
       <div class="riwayat-header-left">
         <h2>Layanan Fotografi <span class="riwayat-blue">Wedding</span></h2>
         <div class="riwayat-paket-pcgk" aria-label="Riwayat Paket Diamond">
           Paket Diamond
         </div>
       </div>
-      <div
-        class="riwayat-status"
-        aria-label="Riwayat status Belum Bayar Deposit"
-      >
+      <div class="riwayat-status" aria-label="Riwayat status Belum Bayar Deposit">
         <div class="riwayat-status-dot" aria-hidden="true"></div>
         Menunggu Konfrimasi
       </div>
     </header>
 
+    <!-- Rincian pesanan -->
     <section>
       <h2
         class="riwayatpemesanan-section-title riwayatpemesanan-expanded"
@@ -138,6 +137,7 @@
       </div>
     </section>
 
+    <!-- Rincian Pembayaran -->
     <section>
       <h2
         class="riwayatpemesanan-section-title riwayatpemesanan-expanded"
@@ -181,6 +181,7 @@
       </div>
     </section>
 
+    <!-- Upload surat izin -->
     <section class="riwayatpemesanan-file-sesction">
       <h2
         class="riwayatpemesanan-section-title riwayatpemesanan-expanded"
@@ -208,11 +209,7 @@
       />
     </section>
 
-    <section
-      class="riwayatpemesanan-buttons"
-      role="group"
-      aria-label="Action buttons"
-    >
+    <section class="riwayatpemesanan-buttons" role="group" aria-label="Action buttons">
       <div class="riwayatpemesanan-left-buttons">
         <button class="riwayatpemesanan-btn-outline" type="button">
           Batalkan Pesanan
@@ -223,25 +220,20 @@
       </button>
     </section>
 
-    <section
-      class="riwayatpemesanan-notes"
-      aria-live="polite"
-      aria-atomic="true"
-    >
+
+     <section class="riwayatpemesanan-notes" aria-live="polite" aria-atomic="true">
       Catatan: -
     </section>
   </main>
 
   <script>
     // Interactive arrow toggle for sections
-    document
-      .querySelectorAll("h2.riwayatpemesanan-section-title")
-      .forEach((header) => {
-        header.addEventListener("click", () => {
-          const expanded = header.getAttribute("aria-expanded") === "true";
-          const controls = header.getAttribute("aria-controls");
-          const content = document.getElementById(controls);
-          if (!content) return;
+    document.querySelectorAll('h2.riwayatpemesanan-section-title').forEach((header) => {
+      header.addEventListener('click', () => {
+        const expanded = header.getAttribute('aria-expanded') === 'true';
+        const controls = header.getAttribute('aria-controls');
+        const content = document.getElementById(controls);
+        if (!content) return;
 
           if (expanded) {
             header.setAttribute("aria-expanded", "false");
@@ -254,14 +246,14 @@
           }
         });
 
-        // Keyboard accessibility: toggle on Enter or Space
-        header.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            header.click();
-          }
-        });
+      // Keyboard accessibility: toggle on Enter or Space
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          header.click();
+        }
       });
+    });
   </script>
 </div>
 
