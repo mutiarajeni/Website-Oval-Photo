@@ -21,9 +21,175 @@ app = Flask(__name__)
 def beranda():
     return render_template('user/beranda.html')
 
+
+
+
+
+
+
+
+
+
+# User - Katalog Layanan
 @app.route('/katalog_layanan')
 def katalog_layanan():
-    return render_template('user/katalog_layanan.html')
+    layanan = list(db.layanan.find())
+    return render_template('user/katalog_layanan.html',
+layanan=layanan, current_route=request.path)
+
+# Admin - Layanan Fotografi
+@app.route('/admin_layananFotografi')
+def admin_layananFotografi():
+    layanan = list(db.layanan.find())
+    return render_template('admin/layananFotografi.html',
+layanan=layanan, current_route=request.path)
+
+
+@app.route('/admin_layananFotografi_tambah', methods=['GET','POST'])
+def admin_layananFotografi_tambah():
+    layanan_exists=False
+    
+    if request.method=='POST':
+        nama = request.form['nama']
+        gambar = request.files['gambar']
+        deskripsi = request.form['deskripsi']
+
+        # Periksa apakah Nama Layanan sudah ada
+        existing_layanan = db.layanan.find_one({'nama': nama})
+        if existing_layanan:
+            layanan_exists = True
+        else:
+            if gambar:
+                nama_file_asli = gambar.filename
+                nama_file_gambar = nama_file_asli.split('/')[-1]
+                file_path = f'static/images/imgLayanan/{nama_file_gambar}'
+                gambar.save(file_path)
+            else:
+                nama_file_gambar = None
+            
+            doc = {
+                'nama':nama,
+                'gambar': nama_file_gambar,
+                'deskripsi': deskripsi
+            }
+            db.layanan.insert_one(doc)
+            return redirect(url_for("admin_layananFotografi"))
+    return render_template('admin/layananFotografi_tambah.html', layanan_exists=layanan_exists)
+
+
+@app.route('/check_nama_layanan', methods=['POST'])
+def check_nama_layanan():
+    data = request.json
+    nama_layanan = data.get('nama', '')
+
+    # Periksa apakah nama layanan sudah ada di database MongoDB
+    existing_layanan = db.layanan.find_one({'nama': {'$regex': f'^{nama_layanan}$', '$options': 'i'}}) 
+    if existing_layanan:
+        return jsonify({'exists': True})
+    else:
+        return jsonify({'exists': False})
+
+@app.route('/admin_layananFotografi_ubah')
+def admin_layananFotografi_ubah():
+    return render_template('admin/layananFotografi_ubah.html')
+
+
+
+
+
+
+
+
+
+
+# Admin - Paket Fotografi
+@app.route('/admin_paketFotografi')
+def admin_paketFotografi():
+    paket=list(db.paket.find())
+    return render_template('admin/paketFotografi.html',
+paket=paket, current_route=request.path)
+
+
+@app.route('/admin_paketFotografi_tambah', methods=['GET','POST'])
+def admin_paketFotografi_tambah():
+    paket_exists=False
+    
+    if request.method=='POST':
+        nama = request.form['nama']
+        layanan_id = request.form['layanan']
+        harga = int(request.form['harga'])
+        deposit = int(request.form['deposit'])
+        deskripsi = request.form['deskripsi']
+        tim_kerja = request.form['tim_kerja']
+        periode = request.form['periode']
+
+        # Periksa apakah nama paket sudah ada
+        # Parsing tanggal dari periode
+        tanggal_mulai = tanggal_selesai = None
+        if ' to ' in periode:
+            tanggal_mulai_str, tanggal_selesai_str = periode.split(' to ')
+        else:
+            tanggal_range = periode.split('–')  # fallback jika memakai strip panjang
+            if len(tanggal_range) == 2:
+                tanggal_mulai_str, tanggal_selesai_str = tanggal_range
+            else:
+                tanggal_mulai_str = tanggal_selesai_str = periode
+
+        try:
+            tanggal_mulai = datetime.datetime.strptime(tanggal_mulai_str.strip(), "%d %B %Y")
+            tanggal_selesai = datetime.datetime.strptime(tanggal_selesai_str.strip(), "%d %B %Y")
+        except Exception as e:
+            print("Error parsing date:", e)
+
+        # Buat dokumen paket
+        doc = {
+            'nama': nama,
+            'layanan_id': ObjectId(layanan_id),
+            'harga': harga,
+            'deposit': deposit,
+            'deskripsi': deskripsi,
+            'tim_kerja': tim_kerja,
+            'periode': {
+                'mulai': tanggal_mulai,
+                'selesai': tanggal_selesai
+            },
+            'created_at': datetime.datetime.utcnow()
+        }
+        db.paket.insert_one(doc)
+        return redirect(url_for("admin_paketFotografi"))
+    return render_template('admin/paketFotografi_tambah.html', paket_exists=paket_exists)
+
+
+@app.route('/admin_paketFotografi_ubah')
+def admin_paketFotografi_ubah():
+    return render_template('admin/paketFotografi_ubah.html')
+
+
+@app.route('/check_nama_paket', methods=['POST'])
+def check_nama_paket():
+    data = request.json
+    nama_paket = data.get('nama', '')
+
+    # Periksa apakah nama paket sudah ada di database MongoDB
+    existing_paket = db.paket.find_one({
+        'nama': {'$regex': f'^{nama_paket}$', '$options': 'i'}
+    })
+    if existing_paket:
+        return jsonify({'exists': True})
+    else:
+        return jsonify({'exists': False})
+    
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/jadwal')
 def jadwal():
@@ -124,32 +290,10 @@ def profiledit():
 def admin_dashboard():
     return render_template('admin/dashboard.html')
 
-# Layanan Fotografi
-@app.route('/admin_layananFotografi')
-def admin_layananFotogafi():
-    return render_template('admin/layananFotografi.html')
-
-@app.route('/admin_layananFotografi_tambah')
-def admin_layananFotografi_tambah():
-    return render_template('admin/layananFotografi_tambah.html')
-
-@app.route('/admin_layananFotografi_ubah')
-def admin_layananFotografi_ubah():
-    return render_template('admin/layananFotografi_ubah.html')
 
 
-# Paket Fotografi
-@app.route('/admin_paketFotografi')
-def admin_paketFotografi():
-    return render_template('admin/paketFotografi.html')
 
-@app.route('/admin_paketFotografi_tambah')
-def admin_paketFotografi_tambah():
-    return render_template('admin/paketFotografi_tambah.html')
 
-@app.route('/admin_paketFotografi_ubah')
-def admin_paketFotografi_ubah():
-    return render_template('admin/paketFotografi_ubah.html')
 
 
 # Galeri

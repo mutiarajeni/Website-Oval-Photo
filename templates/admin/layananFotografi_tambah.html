@@ -13,29 +13,8 @@ Photo {% endblock %} {% block content %}
       <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
           <div class="container mt-5">
-            {% if product_exists %}
-            <div
-              class="alert alert-danger alert-dismissible text-white"
-              role="alert"
-            >
-              <span class="text-sm">
-                Layanan Fotografi sudah ada
-                <a href="#nama" class="alert-link text-white">Nama Layanan</a>.
-                Mohon gunakan nama layanan yang berbeda.
-              </span>
-              <button
-                type="button"
-                class="btn-close text-lg py-3 opacity-10"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            {% endif %}
-
             <form
-              id="addProductForm"
+              id="tambahLayananForm"
               method="POST"
               action="/admin_layananFotografi_tambah"
               enctype="multipart/form-data"
@@ -54,6 +33,12 @@ Photo {% endblock %} {% block content %}
                           required
                         />
                       </div>
+                      <small
+                        class="text-danger"
+                        id="nameError"
+                        style="display: none"
+                        >Nama layanan sudah ada</small
+                      >
                     </td>
                   </tr>
 
@@ -133,6 +118,7 @@ Photo {% endblock %} {% block content %}
 </div>
 
 <script>
+  // Memeriksa apakah form sudah diisi semua
   function checkFormFilled() {
     const nama = document.getElementById("nama").value.trim();
     const gambar = document.getElementById("gambar").files.length > 0;
@@ -141,14 +127,54 @@ Photo {% endblock %} {% block content %}
     submitButton.disabled = !(nama && gambar && deskripsi);
   }
 
+  // Update tombol submit saat input teks berubah
   document.querySelectorAll("#nama, #deskripsi").forEach((input) => {
     input.addEventListener("input", checkFormFilled);
   });
 
   document.getElementById("gambar").addEventListener("change", checkFormFilled);
 
+  // Validasi nama layanan
+  document.addEventListener("DOMContentLoaded", function () {
+    const namaInput = document.getElementById("nama");
+    const nameError = document.getElementById("nameError");
+    const submitBtn = document.getElementById("submitButton");
+
+    function checkNameAvailability() {
+      const nama = namaInput.value.trim();
+
+      if (nama === "") {
+        nameError.style.display = "none";
+        submitBtn.disabled = true;
+        return;
+      }
+
+      fetch("/check_nama_layanan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nama: nama }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.exists) {
+            nameError.style.display = "block";
+            submitBtn.disabled = true;
+          } else {
+            nameError.style.display = "none";
+            checkFormFilled();
+          }
+        });
+    }
+
+    namaInput.addEventListener("input", checkNameAvailability);
+    checkNameAvailability();
+  });
+
+  // Konfirmasi sebelum submit form
   document
-    .getElementById("addProductForm")
+    .getElementById("tambahLayananForm")
     .addEventListener("submit", function (event) {
       event.preventDefault();
       var form = this;

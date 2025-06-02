@@ -8,8 +8,313 @@ Photo {% endblock %} {% block content %}
           <h6 class="text-white text-capitalize ps-3">Detail Pesanan</h6>
         </div>
       </div>
+
+      <section class="bg-white rounded mt-4 p-4 d-flex flex-column gap-4">
+        <div class="d-flex justify-content-end gap-6 fw-bold text-dark me-4">
+          <div>
+            <span>Tanggal Pemesanan</span>
+            <p class="mt-1 fw-normal text-black" style="font-size: 12px">
+              20 April 2025
+            </p>
+          </div>
+          <div>
+            <span>Status</span>
+            <select
+              class="form-select form-select-sm mt-1 w-auto text-muted"
+              style="
+                min-width: 200px;
+                border-radius: 5px;
+                border: 1px solid #ced4da;
+                box-shadow: none;
+                outline: none;
+                font-size: 12px;
+                padding: 8px;
+              "
+            >
+              <option selected>Belum Pemotretan</option>
+              <option>Sudah Pemotretan</option>
+              <option>Sudah Kirim File & Album</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row small">
+          <!-- Informasi Klien -->
+          <div
+            class="col-md-6"
+            style="max-width: 400px; margin-left: 10px; color: black"
+          >
+            <h5 class="text-black text-capitalize ps-1 mb-3 mt-4">
+              Informasi Klien
+            </h5>
+
+            <div class="row row-cols-2 gy-4 gx-4">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-person-fill" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Nama Klien</p>
+                  <p class="fw-bold fs-6 mb-0">Aira Sofia</p>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-people-fill" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Nama Orang Tua</p>
+                  <p class="fw-bold fs-6 mb-0">Adam Sofi</p>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-envelope-fill" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Email</p>
+                  <p class="fw-bold fs-6 mb-0">airasofia@gmail.com</p>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-telephone-fill" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">
+                    No. Telepon Orang Tua
+                  </p>
+                  <p class="fw-bold fs-6 mb-0">+62 822-6970-8711</p>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-telephone-fill" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">
+                    No. Telepon Klien
+                  </p>
+                  <p class="fw-bold fs-6 mb-0">+62 822-7081-9812</p>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-whatsapp" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">
+                    No. WhatsApp Klien
+                  </p>
+                  <p class="fw-bold fs-6 mb-0">+62 822-7081-9812</p>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-instagram" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Instagram</p>
+                  <p class="fw-bold fs-6 mb-0">@aira.sofia</p>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-facebook" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Facebook</p>
+                  <p class="fw-bold fs-6 mb-0">Aira Sofia</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Informasi Pesanan -->
+          <div
+            class="col-md-6"
+            style="max-width: 250px; margin-left: 10px; color: black"
+          >
+            <h5 class="text-black text-capitalize ps-1 mb-3 mt-4">
+              Informasi Pesanan
+            </h5>
+
+            <div class="mb-4">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-camera-fill" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Layanan</p>
+                  <p class="fw-bold fs-6 mb-0">Wedding</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex align-items-start gap-2">
+                <i
+                  class="bi bi-calendar-event-fill"
+                  style="font-size: 14px"
+                ></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Tanggal Acara</p>
+                  <p class="fw-bold fs-6 mb-0">16 Mei 2025</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-clock-fill" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Jam Acara</p>
+                  <p class="fw-bold fs-6 mb-0">09:00 WIB</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-geo-alt-fill" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Lokasi Acara</p>
+                  <p class="fw-bold fs-6 mb-0">Jl. Lintas Sumatera Cikampak</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-link-45deg" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Link Maps</p>
+                  <p class="fw-bold fs-6 mb-0 text-break">
+                    https://maps.app.goo.gl/uk2Dwv5CymgAAfzu9maps.app.goo.gl/uk2Dwv5CymgAAfzu9
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Informasi Lainnya -->
+          <div class="col-md-6" style="max-width: 300px; margin-left: 10px">
+            <h5 class="text-black text-capitalize ps-1 mb-3 mt-4">
+              Informasi Lainnya
+            </h5>
+
+            <!-- Surat Izin -->
+            <div class="mb-4">
+              <div class="d-flex align-items-start gap-2"></div>
+              <label class="form-label fs-6">
+                <i
+                  class="bi bi-envelope-paper-fill me-2"
+                  style="font-size: 14px"
+                ></i
+                >Surat Izin Lokasi
+              </label>
+              <div class="d-flex align-items-center bg-light p-2 rounded ms-4">
+                <i
+                  class="bi bi-file-earmark-pdf-fill text-danger me-2 fs-5"
+                ></i>
+                <a
+                  href="https://example.com/surat-izin-penggunaan-tempat.pdf"
+                  target="_blank"
+                  class="text-decoration-underline fs-6"
+                >
+                  Surat izin penggunaan tempat.pdf
+                </a>
+              </div>
+            </div>
+
+            <!-- Biaya Trasportasi -->
+            <div class="mb-4">
+              <label class="form-label fs-6">
+                <i class="bi bi-cash me-2" style="font-size: 14px"></i>Biaya
+                Transportasi & Akomodasi
+              </label>
+              <input
+                id="biaya-transportasi"
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                oninput="formatNumberInput(event)"
+                class="form-control form-control-sm ms-4 w-95"
+                placeholder="0"
+                style="
+                  border-radius: 5px;
+                  border: 1px solid #ced4da;
+                  font-size: 12px;
+                "
+              />
+            </div>
+
+            <!-- Catatan -->
+            <div class="mb-4">
+              <label class="form-label fs-6">
+                <i class="bi bi-sticky-fill me-2" style="font-size: 14px"></i
+                >Catatan
+              </label>
+              <textarea
+                class="form-control form-control-sm ms-4 w-95"
+                rows="3"
+                style="
+                  border-radius: 5px;
+                  border: 1px solid #ced4da;
+                  font-size: 12px;
+                  height: 100px;
+                "
+              ></textarea>
+            </div>
+
+            <!-- Link Google Drive -->
+            <div class="mb-4">
+              <label class="form-label fs-6">
+                <i class="bi bi-link-45deg me-2" style="font-size: 14px"></i
+                >Link Google Drive
+              </label>
+              <textarea
+                class="form-control form-control-sm ms-4 w-95"
+                rows="3"
+                style="
+                  border-radius: 5px;
+                  border: 1px solid #ced4da;
+                  font-size: 12px;
+                  height: 100px;
+                "
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <button
+            class="btn btn-outline-dark me-2 fw-normal"
+            style="text-transform: none; font-size: 1rem"
+          >
+            Kembali
+          </button>
+          <div class="text-end mt-3">
+            <button
+              class="btn btn-dark fw-normal text-white"
+              style="text-transform: none; font-size: 1rem"
+            >
+              Kirim Pengingat
+            </button>
+            <button
+              class="btn btn-outline-dark me-2 fw-normal"
+              style="text-transform: none; font-size: 1rem"
+            >
+              Simpan
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
+
+  <script>
+    function formatNumberInput(e) {
+      const input = e.target;
+      let value = input.value.replace(/\D/g, "");
+      if (value === "") {
+        input.value = "";
+        return;
+      }
+      value = parseInt(value, 10).toLocaleString("id-ID");
+      input.value = value;
+    }
+  </script>
 
   {% endblock %}
 </div>

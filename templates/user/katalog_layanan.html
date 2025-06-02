@@ -9,30 +9,71 @@
 
 <!--Jadwal-->
 <div class="subutama-container" role="main">
-  <h2 style="font-size: clamp(20px, 4vw, 28px); color: #000000; line-height: 1.3; text-align: justify; margin-bottom:20px; font-weight: 600"
-    >Jadwal
+  <h2
+    style="
+      font-size: clamp(20px, 4vw, 28px);
+      color: #000000;
+      line-height: 1.3;
+      text-align: justify;
+      margin-bottom: 20px;
+      font-weight: 600;
+    "
+  >
+    Jadwal
   </h2>
 
-  <div class="calendar-container" role="region" aria-label="Kalender bulan Februari 2025">
+  <div
+    class="calendar-container"
+    role="region"
+    aria-label="Kalender bulan Februari 2025"
+  >
     <a href="/jadwal" class="view-btn" aria-label="Lihat jadwal lengkap">
       <i class="bi bi-calendar3"></i> Lihat
     </a>
 
-    <div class="calendar-header" role="banner" aria-live="polite" aria-atomic="true" aria-relevant="text">
-      <button class="nav-left" aria-label="Bulan sebelumnya" title="Bulan sebelumnya" type="button" id="prevMonthBtn">
+    <div
+      class="calendar-header"
+      role="banner"
+      aria-live="polite"
+      aria-atomic="true"
+      aria-relevant="text"
+    >
+      <button
+        class="nav-left"
+        aria-label="Bulan sebelumnya"
+        title="Bulan sebelumnya"
+        type="button"
+        id="prevMonthBtn"
+      >
         <i class="bi bi-caret-left-fill"></i>
       </button>
 
-      <div class="nav-month-container" aria-live="polite" aria-atomic="true" aria-relevant="text">
+      <div
+        class="nav-month-container"
+        aria-live="polite"
+        aria-atomic="true"
+        aria-relevant="text"
+      >
         <h3 id="monthYearLabel">Februari 2025</h3>
       </div>
 
-      <button class="nav-right" aria-label="Bulan berikutnya" title="Bulan berikutnya" type="button" id="nextMonthBtn">
+      <button
+        class="nav-right"
+        aria-label="Bulan berikutnya"
+        title="Bulan berikutnya"
+        type="button"
+        id="nextMonthBtn"
+      >
         <i class="bi bi-caret-right-fill"></i>
       </button>
     </div>
 
-    <table class="calendar-table" role="grid" aria-readonly="true" aria-label="Kalender">
+    <table
+      class="calendar-table"
+      role="grid"
+      aria-readonly="true"
+      aria-label="Kalender"
+    >
       <thead>
         <tr role="row">
           <th role="columnheader" scope="col">SEN</th>
@@ -52,15 +93,25 @@
 
   <script>
     (() => {
-      const monthYearLabel = document.getElementById('monthYearLabel');
-      const calendarBody = document.getElementById('calendarBody');
-      const prevMonthBtn = document.getElementById('prevMonthBtn');
-      const nextMonthBtn = document.getElementById('nextMonthBtn');
+      const monthYearLabel = document.getElementById("monthYearLabel");
+      const calendarBody = document.getElementById("calendarBody");
+      const prevMonthBtn = document.getElementById("prevMonthBtn");
+      const nextMonthBtn = document.getElementById("nextMonthBtn");
 
       // Indonesian month names
       const monthNames = [
-        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember",
       ];
 
       // Today date info
@@ -90,7 +141,7 @@
         monthYearLabel.textContent = `${monthName} ${year}`;
 
         // Clear previous calendar body
-        calendarBody.innerHTML = '';
+        calendarBody.innerHTML = "";
 
         // First day of month
         const firstDay = new Date(year, month, 1);
@@ -118,7 +169,7 @@
           days.push({
             day: dayNum,
             currentMonth: false,
-            date: new Date(prevYear, prevMonth, dayNum)
+            date: new Date(prevYear, prevMonth, dayNum),
           });
         }
 
@@ -127,7 +178,7 @@
           days.push({
             day: i,
             currentMonth: true,
-            date: new Date(year, month, i)
+            date: new Date(year, month, i),
           });
         }
 
@@ -139,31 +190,31 @@
           days.push({
             day: i,
             currentMonth: false,
-            date: new Date(nextYear, nextMonth, i)
+            date: new Date(nextYear, nextMonth, i),
           });
         }
 
         // Create rows and cells
         for (let week = 0; week < 6; week++) {
-          const tr = document.createElement('tr');
-          tr.setAttribute('role', 'row');
+          const tr = document.createElement("tr");
+          tr.setAttribute("role", "row");
 
           for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
             const dayObj = days[week * 7 + dayIndex];
-            const td = document.createElement('td');
-            td.setAttribute('role', 'gridcell');
+            const td = document.createElement("td");
+            td.setAttribute("role", "gridcell");
             td.tabIndex = dayObj.currentMonth ? 0 : -1;
             td.textContent = dayObj.day;
 
             // Sunday coloring (MIN = last column)
             if (dayIndex === 6) {
-              td.classList.add('sunday');
+              td.classList.add("sunday");
             }
 
             // Inactive days (not current month)
             if (!dayObj.currentMonth) {
-              td.classList.add('inactive');
-              td.setAttribute('aria-disabled', 'true');
+              td.classList.add("inactive");
+              td.setAttribute("aria-disabled", "true");
             }
 
             // Highlight today
@@ -173,8 +224,8 @@
               dayObj.date.getMonth() === today.getMonth() &&
               dayObj.date.getDate() === today.getDate()
             ) {
-              td.classList.add('today');
-              td.setAttribute('aria-current', 'date');
+              td.classList.add("today");
+              td.setAttribute("aria-current", "date");
             }
 
             // Highlight selected date
@@ -184,23 +235,27 @@
               dayObj.date.getMonth() === selectedDate.getMonth() &&
               dayObj.date.getDate() === selectedDate.getDate()
             ) {
-              td.classList.add('selected');
-              td.setAttribute('aria-selected', 'true');
+              td.classList.add("selected");
+              td.setAttribute("aria-selected", "true");
             } else {
-              td.setAttribute('aria-selected', 'false');
+              td.setAttribute("aria-selected", "false");
             }
 
             // Click event to select date (only current month)
             if (dayObj.currentMonth) {
-              td.addEventListener('click', () => {
+              td.addEventListener("click", () => {
                 selectedDate = dayObj.date;
                 renderCalendar(currentYear, currentMonth);
-                alert(`Tanggal dipilih: ${selectedDate.getDate()} ${monthNames[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`);
+                alert(
+                  `Tanggal dipilih: ${selectedDate.getDate()} ${
+                    monthNames[selectedDate.getMonth()]
+                  } ${selectedDate.getFullYear()}`
+                );
               });
 
               // Keyboard accessibility: select date on Enter or Space
-              td.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+              td.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
                   td.click();
                 }
@@ -214,7 +269,7 @@
       }
 
       // Navigation handlers
-      prevMonthBtn.addEventListener('click', () => {
+      prevMonthBtn.addEventListener("click", () => {
         currentMonth--;
         if (currentMonth < 0) {
           currentMonth = 11;
@@ -224,7 +279,7 @@
         renderCalendar(currentYear, currentMonth);
       });
 
-      nextMonthBtn.addEventListener('click', () => {
+      nextMonthBtn.addEventListener("click", () => {
         currentMonth++;
         if (currentMonth > 11) {
           currentMonth = 0;
@@ -238,85 +293,104 @@
       renderCalendar(currentYear, currentMonth);
     })();
   </script>
-   
 </div>
-  
-
 
 <!--Layanan Tersedia-->
 <div class="subutama-container" role="main">
-  <h2 class="fw-bold mb-4" style="font-size: clamp(20px, 4vw, 28px); color: #000000; line-height: 1.3; text-align: justify; margin-bottom:40px; font-weight: 600"
-  >Layanan Tersedia
+  <h2
+    class="fw-bold mb-4"
+    style="
+      font-size: clamp(20px, 4vw, 28px);
+      color: #000000;
+      line-height: 1.3;
+      text-align: justify;
+      margin-bottom: 40px;
+      font-weight: 600;
+    "
+  >
+    Layanan Tersedia
   </h2>
   <div class="service-container">
+    {% for layanan in layanan %}
     <div class="service">
       <div class="service-content">
-        <img src="static/img/katalog1.jpg" alt="Engagement">
+        <img
+          src="../static/images/imgLayanan/{{ layanan.gambar }}"
+          alt="Gambar"
+        />
         <div class="text-box">
-          <h3>Engagement</h3>
-          <p>Abadikan momen pertunangan kamu dan pasangan dengan hasil foto yang romantis dan penuh cerita.</p>
+          <h3>{{ layanan.nama }}</h3>
+          <p>{{ layanan.deskripsi }}</p>
           <div class="btn-wrapper">
-            <a class="btn-katalog" href="/engagement">Lihat Paket</a>
+            <a class="btn-katalog" href="#" target="_blank">Lihat Paket</a>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="service">
-      <div class="service-content reverse">
-        <img src="static/img/katalog2.jpg" alt="Prewedding">
-        <div class="text-box">
-          <h3>Prewedding</h3>
-          <p>Ciptakan kenangan indah sebelum pernikahan dengan konsep foto yang unik, personal dan penuh makna.</p>
-          <div class="btn-wrapper">
-            <a class="btn-katalog" href="/prewedding">Lihat Paket</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="service">
-      <div class="service-content">
-        <img src="static/img/katalog3.jpg" alt="Wedding">
-        <div class="text-box">
-          <h3>Wedding</h3>
-          <p>Kami mengabadikan setiap detil pernikahan kamu dan pasanganmu, dari persiapan hingga resepsi, dengan kualitas foto terbaik.</p>
-          <div class="btn-wrapper">
-            <a class="btn-katalog" href="/wedding">Lihat Paket</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 
-
-
 <!--Tahapan-->
-<h2 class="subutama-container"  style="font-size: clamp(20px, 4vw, 28px); color: #000000; line-height: 1.3; text-align: justify; margin-bottom:20px; font-weight: 600"
-  >Tahapan Pemesanan
+<h2
+  class="subutama-container"
+  style="
+    font-size: clamp(20px, 4vw, 28px);
+    color: #000000;
+    line-height: 1.3;
+    text-align: justify;
+    margin-bottom: 20px;
+    font-weight: 600;
+  "
+>
+  Tahapan Pemesanan
 </h2>
 
 <section class="timeline-section">
   <div class="timeline-wrapper">
     <!-- Baris atas -->
     <div class="timeline-row row-top">
-      <div class="step"><span class="circle">1</span><p>Pilih layanan fotografi yang kamu inginkan</p></div>
-      <div class="step"><span class="circle">2</span><p>Pilih paket layanan sesuai dengan kebutuhan kamu</p></div>
-      <div class="step"><span class="circle">3</span><p>Lakukan pengisian formulir pemesanan </p></div>
-      <div class="step step-down"><span class="circle">4</span><p>Tunggu selama 1x24 jam untuk dikonfirmasi</p></div>
+      <div class="step">
+        <span class="circle">1</span>
+        <p>Pilih layanan fotografi yang kamu inginkan</p>
+      </div>
+      <div class="step">
+        <span class="circle">2</span>
+        <p>Pilih paket layanan sesuai dengan kebutuhan kamu</p>
+      </div>
+      <div class="step">
+        <span class="circle">3</span>
+        <p>Lakukan pengisian formulir pemesanan</p>
+      </div>
+      <div class="step step-down">
+        <span class="circle">4</span>
+        <p>Tunggu selama 1x24 jam untuk dikonfirmasi</p>
+      </div>
     </div>
 
     <!-- Baris bawah -->
     <div class="timeline-row row-bottom">
-      <div class="step"><span class="circle">5</span><p>Lakukan pembayaran deposit </p></div>
-      <div class="step"><span class="circle">6</span><p>Sesi pemotretan dan pembayaran pelunasan</p></div>
-      <div class="step"><span class="circle">7</span><p>Menerima hasil foto dan keuntungan lainnya sesuai dengan paket layanan yang dipesan</p></div>
-      <div class="step"><span class="circle">8</span><p>Memberikan penilaian dan ulasan terhadap layanan yang diberikan</p></div>
+      <div class="step">
+        <span class="circle">5</span>
+        <p>Lakukan pembayaran deposit</p>
+      </div>
+      <div class="step">
+        <span class="circle">6</span>
+        <p>Sesi pemotretan dan pembayaran pelunasan</p>
+      </div>
+      <div class="step">
+        <span class="circle">7</span>
+        <p>
+          Menerima hasil foto dan keuntungan lainnya sesuai dengan paket layanan
+          yang dipesan
+        </p>
+      </div>
+      <div class="step">
+        <span class="circle">8</span>
+        <p>Memberikan penilaian dan ulasan terhadap layanan yang diberikan</p>
+      </div>
     </div>
   </div>
 </section>
-
-
 
 {% endblock %}
