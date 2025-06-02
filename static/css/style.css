@@ -79,18 +79,16 @@ body {
   transition: 0.2s linear;
 }
 
-
 /* ============================= Elemen ekstra di sisi kanan (icon profil) ========================== */
 .navbar .navbar-extra {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  
 }
 
 .navbar .navbar-extra a {
   color: #fff;
-  margin: 0 0.5rem;    
+  margin: 0 0.5rem;
 }
 
 .navbar .navbar-extra a:hover {
@@ -120,10 +118,11 @@ body {
   width: 200px;
   transform: translateX(-50%);
   background-color: white;
-  border-radius: 0.375rem; 
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
-  color: #374151; 
-  font-size: 0.875rem; 
+  border-radius: 0.375rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  color: #374151;
+  font-size: 0.875rem;
   font-family: inherit;
   display: none;
   z-index: 10;
@@ -131,7 +130,7 @@ body {
 .navbar-dropdown.show {
   display: block;
 }
-  
+
 /* Desain Panah di Pojok Kanan Atas */
 .navbar-dropdown {
   position: absolute;
@@ -157,7 +156,7 @@ body {
   height: 12px;
   background: white;
   transform: rotate(45deg);
-  box-shadow: -1px -1px 1px rgba(0,0,0,0.05);
+  box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.05);
   z-index: -1; /* so it blends with dropdown */
 }
 
@@ -177,7 +176,7 @@ body {
   display: inline;
 }
 
-.navbar-item:hover{
+.navbar-item:hover {
   background-color: #86ade8;
   color: white;
   text-decoration: none;
@@ -190,14 +189,13 @@ body {
   font-size: 20px;
 }
 
-.navbar-item:hover .navbar-icon{
+.navbar-item:hover .navbar-icon {
   color: white;
 }
 
-.navbar-item:hover span{
+.navbar-item:hover span {
   color: white;
 }
-
 
 /*Navbar Garis 3*/
 #hamburger-menu {
@@ -256,7 +254,7 @@ body {
     transform: scaleX(0.3);
   }
 
-  .navbar-dropdown{
+  .navbar-dropdown {
     right: 43px;
   }
 }
@@ -390,19 +388,18 @@ footer ul li {
   transition: all 0.2s ease;
 }
 
-.hero .content .cta:hover{
-  background-color: #5B90E0;
+.hero .content .cta:hover {
+  background-color: #5b90e0;
   color: #fff;
   text-decoration: none;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
 }
 
-.hero .content .cta:active{
+.hero .content .cta:active {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(1px);
 }
-
 
 /* ================================= Content Section 1 (Kenapa?) - Beranda ========================== */
 .kenapa-container {
@@ -445,7 +442,7 @@ footer ul li {
   padding: 10px 20px;
   border: 1px solid #225cb3;
   border-radius: 50px;
-  color: #225CB3;
+  color: #225cb3;
   text-decoration: none;
   font-weight: 500;
   transition: background-color 0.3s, color 0.3s;
@@ -524,11 +521,10 @@ footer ul li {
   }
 }
 
-
 /* ============================ Content Section 2 (Galeri) - Beranda ================================ */
 .gallery {
-  margin:60px auto;
-  padding:0 auto;
+  margin: 60px auto;
+  padding: 0 auto;
 }
 .gallery h2 {
   font-size: clamp(20px, 4vw, 28px); /* Size font mengikuti ukuran layar */
@@ -571,7 +567,6 @@ footer ul li {
   transition: background-color 0.3s, color 0.3s;
   margin-left: center;
   background-color: white;
-  
 }
 .gallery button:hover {
   background-color: #86ade8;
@@ -595,14 +590,13 @@ footer ul li {
   }
 }
 
-
 /* ======================== Content Section 3 (Katalog Layanan) - Beranda =========================== */
 .layanan {
-  margin:60px auto;
-  padding:0 auto;
+  margin: 60px auto;
+  padding: 0 auto;
 }
 .layanan h2 {
-   font-size: clamp(20px, 4vw, 28px); /* Size font mengikuti ukuran layar */
+  font-size: clamp(20px, 4vw, 28px); /* Size font mengikuti ukuran layar */
   font-weight: 600;
   margin-bottom: 32px;
 }
@@ -738,9 +732,9 @@ footer ul li {
   }
 }
 
-
 /*============================== Content Section 4 (Tahapan) - Beranda ===============================*/
-.timeline-section { /* background warna biru */
+.timeline-section {
+  /* background warna biru */
   background-color: #f2f8ff;
   padding: 60px 20px;
   position: relative;
@@ -783,7 +777,7 @@ footer ul li {
   transition: transform 0.3s ease;
 }
 
-.step:hover{
+.step:hover {
   transform: scale(1.02);
 }
 
@@ -841,7 +835,6 @@ footer ul li {
   border-left: 2px dashed #89929e;
 }
 
-
 /* Laptop (1266px) */
 @media (max-width: 1266px) {
   .timeline-row {
@@ -864,8 +857,8 @@ footer ul li {
   }
 
   .step::after,
-  .step::before{
-    display:none;
+  .step::before {
+    display: none;
   }
 }
 
@@ -890,12 +883,10 @@ footer ul li {
   }
 
   .step::after,
-  .step::before{
-    display:none;
+  .step::before {
+    display: none;
   }
 }
-
-
 
 /*================================ Content Section 5 (Testimoni) - Beranda ===========================*/
 .testimonial-section {
@@ -1071,7 +1062,6 @@ footer ul li {
   }
 }
 
-
 /* ============================================== GALERI ============================================ */
 /* Filters Section */
 .filters {
@@ -1090,7 +1080,7 @@ footer ul li {
 .filters label {
   display: block;
   font-size: clamp(14px, 4vw, 16px); /* Size font mengikuti ukuran layar */
-  color: #4b5563; 
+  color: #4b5563;
   margin-bottom: 8px;
   font-weight: 400;
   margin-left: auto;
@@ -1099,9 +1089,9 @@ footer ul li {
   width: 100%;
   height: 45px;
   font-size: 16px;
-  color: #374151; 
+  color: #374151;
   padding: 6px 12px;
-  border: 1px solid #d1d5db; 
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   outline-offset: 2px;
   outline-color: transparent;
@@ -1115,8 +1105,8 @@ footer ul li {
 }
 .filters select[disabled] {
   background-color: #f3f4f6;
-  border-color: #e5e7eb; 
-  color: #9ca3af; 
+  border-color: #e5e7eb;
+  color: #9ca3af;
   cursor: not-allowed;
 }
 
@@ -1124,10 +1114,9 @@ footer ul li {
 .description {
   margin: 32px auto;
   padding: 24px;
-  background-color: #eff6ff; 
+  background-color: #eff6ff;
   border-radius: 8px;
-  color: #374151; 
-  
+  color: #374151;
 }
 .description h2 {
   font-weight: 700;
@@ -1181,7 +1170,6 @@ footer ul li {
     gap: 6px 6px;
   }
 }
-
 
 /* ========================================== KATALOG LAYANAN ======================================= */
 /* kalender */
@@ -1265,7 +1253,7 @@ footer ul li {
 }
 
 .calendar-header button:hover {
-  color: #2B5EA3;
+  color: #2b5ea3;
   background-color: #dbeafe;
 }
 
@@ -1474,12 +1462,12 @@ footer ul li {
   padding: 3.5rem;
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
 }
 
 .text-box h3 {
   font-size: 18px;
-  font-weight: 600; 
+  font-weight: 600;
   text-align: left;
   width: 100%;
   margin-bottom: 15px;
@@ -1487,7 +1475,7 @@ footer ul li {
 
 .text-box p {
   font-size: 12px;
-  font-weight: 400; 
+  font-weight: 400;
   text-align: justify;
   width: 100%;
   margin-bottom: 25px;
@@ -1508,7 +1496,6 @@ footer ul li {
   border-radius: 50px;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
 
 .btn-katalog:hover {
   background-color: #5b90ed;
@@ -1719,7 +1706,6 @@ button:hover {
   }
 }
 
-
 /* ========================================= PAKET FOTO ============================================= */
 /* Hero Header */
 .header-paket {
@@ -1732,19 +1718,6 @@ button:hover {
   justify-content: center;
   color: #fff;
   position: relative;
-}
-
-/* Gambar alternatif */
-.header-paket.bg-enggagement {
-  background-image: url('../img/P1.jpg');
-}
-
-.header-paket.bg-prewedding {
-  background-image: url('../img/P2.jpg');
-}
-
-.header-paket.bg-wedding {
-  background-image: url('../img/P3.jpg');
 }
 
 .header-paket h1 {
@@ -1763,21 +1736,20 @@ button:hover {
   font-weight: 400;
 }
 
-
 /* Tampilan Paket */
 .paket-section {
   padding: 20px 0;
 }
 
 /* Button kembali */
- button.back-btn {
+button.back-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 14px;
   font-weight: 400;
-  color: #2B5EA3;
-  border: 1px solid #2B5EA3;
+  color: #2b5ea3;
+  border: 1px solid #2b5ea3;
   border-radius: 9999px;
   padding: 8px 28px;
   background: transparent;
@@ -1791,7 +1763,6 @@ button.back-btn:hover {
 button.back-btn i {
   font-size: 10px;
 }
-
 
 /* Desain Paket */
 .grid-container-paket {
@@ -1823,17 +1794,17 @@ button.back-btn i {
 }
 .card-paket:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-  border-color: #2B5EA3;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  border-color: #2b5ea3;
 }
 
 .card-paket-header {
- background: linear-gradient(to bottom, #B1CAF0, #F6F9FF);
- padding: 3.5rem;
- text-align: center;
- font-weight: bold;
- color: #003b88;
- border-radius: 12px 12px 0 0;
+  background: linear-gradient(to bottom, #b1caf0, #f6f9ff);
+  padding: 3.5rem;
+  text-align: center;
+  font-weight: bold;
+  color: #003b88;
+  border-radius: 12px 12px 0 0;
 }
 .card-paket-header h3 {
   margin: 0;
@@ -1845,7 +1816,7 @@ button.back-btn i {
   flex-grow: 1;
   padding: 10px 28px 28px 28px;
   font-size: 13px;
-  color: #1A1A1A;
+  color: #1a1a1a;
   display: flex;
   flex-direction: column;
   text-align: justify;
@@ -1856,12 +1827,13 @@ button.back-btn i {
 }
 .section-paket p.title {
   font-weight: 600;
-  color: #2B5EA3;
+  color: #2b5ea3;
   margin: 0 0 6px 0;
   font-size: 14px;
 }
 
-ul .paket { /*tulisan isi keuntungan */
+ul .paket {
+  /*tulisan isi keuntungan */
   margin: auto 25px; /*margin tulisan */
   padding-left: 4px; /*jarak bullet point dgn tulisan */
   list-style-type: disc; /* bullet point */
@@ -1872,9 +1844,9 @@ ul .paket li {
   margin-bottom: 2px;
 }
 
-
-.price-section-paket { /*garis pembatas*/
-  border-top: 1px solid #DDDDDD;
+.price-section-paket {
+  /*garis pembatas*/
+  border-top: 1px solid #dddddd;
   padding-top: 12px;
   margin-top: auto;
 }
@@ -1893,7 +1865,6 @@ ul .paket li {
   margin-top: -24px;
 }
 
-
 .button-order-btnPaket-wrapper {
   position: absolute;
   left: 50%;
@@ -1902,7 +1873,7 @@ ul .paket li {
 }
 button.order-btnPaket {
   width: 100%;
-  background-color: #2B5EA3;
+  background-color: #2b5ea3;
   color: #fff;
   border: none;
   border-radius: 9999px;
@@ -1916,24 +1887,24 @@ button.order-btnPaket:hover {
   background-color: #244a87;
 }
 
-
-.validity-paket { /* exp paket */
+.validity-paket {
+  /* exp paket */
   font-size: 10px;
-  color: #D99F0D;
+  color: #d99f0d;
   text-align: center;
   margin: 6px 0 12px 0;
   font-weight: 500;
 }
 
-
-a.faq-link-paket { /* button faq */
+a.faq-link-paket {
+  /* button faq */
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: #0EA5E9;
+  color: #0ea5e9;
   cursor: pointer;
   user-select: none;
   text-decoration: none;
@@ -1944,8 +1915,6 @@ a.faq-link-paket:hover {
 a.faq-link-paket i {
   font-size: 14px;
 }
-
-
 
 /* --- Catatan Penting --- */
 .container-catatan {
@@ -1963,7 +1932,8 @@ a.faq-link-paket i {
   position: relative;
 }
 
-.header-label-catatan { /* tulisan 'catatan penting */
+.header-label-catatan {
+  /* tulisan 'catatan penting */
   position: absolute;
   top: 0;
   left: 0; /* jarak dari sisi kiri */
@@ -1985,7 +1955,6 @@ ol .catatan {
   text-align: justify;
   line-height: 24px;
   margin-bottom: 8px;
-  
 }
 
 ol .catatan > li {
@@ -1994,7 +1963,8 @@ ol .catatan > li {
   list-style-type: disc; /* bullet point*/
 }
 
-ul .catatan { /* jarak tulisan bullet point */
+ul .catatan {
+  /* jarak tulisan bullet point */
   padding-left: 1.25rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -2007,7 +1977,6 @@ ul .catatan > li {
   color: #dc2626;
   font-weight: 500;
 }
-
 
 .faq-btn-catatan {
   display: inline-flex;
@@ -2063,7 +2032,6 @@ ul .catatan > li {
   line-height: 1;
 }
 
-
 /* Responsif Catatan Custom */
 @media (min-width: 1266px) {
   .container-catatan {
@@ -2090,7 +2058,6 @@ ul .catatan > li {
   }
 }
 
-
 @media (min-width: 768px) and (max-width: 992px) {
   .container-catatan {
     max-width: 90%;
@@ -2103,7 +2070,6 @@ ul .catatan > li {
     padding: 10px 18px;
   }
 }
-
 
 @media (min-width: 420px) and (max-width: 767px) {
   .container-catatan {
@@ -2118,10 +2084,9 @@ ul .catatan > li {
   }
 }
 
-
-
 /* ========================================== FORM PEMESANAN ======================================== */
-.formlayanan-text-center { /*teks keterangan form pemesanan*/
+.formlayanan-text-center {
+  /*teks keterangan form pemesanan*/
   text-align: center;
   font-size: 16px;
   margin-bottom: 70px;
@@ -2149,11 +2114,12 @@ ul .catatan > li {
 }
 @media (min-width: 768px) {
   .formlayanan-row {
-    grid-template-columns: repeat(2, 1fr); 
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.formlayanan-label { /*Label Field*/
+.formlayanan-label {
+  /*Label Field*/
   display: block;
   font-size: 14px;
   font-weight: 400;
@@ -2167,7 +2133,7 @@ ul .catatan > li {
 .formlayanan-textarea,
 .formlayanan-select {
   width: 100%;
-  border: 1px solid #d1d5db; 
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   padding: 8px 12px;
   font-size: 14px;
@@ -2190,24 +2156,25 @@ ul .catatan > li {
   color: black;
 }
 
-.formlayanan-text-xs { /*teks contoh*/
+.formlayanan-text-xs {
+  /*teks contoh*/
   font-size: 12px;
-  color: #6b7280; 
+  color: #6b7280;
   margin-top: 8px;
 }
 
-.formlayanan-text-green { /*teks biaya tambahan*/
+.formlayanan-text-green {
+  /*teks biaya tambahan*/
   font-size: 12px;
   color: #258200;
   font-weight: 500;
   margin-top: 8px;
 }
 
-
 .formlayanan-radio-group {
   font-size: 14px;
   text-align: justify;
-  color: #374151; 
+  color: #374151;
 }
 .formlayanan-radio-label {
   display: flex;
@@ -2223,7 +2190,8 @@ ul .catatan > li {
   accent-color: #d87a2a;
   cursor: pointer;
 }
-.formlayanan-radio-desc { /* tulisan Keterangan di radiobutton */
+.formlayanan-radio-desc {
+  /* tulisan Keterangan di radiobutton */
   font-weight: 400;
   color: #a0a2a5;
   margin-top: 0.125rem;
@@ -2231,12 +2199,10 @@ ul .catatan > li {
   font-size: 12px;
 }
 
-
 .formlayanan-textarea {
   resize: vertical;
   min-height: 6rem;
 }
-
 
 /*button upload file*/
 .formlayanan-upload-label {
@@ -2252,7 +2218,7 @@ ul .catatan > li {
   transition: background-color 0.2s ease-in-out;
 }
 .formlayanan-upload-label:hover {
-  background-color: #86ade8; 
+  background-color: #86ade8;
   color: white;
 }
 .formlayanan-upload-label i {
@@ -2262,7 +2228,6 @@ ul .catatan > li {
 .formlayanan-upload-input {
   display: none;
 }
-
 
 /*button kembali - pesan*/
 .formlayanan-buttons {
@@ -2287,7 +2252,7 @@ ul .catatan > li {
 }
 .formlayanan-btn-kembali:hover {
   background-color: #2b5ea3;
-  color: #ffffff
+  color: #ffffff;
 }
 .formlayanan-btn-pesan {
   background-color: #d1d5db; /* gray-300 */
@@ -2301,19 +2266,17 @@ ul .catatan > li {
   cursor: pointer;
   border-color: transparent;
 }
- 
-
 
 @media (max-width: 996px) {
-  .formlayanan-text-center{
+  .formlayanan-text-center {
     font-size: 14px;
   }
 
-  .formlayanan-row{
+  .formlayanan-row {
     padding: 0 16px;
   }
 
-  .formlayanan-upload-label{
+  .formlayanan-upload-label {
     font-size: 12px;
   }
   .formlayanan-buttons {
@@ -2326,11 +2289,10 @@ ul .catatan > li {
     width: 100%;
     text-align: center;
   }
-}    
-
+}
 
 @media (max-width: 420px) {
-  .formlayanan-text-center{
+  .formlayanan-text-center {
     font-size: 14px;
   }
 
@@ -2342,11 +2304,11 @@ ul .catatan > li {
     font-size: 12px;
   }
 
-  .formlayanan-row{
+  .formlayanan-row {
     padding: 0 16px;
   }
 
-  .formlayanan-label { 
+  .formlayanan-label {
     font-size: 12px;
   }
 
@@ -2365,19 +2327,21 @@ ul .catatan > li {
     font-size: 12px;
   }
 
-  .formlayanan-radio-desc { 
+  .formlayanan-radio-desc {
     font-size: 10px;
   }
 
-  .formlayanan-text-xs { /*teks contoh*/
-    font-size: 10px;  
-  }
-
-  .formlayanan-text-green { /*teks biaya tambahan*/
+  .formlayanan-text-xs {
+    /*teks contoh*/
     font-size: 10px;
   }
 
-  .formlayanan-upload-label{
+  .formlayanan-text-green {
+    /*teks biaya tambahan*/
+    font-size: 10px;
+  }
+
+  .formlayanan-upload-label {
     font-size: 12px;
   }
 
@@ -2391,9 +2355,7 @@ ul .catatan > li {
     width: 100%;
     text-align: center;
   }
-
-}    
-
+}
 
 /* ======================================== TENTANG KAMI ============================================ */
 .about-text {
@@ -2410,7 +2372,6 @@ ul .catatan > li {
   border-radius: 2rem;
   box-shadow: 1px 1px 3px rgba(1, 1, 3, 0.5);
 }
-
 
 @media (max-width: 768px) {
   .about-text {
@@ -2430,16 +2391,17 @@ ul .catatan > li {
 .card-tim {
   flex-shrink: 0;
   width: 224px;
-  background-color: #2c3847 ;
-  border-radius: 12px ;
-  box-shadow: 0 10px 15px -3px rgb(44 56 71 / 0.3), 0 4px 6px -4px rgb(44 56 71 / 0.2);
+  background-color: #2c3847;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgb(44 56 71 / 0.3),
+    0 4px 6px -4px rgb(44 56 71 / 0.2);
   color: white;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s;
 }
 
-.card-tim:hover{
+.card-tim:hover {
   transform: translateY(-5px);
 }
 
@@ -2468,11 +2430,10 @@ ul .catatan > li {
   margin: 0;
 }
 
-
 /* ============================================== KONTAK ============================================ */
 .kontak-title {
   font-weight: 600;
-  font-size: clamp(20px, 4vw, 24px);;
+  font-size: clamp(20px, 4vw, 24px);
   margin-bottom: 20px;
 }
 .kontak-text-sm {
@@ -2493,7 +2454,6 @@ ul .catatan > li {
   margin-bottom: 1.5rem;
   font-size: 14px;
   text-align: justify;
-  
 }
 .kontak-info-item p,
 .kontak-info-item a {
@@ -2502,7 +2462,7 @@ ul .catatan > li {
 
 /* judul 2 tulisan di kontak */
 .kontak-info-item p.kontak-label {
-  font-weight: 600; 
+  font-weight: 600;
   font-size: 16px;
   text-align: justify;
   line-height: 28px;
@@ -2515,7 +2475,6 @@ ul .catatan > li {
   text-decoration: underline;
   font-size: 16px;
   text-align: justify;
-
 }
 .kontak-info-item a:hover,
 .kontak-info-item a:focus {
@@ -2571,7 +2530,6 @@ ul .catatan > li {
   font-size: clamp(20px, 4vw, 24px);
   margin-bottom: 12px;
   margin-top: 80px;
-
 }
 .kontak-paragraph {
   font-size: 14px;
@@ -2580,11 +2538,10 @@ ul .catatan > li {
   text-align: justify;
 }
 
-
 .kontak-faq-button {
   font-size: 16px;
   font-weight: 500;
-  background-color: #DBEAFE;
+  background-color: #dbeafe;
   color: #1e40af;
   padding: 1.5rem 3rem;
   border-radius: 8px;
@@ -2598,7 +2555,6 @@ ul .catatan > li {
   outline: none;
   color: white;
 }
-
 
 /* ============================================= PROFILE ============================================ */
 .profil-header {
@@ -2627,7 +2583,6 @@ ul .catatan > li {
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
 
 .profil-avatar i {
@@ -2664,8 +2619,8 @@ ul .catatan > li {
 
 .profil-button-wrapper {
   display: flex;
-  justify-content: center; 
-  margin-top: 1rem;        
+  justify-content: center;
+  margin-top: 1rem;
 }
 
 .profil-button {
@@ -2674,7 +2629,7 @@ ul .catatan > li {
   border: 1px solid #7da6db;
   border-radius: 9999px;
   background-color: transparent;
-  color: #225CB3;
+  color: #225cb3;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -2697,17 +2652,19 @@ ul .catatan > li {
   }
 }
 
-
 /* ============================================= PROFILE EDIT ======================================= */
 
-#editprofil-photoInput { /* input file untuk upload foto */
+#editprofil-photoInput {
+  /* input file untuk upload foto */
   display: none;
 }
-.editprofil-profile-image-wrapper { /* wrapper untuk foto profil */
+.editprofil-profile-image-wrapper {
+  /* wrapper untuk foto profil */
   position: relative;
   display: inline-block;
 }
-.editprofil-camera-label { /* label untuk input file yang button gambar kamera */
+.editprofil-camera-label {
+  /* label untuk input file yang button gambar kamera */
   position: absolute;
   bottom: -4px;
   right: -4px;
@@ -2724,23 +2681,26 @@ ul .catatan > li {
   justify-content: center;
 }
 .editprofil-camera-label:hover {
-  background-color: #36455D;
+  background-color: #36455d;
 }
 .editprofil-camera-icon {
   color: white;
   font-size: 12px;
 }
 
-.editprofil-reponsiflabel { /* label input text */
+.editprofil-reponsiflabel {
+  /* label input text */
   font-size: clamp(10px, 1.2vw, 12px);
   font-weight: 500;
 }
 
-.editprofil-reponsifinputtext { /* input text */
+.editprofil-reponsifinputtext {
+  /* input text */
   font-size: clamp(10px, 1vw, 12px);
 }
 
-.editprofil-btneditbatal { /* button batal */
+.editprofil-btneditbatal {
+  /* button batal */
   font-weight: 600;
   font-size: clamp(10px, 1.2vw, 12px);
   padding: 6px 10px;
@@ -2749,8 +2709,7 @@ ul .catatan > li {
   color: #86ade8;
   border: 1px solid #7da6db;
   border-radius: 9999px;
-   background-color: transparent;
-  
+  background-color: transparent;
 }
 
 .editprofil-btneditbatal:hover {
@@ -2759,7 +2718,8 @@ ul .catatan > li {
   color: #fff;
 }
 
-.editprofil-btneditsimpan { /* button simpan */
+.editprofil-btneditsimpan {
+  /* button simpan */
   font-weight: 600;
   font-size: clamp(10px, 1.2vw, 12px);
   padding: 6px 10px;
@@ -2769,16 +2729,13 @@ ul .catatan > li {
   border: 1px solid #7da6db;
   border-radius: 9999px;
   background-color: #86ade8;
-  
 }
 
-.editprofil-btneditsimpan:hover { 
+.editprofil-btneditsimpan:hover {
   transform: scale(0.98);
   background-color: #5b90ed;
   color: #ffffff;
 }
-
-
 
 /* =============================== LOGIN - LUPA KATA SANDI - DAFTAR ================================= */
 .container-login {
@@ -2787,7 +2744,7 @@ ul .catatan > li {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #F3F7FD;
+  background-color: #f3f7fd;
   padding: 2rem 1rem;
 }
 
@@ -2821,13 +2778,13 @@ ul .catatan > li {
 
 h2.login-title {
   font-weight: 700;
-  font-size: clamp(20px, 4vw, 24px); 
+  font-size: clamp(20px, 4vw, 24px);
   text-align: center;
   margin-bottom: 1rem;
 }
 
 p.login-subtitle {
-  font-size: clamp(10px, 4vw, 12px); 
+  font-size: clamp(10px, 4vw, 12px);
   color: #9ca3af;
   text-align: center;
   margin-bottom: 1.5rem;
@@ -2922,7 +2879,6 @@ p.signup-text a:hover {
   text-decoration: underline;
 }
 
-
 /* ============================================ KUMPULAN FAQ ======================================== */
 .kumpulfaq-header {
   display: flex;
@@ -2953,20 +2909,20 @@ p.signup-text a:hover {
   width: 100%;
   padding: 8px 16px 8px 36px;
   border-radius: 9999px;
-  border: 1px solid #e5e7eb; 
+  border: 1px solid #e5e7eb;
   font-size: 16px;
-  color: #6b7280; 
+  color: #6b7280;
   outline: none;
   transition: box-shadow 0.2s ease;
 }
 
 .kumpulfaq-search-input::placeholder {
-  color: #9ca3af; 
+  color: #9ca3af;
   font-size: 14px;
 }
 
 .kumpulfaq-search-input:focus {
-  box-shadow: 0 0 0 2px #93c5fd; 
+  box-shadow: 0 0 0 2px #93c5fd;
   border-color: #93c5fd;
   color: #111827;
 }
@@ -2981,7 +2937,7 @@ p.signup-text a:hover {
 }
 
 .kumpulfaq-link-whatsapp {
-  color: #16a34a; 
+  color: #16a34a;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -2991,7 +2947,7 @@ p.signup-text a:hover {
 }
 
 .kumpulfaq-link-whatsapp:hover {
-  color: #15803d; 
+  color: #15803d;
 }
 
 .kumpulfaq-link-whatsapp i {
@@ -2999,7 +2955,7 @@ p.signup-text a:hover {
 }
 
 .kumpulfaq-link-question {
-  color: #3b82f6; 
+  color: #3b82f6;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -3009,7 +2965,7 @@ p.signup-text a:hover {
 }
 
 .kumpulfaq-link-question:hover {
-  color: #2563eb; 
+  color: #2563eb;
 }
 
 .kumpulfaq-link-question i {
@@ -3023,7 +2979,7 @@ p.signup-text a:hover {
 }
 
 .kumpulfaq-faq-item {
-  background-color: #F8FAFC;
+  background-color: #f8fafc;
   border-radius: 0.5rem;
   padding: 16px;
   font-size: 16px;
@@ -3074,7 +3030,7 @@ p.signup-text a:hover {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #374151; 
+  color: #374151;
   max-width: 880px;
   text-align: justify;
 }
@@ -3093,18 +3049,17 @@ p.signup-text a:hover {
   }
 }
 
-
 /* ============================================== FORM FAQ ========================================== */
 h1.formfaq-title {
   text-align: center;
   font-weight: 600;
-  font-size:  clamp(18px, 4vw, 24px);  
+  font-size: clamp(18px, 4vw, 24px);
   margin-bottom: 12px;
 }
 
 p.formfaq-description {
   text-align: center;
-  font-size: 14px;  
+  font-size: 14px;
   margin-bottom: 60px;
   line-height: 25px;
 }
@@ -3127,7 +3082,6 @@ p.formfaq-description {
   align-items: center;
 }
 
-
 /* ============================================== FORM ULASAN ======================================= */
 /* formulasan flex wrapper */
 .formulasan-flex {
@@ -3136,7 +3090,7 @@ p.formfaq-description {
   gap: 2rem;
   padding: 0;
 }
-  @media (min-width: 420px) {
+@media (min-width: 420px) {
   .formulasan-flex {
     flex-direction: column;
   }
@@ -3238,7 +3192,6 @@ p.formfaq-description {
   outline: none;
   box-shadow: 0 0 0 2px #93c5fd;
   border-color: #93c5fd;
-  
 }
 
 /* formulasan buttons container */
@@ -3249,10 +3202,10 @@ p.formfaq-description {
 
 /* formulasan button styles */
 .formulasan-btn-back {
-  color: #225CB3;
+  color: #225cb3;
   font-weight: 500;
   font-size: 12px;
-  border: 1px solid #225CB3;
+  border: 1px solid #225cb3;
   border-radius: 9999px;
   padding: 8px 24px;
   background-color: transparent;
@@ -3260,7 +3213,7 @@ p.formfaq-description {
   transition: background-color 0.2s ease;
 }
 .formulasan-btn-back:hover {
-  background-color: #2B5EA3;
+  background-color: #2b5ea3;
   color: white;
 }
 
@@ -3276,14 +3229,13 @@ p.formfaq-description {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 .formulasan-btn-send.enabled {
-  background-color: #2B5EA3;
+  background-color: #2b5ea3;
   color: white;
   cursor: pointer;
 }
 .formulasan-btn-send.enabled:hover {
   background-color: #2563eb;
 }
-
 
 /* formulasan right side */
 .formulasan-right {
@@ -3345,7 +3297,6 @@ p.formfaq-description {
 .formulasan-reviewer-name {
   font-weight: 700;
   font-size: 14px;
-  
 }
 
 /* formulasan review date */
@@ -3410,10 +3361,8 @@ p.formfaq-description {
 
 .formulasan-more-btn:hover {
   background-color: #2b5ea3;
-  color:white;
+  color: white;
 }
-
-
 
 /* ============================================ RIWAYAT PESANAN ===================================== */
 /* Navbar */
@@ -3455,13 +3404,13 @@ p.formfaq-description {
   }
 }
 
-
 /* Container */
-main.riwayatpemesanan-container { /* box di paling belakang-biru muda*/
+main.riwayatpemesanan-container {
+  /* box di paling belakang-biru muda*/
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-  background-color: #F6F9FF;
+  background-color: #f6f9ff;
   border-radius: 0.75rem;
   padding: 3rem;
   box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
@@ -3521,7 +3470,6 @@ main.riwayatpemesanan-container { /* box di paling belakang-biru muda*/
   flex-shrink: 0;
 }
 
-
 /* Section headings */
 h2.riwayatpemesanan-section-title {
   font-weight: 500;
@@ -3542,7 +3490,8 @@ h2.riwayatpemesanan-section-title i.riwayatpemesanan-arrow {
   color: #111827;
 }
 
-h2.riwayatpemesanan-section-title.riwayatpemesanan-expanded i.riwayatpemesanan-arrow {
+h2.riwayatpemesanan-section-title.riwayatpemesanan-expanded
+  i.riwayatpemesanan-arrow {
   transform: rotate(180deg);
 }
 
@@ -3565,7 +3514,8 @@ div.riwayatpemesanan-info-block {
 }
 
 /* Isi - Label dan icon */
-div.riwayatpemesanan-label { /* label */
+div.riwayatpemesanan-label {
+  /* label */
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -3573,7 +3523,8 @@ div.riwayatpemesanan-label { /* label */
   color: #111827;
 }
 
-div.riwayatpemesanan-label i { /* icon */
+div.riwayatpemesanan-label i {
+  /* icon */
   font-size: 12px;
   min-width: 1rem;
   text-align: center;
@@ -3598,7 +3549,6 @@ p.riwayatpemesanan-value {
   font-size: 12px;
 }
 
-
 /* Pembayaran detail container */
 div.riwayatpemesanan-payment-details {
   background-color: #e8f0fa;
@@ -3606,7 +3556,7 @@ div.riwayatpemesanan-payment-details {
   font-size: 0.75rem;
   color: #111827;
   padding: 20px 40px;
-  margin:0 auto;
+  margin: 0 auto;
   max-width: 750px;
 }
 
@@ -3614,13 +3564,12 @@ div.riwayatpemesanan-payment-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4rem;
-  margin: 0 auto;             
+  margin: 0 auto;
   margin-bottom: 8px;
-    
 }
 
 div.riwayatpemesanan-payment-row.border-bottom {
-  border-bottom: 1px solid #6F7C8E !important;
+  border-bottom: 1px solid #6f7c8e !important;
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
@@ -3642,7 +3591,6 @@ div.riwayatpemesanan-payment-row.riwayatpemesanan-sisa {
   color: #f97316;
 }
 
-
 .riwayatpemesanan-form {
   display: grid;
   grid-template-columns: 1fr;
@@ -3662,7 +3610,6 @@ div.riwayatpemesanan-payment-row.riwayatpemesanan-sisa {
   font-size: 0.75rem;
   color: #1a1a1a;
 }
-
 
 .riwayatpemesanan-textarea {
   background-color: white;
@@ -3692,8 +3639,6 @@ div.riwayatpemesanan-payment-row.riwayatpemesanan-sisa {
   cursor: not-allowed;
 }
 
-
-
 /* File upload section */
 section.riwayatpemesanan-file-section {
   font-size: 0.75rem;
@@ -3714,7 +3659,7 @@ section.riwayatpemesanan-file-section {
   transition: background-color 0.2s ease-in-out;
 }
 .riwayatpemesanan-upload-label:hover {
-  background-color: #eff6ff; 
+  background-color: #eff6ff;
 }
 .riwayatpemesanan-upload-label i {
   margin-right: 8px;
@@ -3765,7 +3710,7 @@ button.riwayatpemesanan-btn-primary {
   font-weight: 600;
   font-size: 12px;
   border-radius: 9999px;
-  padding:  10px 28px;
+  padding: 10px 28px;
   border: none;
   cursor: pointer;
   white-space: nowrap;
@@ -3820,12 +3765,12 @@ section.riwayatpemesanan-balance-section p.riwayatpemesanan-balance-amount {
   gap: 4px;
 }
 
-section.riwayatpemesanan-balance-section p.riwayatpemesanan-balance-amount span {
+section.riwayatpemesanan-balance-section
+  p.riwayatpemesanan-balance-amount
+  span {
   font-size: 28px;
   font-weight: 700;
 }
-
-
 
 /* Responsive */
 @media (min-width: 640px) {
@@ -3835,7 +3780,7 @@ section.riwayatpemesanan-balance-section p.riwayatpemesanan-balance-amount span 
   div.riwayatpemesanan-status {
     margin-left: 0;
   }
-  
+
   div.riwayatpemesanan-details {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -3845,10 +3790,8 @@ section.riwayatpemesanan-balance-section p.riwayatpemesanan-balance-amount span 
   }
   section.riwayatpemesanan-buttons {
     flex-wrap: nowrap;
-    
   }
   div.riwayatpemesanan-left-buttons {
-    
     flex-wrap: nowrap;
   }
   button.riwayatpemesanan-btn-outline,
@@ -3857,7 +3800,6 @@ section.riwayatpemesanan-balance-section p.riwayatpemesanan-balance-amount span 
   }
 }
 
-    
 /* ==========================================TAMBAHAN LAINNYA ======================================= */
 .sidebar {
   position: fixed;
@@ -3869,13 +3811,11 @@ section.riwayatpemesanan-balance-section p.riwayatpemesanan-balance-amount span 
   padding: 15px;
 }
 
-
 /* --- Jarak Section Berwarna --- */
 .jarak-section {
   background-color: #fff;
   padding: 60px 20px;
 }
-
 
 /* --- Container Utama --- */
 .subutama-container {
@@ -3888,11 +3828,10 @@ section.riwayatpemesanan-balance-section p.riwayatpemesanan-balance-amount span 
   padding-left: 16px;
   padding-right: 16px;
   box-sizing: border-box;
-
 }
 
 /* --- container untuk button back --- */
-.triutama-container { 
+.triutama-container {
   max-width: 1100px;
   width: 100%;
   margin-top: 40px;
@@ -3905,7 +3844,7 @@ section.riwayatpemesanan-balance-section p.riwayatpemesanan-balance-amount span 
 }
 
 /* Container untuk Tentang Kami */
-.fourutama-container{
+.fourutama-container {
   max-width: 1000px;
   width: 100%;
   margin-top: 40px;
@@ -3915,7 +3854,6 @@ section.riwayatpemesanan-balance-section p.riwayatpemesanan-balance-amount span 
   padding-right: 16px;
   box-sizing: border-box;
 }
-
 
 /* --- button otomatis --- */
 .otomatisbtn-button-container {
@@ -3932,15 +3870,15 @@ button.otomatisbtn-kembali {
   padding: 0.625rem 2rem;
   cursor: pointer;
   min-width: 6.5rem;
-  color: #1D4ED8; /* blue-700 */
-  border: 1px solid #1D4ED8;
+  color: #1d4ed8; /* blue-700 */
+  border: 1px solid #1d4ed8;
   background: transparent;
   transition: #3227cc 0.3s, ease;
 }
 
-button.otomatisbtn-kembali:hover{
-background-color: #2d2aff;
-color: #ffffff;
+button.otomatisbtn-kembali:hover {
+  background-color: #2d2aff;
+  color: #ffffff;
 }
 
 button.otomatisbtn-kembali:focus {
@@ -3948,16 +3886,15 @@ button.otomatisbtn-kembali:focus {
   box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.4); /* efek focus - borderline ketika di klik */
 }
 
-
 button.otomatisbtn-pesan {
   font-weight: 600;
   font-size: 0.875rem;
   line-height: 1.25rem;
   border-radius: 9999px; /* rounded-full */
   padding: 0.625rem 2rem;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   color: white;
-  background-color: #D1D5DB; /* gray-300 */
+  background-color: #d1d5db; /* gray-300 */
   border: none;
   cursor: not-allowed;
   min-width: 6.5rem;
@@ -3965,6 +3902,6 @@ button.otomatisbtn-pesan {
 }
 
 button.otomatisbtn-pesan.otomatisbtn-active {
-  background-color: #1D4ED8; /* blue-700 */
+  background-color: #1d4ed8; /* blue-700 */
   cursor: pointer;
 }

@@ -14,7 +14,7 @@ Photo {% endblock %} {% block content %}
         <div class="table-responsive p-0">
           <div class="container mt-5">
             <form
-              id="addProductForm"
+              id="tambahPaketForm"
               method="POST"
               action="/admin_paketFotografi_tambah"
               enctype="multipart/form-data"
@@ -97,7 +97,7 @@ Photo {% endblock %} {% block content %}
                         <textarea
                           class="form-control"
                           id="keuntungan"
-                          name="deskripsi"
+                          name="keuntungan"
                           rows="5"
                         ></textarea>
                       </div>
@@ -220,30 +220,24 @@ Photo {% endblock %} {% block content %}
 </script>
 
 <script>
+  // Memeriksa apakah form sudah diisi semua
   let isNameDuplicate = false;
 
-  // Memeriksa apakah form sudah diisi semua
   function checkFormFilled() {
     const nama = document.getElementById("nama").value.trim();
-    const layanan = document.getElementById("layanan").value.trim();
+    const layanan = document.getElementById("layananSelect").value.trim();
     const harga = document.getElementById("harga").value.trim();
     const deposit = document.getElementById("deposit").value.trim();
     const keuntungan = document.getElementById("keuntungan").value.trim();
     const tim = document.getElementById("tim_kerja").value.trim();
     const periode = document.getElementById("periode").value.trim();
-
     const submitButton = document.getElementById("submitButton");
 
-    submitButton.disabled = !(
-      nama &&
-      layanan &&
-      harga &&
-      deposit &&
-      keuntungan &&
-      tim &&
-      periode &&
-      !isNameDuplicate
-    );
+    const isFilled =
+      nama && layanan && harga && deposit && keuntungan && tim && periode;
+
+    // Tombol submit aktif hanya jika form lengkap dan nama tidak duplikat
+    submitButton.disabled = !(isFilled && !isNameDuplicate);
   }
 
   // Validasi nama paket
@@ -279,22 +273,32 @@ Photo {% endblock %} {% block content %}
       });
   }
 
+  // Event listener setelah halaman selesai dimuat
   document.addEventListener("DOMContentLoaded", function () {
-    document
-      .querySelectorAll(
-        "#nama, #layananSelect, #harga, #deposit, #keuntungan, #tim_kerja, #periode"
-      )
-      .forEach((input) => {
-        input.addEventListener("input", () => {
-          if (input.id === "nama") {
+    const inputs = [
+      "nama",
+      "layananSelect",
+      "harga",
+      "deposit",
+      "keuntungan",
+      "tim_kerja",
+      "periode",
+    ];
+
+    inputs.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", () => {
+          if (id === "nama") {
             checkNameAvailability();
           } else {
             checkFormFilled();
           }
         });
-      });
+      }
+    });
 
-    checkFormFilled();
+    checkFormFilled(); // Cek saat pertama kali load
   });
 
   // Konfirmasi sebelum submit form

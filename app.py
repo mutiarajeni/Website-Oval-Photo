@@ -25,18 +25,6 @@ def beranda():
 
 
 
-
-
-
-
-
-# User - Katalog Layanan
-@app.route('/katalog_layanan')
-def katalog_layanan():
-    layanan = list(db.layanan.find())
-    return render_template('user/katalog_layanan.html',
-layanan=layanan, current_route=request.path)
-
 # Admin - Layanan Fotografi
 @app.route('/admin_layananFotografi')
 def admin_layananFotografi():
@@ -93,6 +81,13 @@ def check_nama_layanan():
 def admin_layananFotografi_ubah():
     return render_template('admin/layananFotografi_ubah.html')
 
+# User - Katalog Layanan
+@app.route('/katalog_layanan')
+def katalog_layanan():
+    layanan = list(db.layanan.find())
+    return render_template('user/katalog_layanan.html',
+layanan=layanan, current_route=request.path)
+
 
 
 
@@ -119,27 +114,25 @@ def admin_paketFotografi_tambah():
         layanan_id = request.form['layanan']
         harga = int(request.form['harga'])
         deposit = int(request.form['deposit'])
-        deskripsi = request.form['deskripsi']
+        keuntungan = request.form['keuntungan']
         tim_kerja = request.form['tim_kerja']
         periode = request.form['periode']
 
-        # Periksa apakah nama paket sudah ada
-        # Parsing tanggal dari periode
+         # Parsing tanggal dari periode input (flatpickr dengan mode range: "dd MMMM yyyy to dd MMMM yyyy")
         tanggal_mulai = tanggal_selesai = None
-        if ' to ' in periode:
-            tanggal_mulai_str, tanggal_selesai_str = periode.split(' to ')
-        else:
-            tanggal_range = periode.split('–')  # fallback jika memakai strip panjang
-            if len(tanggal_range) == 2:
-                tanggal_mulai_str, tanggal_selesai_str = tanggal_range
+        if periode:
+            # Ganti tanda '–' (en dash) jadi ' to ' supaya seragam
+            periode = periode.replace('–', ' to ').replace('—', ' to ')
+            if ' to ' in periode:
+                tanggal_mulai_str, tanggal_selesai_str = periode.split(' to ')
             else:
                 tanggal_mulai_str = tanggal_selesai_str = periode
 
-        try:
-            tanggal_mulai = datetime.datetime.strptime(tanggal_mulai_str.strip(), "%d %B %Y")
-            tanggal_selesai = datetime.datetime.strptime(tanggal_selesai_str.strip(), "%d %B %Y")
-        except Exception as e:
-            print("Error parsing date:", e)
+            try:
+                tanggal_mulai = datetime.strptime(tanggal_mulai_str.strip(), "%d %B %Y")
+                tanggal_selesai = datetime.strptime(tanggal_selesai_str.strip(), "%d %B %Y")
+            except Exception as e:
+                print("Error parsing date:", e)
 
         # Buat dokumen paket
         doc = {
@@ -147,23 +140,18 @@ def admin_paketFotografi_tambah():
             'layanan_id': ObjectId(layanan_id),
             'harga': harga,
             'deposit': deposit,
-            'deskripsi': deskripsi,
+            'keuntungan': keuntungan,
             'tim_kerja': tim_kerja,
             'periode': {
                 'mulai': tanggal_mulai,
                 'selesai': tanggal_selesai
             },
-            'created_at': datetime.datetime.utcnow()
+            'created_at': datetime.utcnow()
         }
         db.paket.insert_one(doc)
         return redirect(url_for("admin_paketFotografi"))
-    return render_template('admin/paketFotografi_tambah.html', paket_exists=paket_exists)
-
-
-@app.route('/admin_paketFotografi_ubah')
-def admin_paketFotografi_ubah():
-    return render_template('admin/paketFotografi_ubah.html')
-
+    layanan = list(db.layanan.find())
+    return render_template('admin/paketFotografi_tambah.html', layanan=layanan, paket_exists=paket_exists)
 
 @app.route('/check_nama_paket', methods=['POST'])
 def check_nama_paket():
@@ -178,9 +166,36 @@ def check_nama_paket():
         return jsonify({'exists': True})
     else:
         return jsonify({'exists': False})
+
+@app.route('/admin_paketFotografi_ubah')
+def admin_paketFotografi_ubah():
+    return render_template('admin/paketFotografi_ubah.html')
+
+@app.route('/lihat_paket/<layanan_id>')
+def lihat_paket(layanan_id):
+    # Cari layanan berdasarkan id
+    layanan = db.layanan.find_one({'_id': ObjectId(layanan_id)})
+    if not layanan:
+        return "Layanan tidak ditemukan", 404
+
+    # Cari paket yang terkait dengan layanan
+    paket_list = list(db.paket.find({'layanan_id': ObjectId(layanan_id)}))
+
+    # Ubah format tanggal periode supaya mudah tampil di template
+    for paket in paket_list:
+        if 'periode' in paket and paket['periode']:
+            mulai = paket['periode'].get('mulai')
+            selesai = paket['periode'].get('selesai')
+            if mulai and selesai:
+                paket['periode_str'] = f"{mulai.strftime('%d %B %Y')} - {selesai.strftime('%d %B %Y')}"
+            else:
+                paket['periode_str'] = "Tidak ada periode"
+        else:
+            paket['periode_str'] = "Tidak ada periode"
+
+    return render_template('user/lihat_paket.html', layanan=layanan, paket_list=paket_list)
+
     
-
-
 
 
 
@@ -194,18 +209,6 @@ def check_nama_paket():
 @app.route('/jadwal')
 def jadwal():
     return render_template('user/jadwal.html')
-
-@app.route('/engagement')
-def engagement():
-    return render_template('user/paket_engagement.html')
-
-@app.route('/prewedding')
-def prewedding():
-    return render_template('user/paket_prewedding.html')
-
-@app.route('/wedding')
-def wedding():
-    return render_template('user/paket_wedding.html')
 
 
 @app.route('/booking')

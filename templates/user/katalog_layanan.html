@@ -322,7 +322,12 @@
           <h3>{{ layanan.nama }}</h3>
           <p>{{ layanan.deskripsi }}</p>
           <div class="btn-wrapper">
-            <a class="btn-katalog" href="#" target="_blank">Lihat Paket</a>
+            <a
+              class="btn-katalog"
+              href="{{ url_for('lihat_paket', layanan_id=layanan._id) }}"
+              target="_blank"
+              >Lihat Paket</a
+            >
           </div>
         </div>
       </div>
