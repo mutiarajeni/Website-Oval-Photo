@@ -1,5 +1,5 @@
-{% extends "admin/base_admin.html" %} {% block title %} Photo {% endblock %} {%
-block content %}
+{% extends "pemilik/base_pemilik.html" %} {% block title %} Photo {% endblock %}
+{% block content %}
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -7,16 +7,7 @@ block content %}
         <div class="bg-admin shadow-dark border-radius-lg pt-4 pb-3">
           <div class="row">
             <div class="col-6 d-flex align-items-center">
-              <h5 class="text-white text-capitalize ps-3">Layanan Fotografi</h5>
-            </div>
-            <div class="col-6 text-end">
-              <a
-                class="btn btn-light btn-sm text-capitalize mb-0 me-4 fs-6 fw-normal"
-                href="/admin_layananFotografi_tambah"
-              >
-                <i class="material-icons text-dark me-1 fs-4">add</i>
-                &nbsp;&nbsp;Tambah Layanan
-              </a>
+              <h5 class="text-white text-capitalize ps-3">Pesanan</h5>
             </div>
           </div>
         </div>
@@ -30,9 +21,9 @@ block content %}
                   class="text-center text-dark fs-7 fw-bold"
                   style="width: 50px"
                 ></th>
-                <th class="text-center text-dark fs-7 fw-bold">Foto</th>
-                <th class="text-center text-dark fs-7 fw-bold">Nama Layanan</th>
-                <th class="text-center text-dark fs-7 fw-bold">Deskripsi</th>
+                <th class="text-center text-dark fs-7 fw-bold">Nama Klien</th>
+                <th class="text-center text-dark fs-7 fw-bold">Layanan</th>
+                <th class="text-center text-dark fs-7 fw-bold">Status</th>
                 <th class="text-center text-dark fs-7 fw-bold">Aksi</th>
               </tr>
             </thead>
@@ -105,35 +96,5 @@ block content %}
     </div>
   </div>
 </div>
-
-<style>
-  /* Custom hijau untuk toggle switch */
-  .form-check-input.toggle-hijau:checked {
-    background-color: #00c851; /* hijau */
-    border-color: #00c851;
-  }
-
-  .form-check-input.toggle-hijau:focus {
-    box-shadow: 0 0 0 0.25rem rgba(0, 200, 81, 0.25);
-  }
-</style>
-
-<script>
-  function ubahStatus(id) {
-    const toggle = document.getElementById("toggleAktif" + id);
-    const label = document.getElementById("statusLabel" + id);
-    const baru = toggle.checked;
-
-    // Ubah label di UI
-    label.textContent = baru ? "Aktif" : "Tidak Aktif";
-
-    // Kirim ke server
-    fetch(`/admin_layananFotografi_toggle/${id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: baru }),
-    }).catch(console.error);
-  }
-</script>
 
 {% endblock %}

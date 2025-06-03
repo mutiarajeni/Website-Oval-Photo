@@ -11,49 +11,33 @@ Photo {% endblock %} {% block content %}
       <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
           <div class="container mt-5">
-            {% if product_exists %}
-            <div
-              class="alert alert-danger alert-dismissible text-white"
-              role="alert"
-            >
-              <span class="text-sm">
-                Lokasi sudah ada
-                <a href="#lokasi_nama" class="alert-link text-white"
-                  >Nama Lokasi</a
-                >. Mohon gunakan nama lokasi yang berbeda.
-              </span>
-              <button
-                type="button"
-                class="btn-close text-lg py-3 opacity-10"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            {% endif %}
-
             <form
-              id="addProductForm"
+              id="tambahLokasiForm"
               method="POST"
-              action="/admin_paketFotografi_tambah"
+              action="/admin_lokasi_tambah"
               enctype="multipart/form-data"
             >
               <table class="table table-no-border">
                 <tbody>
                   <tr>
-                    <td><label for="lokasi_nama">Nama Lokasi</label></td>
+                    <td><label for="nama">Nama Lokasi</label></td>
                     <td>
                       <div class="input-group input-group-outline">
                         <label class="form-label"></label>
                         <input
                           type="text"
                           class="form-control"
-                          id="lokasi_nama"
+                          id="nama"
                           name="nama"
                           required
                         />
                       </div>
+                      <small
+                        class="text-danger"
+                        id="nameError"
+                        style="display: none"
+                        >Nama lokasi sudah ada</small
+                      >
                     </td>
                   </tr>
                   <tr>
@@ -85,15 +69,15 @@ Photo {% endblock %} {% block content %}
                     </td>
                   </tr>
                   <tr>
-                    <td><label for="harga">Biaya</label></td>
+                    <td><label for="biaya">Biaya</label></td>
                     <td>
                       <div class="input-group input-group-outline">
                         <label class="form-label"></label>
                         <input
                           type="number"
                           class="form-control"
-                          id="harga"
-                          name="harga"
+                          id="biaya"
+                          name="biaya"
                           required
                         />
                       </div>
@@ -127,24 +111,77 @@ Photo {% endblock %} {% block content %}
 </div>
 
 <script>
+  // Memeriksa apakah form sudah diisi semua
+  let isNameDuplicate = false;
+
   function checkFormFilled() {
-    const nama = document.getElementById("lokasi_nama").value.trim();
+    const nama = document.getElementById("nama").value.trim();
     const alamat = document.getElementById("alamat").value.trim();
     const linkMaps = document.getElementById("link_maps").value.trim();
-    const harga = document.getElementById("harga").value.trim();
-
+    const biaya = document.getElementById("biaya").value.trim();
     const submitButton = document.getElementById("submitButton");
-    submitButton.disabled = !(nama && alamat && linkMaps && harga);
+
+    const isFilled = nama && alamat && linkMaps && biaya;
+
+    // Tombol submit aktif hanya jika form lengkap dan nama tidak duplikat
+    submitButton.disabled = !(isFilled && !isNameDuplicate);
   }
 
-  document
-    .querySelectorAll("#lokasi_nama, #alamat, #link_maps, #harga")
-    .forEach((input) => {
-      input.addEventListener("input", checkFormFilled);
+  // Validasi nama lokasi
+  function checkNameAvailability() {
+    const namaInput = document.getElementById("nama");
+    const nameError = document.getElementById("nameError");
+    const nama = namaInput.value.trim();
+
+    if (nama === "") {
+      nameError.style.display = "none";
+      isNameDuplicate = false;
+      checkFormFilled();
+      return;
+    }
+
+    fetch("/check_nama_lokasi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ nama: nama }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.exists) {
+          nameError.style.display = "block";
+          isNameDuplicate = true;
+        } else {
+          nameError.style.display = "none";
+          isNameDuplicate = false;
+        }
+        checkFormFilled();
+      });
+  }
+
+  // Event listener setelah halaman selesai dimuat
+  document.addEventListener("DOMContentLoaded", function () {
+    const inputs = ["nama", "alamat", "link_maps", "biaya"];
+
+    inputs.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", () => {
+          if (id === "nama") {
+            checkNameAvailability();
+          } else {
+            checkFormFilled();
+          }
+        });
+      }
     });
 
+    checkFormFilled(); // Cek saat pertama kali load
+  });
+
   document
-    .getElementById("addProductForm")
+    .getElementById("tambahLokasiForm")
     .addEventListener("submit", function (event) {
       event.preventDefault();
       var form = this;

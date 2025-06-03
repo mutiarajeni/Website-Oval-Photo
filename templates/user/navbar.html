@@ -1,6 +1,10 @@
 <nav class="navbar fixed-top navbar-expand-lg">
   <a href="/masuk" class="navbar-logo"
-    ><img src="static/img/logo.png" alt="Logo" height="50" />&nbsp;Oval Photo
+    ><img
+      src="{{ url_for('static', filename='img/logo.png') }}"
+      alt="Logo"
+      height="50"
+    />&nbsp;Oval Photo
   </a>
 
   <div class="navbar-nav">
@@ -33,7 +37,7 @@
 
   <div class="navbar-extra">
     <!-- Tombol ikon user -->
-    <a 
+    <a
       href="#"
       aria-label="User menu"
       class="user-icon"
@@ -49,7 +53,7 @@
     <a href="#" id="hamburger-menu"><i class="bi bi-list"></i></a>
 
     <!-- Dropdown dari ikon profil -->
-    <div 
+    <div
       id="navbar-dropdown"
       class="navbar-dropdown"
       role="menu"
@@ -75,22 +79,21 @@
     function navbarToggle(event) {
       event.preventDefault();
       event.stopPropagation(); // agar tidak tertutup langsung
-      const menu = document.getElementById('navbar-dropdown');
-      const button = document.getElementById('user-icon');
-      const isShown = menu.classList.contains('show');
-      menu.classList.toggle('show', !isShown);
-      button.setAttribute('aria-expanded', String(!isShown));
+      const menu = document.getElementById("navbar-dropdown");
+      const button = document.getElementById("user-icon");
+      const isShown = menu.classList.contains("show");
+      menu.classList.toggle("show", !isShown);
+      button.setAttribute("aria-expanded", String(!isShown));
     }
 
     // Klik di luar menu dan ikon = tutup dropdown
-    document.addEventListener('click', (e) => {
-      const menu = document.getElementById('navbar-dropdown');
-      const button = document.getElementById('user-icon');
+    document.addEventListener("click", (e) => {
+      const menu = document.getElementById("navbar-dropdown");
+      const button = document.getElementById("user-icon");
       if (!button.contains(e.target) && !menu.contains(e.target)) {
-        menu.classList.remove('show');
-        button.setAttribute('aria-expanded', 'false');
+        menu.classList.remove("show");
+        button.setAttribute("aria-expanded", "false");
       }
     });
   </script>
-
 </nav>

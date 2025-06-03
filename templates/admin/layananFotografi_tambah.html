@@ -168,13 +168,21 @@ Photo {% endblock %} {% block content %}
 
   // Event listener setelah halaman selesai dimuat
   document.addEventListener("DOMContentLoaded", function () {
-    const namaInput = document.getElementById("nama");
-    const deskripsiInput = document.getElementById("deskripsi");
-    const gambarInput = document.getElementById("gambar");
+    const inputs = ["nama", "deskripsi", "gambar"];
 
-    namaInput.addEventListener("input", checkNameAvailability);
-    deskripsiInput.addEventListener("input", checkFormFilled);
-    gambarInput.addEventListener("change", checkFormFilled);
+    inputs.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const eventType = id === "gambar" ? "change" : "input";
+        el.addEventListener(eventType, () => {
+          if (id === "nama") {
+            checkNameAvailability();
+          } else {
+            checkFormFilled();
+          }
+        });
+      }
+    });
 
     checkFormFilled(); // Cek saat pertama kali load
   });

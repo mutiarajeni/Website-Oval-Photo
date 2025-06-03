@@ -1,5 +1,5 @@
-{% extends "admin/base_admin.html" %} {% block title %} Photo {% endblock %} {%
-block content %}
+{% extends "pemilik/base_pemilik.html" %} {% block title %} Photo {% endblock %}
+{% block content %}
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -7,7 +7,7 @@ block content %}
         <div class="bg-admin shadow-dark border-radius-lg pt-4 pb-3">
           <div class="row">
             <div class="col-6 d-flex align-items-center">
-              <h5 class="text-white text-capitalize ps-3">Layanan Fotografi</h5>
+              <h5 class="text-white text-capitalize ps-3">Pengguna</h5>
             </div>
             <div class="col-6 text-end">
               <a
@@ -15,7 +15,7 @@ block content %}
                 href="/admin_layananFotografi_tambah"
               >
                 <i class="material-icons text-dark me-1 fs-4">add</i>
-                &nbsp;&nbsp;Tambah Layanan
+                &nbsp;&nbsp;Tambah Pengguna
               </a>
             </div>
           </div>
@@ -30,9 +30,11 @@ block content %}
                   class="text-center text-dark fs-7 fw-bold"
                   style="width: 50px"
                 ></th>
-                <th class="text-center text-dark fs-7 fw-bold">Foto</th>
-                <th class="text-center text-dark fs-7 fw-bold">Nama Layanan</th>
-                <th class="text-center text-dark fs-7 fw-bold">Deskripsi</th>
+                <th class="text-center text-dark fs-7 fw-bold">Nama</th>
+                <th class="text-center text-dark fs-7 fw-bold">
+                  Nama Pengguna
+                </th>
+                <th class="text-center text-dark fs-7 fw-bold">Peran</th>
                 <th class="text-center text-dark fs-7 fw-bold">Aksi</th>
               </tr>
             </thead>
