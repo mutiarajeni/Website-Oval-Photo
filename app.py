@@ -9,6 +9,8 @@ from werkzeug.utils import secure_filename
 import random
 import string
 import os
+import re
+import locale
 
 # Koneksi ke database MongoDB
 connection_string = "mongodb+srv://test:sparta@cluster0.9kunvma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
@@ -57,6 +59,12 @@ def pemilik_akunKlien():
     return render_template('pemilik/akunKlien.html')
 
 
+def sanitize_filename(name):
+    # Ganti spasi dengan underscore dan hapus karakter tidak valid
+    name = name.strip().lower()
+    name = re.sub(r'[^\w\s-]', '', name)
+    name = re.sub(r'[\s-]+', '_', name)
+    return name
 
 # Admin - Layanan Fotografi
 @app.route('/admin_layananFotografi')
@@ -90,10 +98,11 @@ def admin_layananFotografi_tambah():
         if existing_layanan:
             layanan_exists = True
         else:
-            if gambar:
-                nama_file_asli = gambar.filename
-                nama_file_gambar = nama_file_asli.split('/')[-1]
-                file_path = f'static/images/imgLayanan/{nama_file_gambar}'
+            if gambar and gambar.filename != "":
+                ekstensi = os.path.splitext(gambar.filename)[1]
+                timestamp = str(int(time.time()))
+                nama_file_gambar = f"{sanitize_filename(nama)}_{timestamp}{ekstensi}"
+                file_path = os.path.join('static/images/imgLayanan', nama_file_gambar)
                 gambar.save(file_path)
             else:
                 nama_file_gambar = None
@@ -121,9 +130,56 @@ def check_nama_layanan():
     else:
         return jsonify({'exists': False})
 
-@app.route('/admin_layananFotografi_ubah')
-def admin_layananFotografi_ubah():
-    return render_template('admin/layananFotografi_ubah.html')
+@app.route('/admin_layananFotografi_ubah/<_id>', methods=['GET', 'POST'])
+def admin_layananFotografi_ubah(_id):
+    layanan_exists = False
+
+    if request.method == 'POST':
+        id = request.form['_id']
+        nama = request.form['nama']
+        deskripsi = request.form['deskripsi']
+        gambar = request.files['gambar']
+
+        # Periksa apakah Nama Layanan sudah ada, kecuali layanan yang sedang diubah
+        existing_layanan = db.layanan.find_one({'nama': nama, '_id': {'$ne': ObjectId(id)}})
+        if existing_layanan:
+            layanan_exists = True
+        else:
+            # Ambil data lama untuk akses gambar lama
+            old_layanan = db.layanan.find_one({'_id': ObjectId(_id)})
+            doc = {
+                'nama': nama,
+                'deskripsi': deskripsi,
+                'status': True,
+                'gambar': old_layanan.get('gambar')  # default ke gambar lama
+            }
+
+            # Cek apakah user mengunggah file baru
+            if gambar and gambar.filename != "":
+                ekstensi = os.path.splitext(gambar.filename)[1]
+                timestamp = str(int(time.time()))
+                nama_file_gambar = f"{sanitize_filename(nama)}_{timestamp}{ekstensi}"
+                file_path = os.path.join('static/images/imgLayanan', nama_file_gambar)
+                gambar.save(file_path)
+                doc['gambar'] = nama_file_gambar
+
+                # Hapus gambar lama
+                old_image_filename = old_layanan.get('gambar')
+                if old_image_filename and old_image_filename != nama_file_gambar:
+                    old_image_path = os.path.join('static/images/imgLayanan', old_image_filename)
+                    if os.path.exists(old_image_path):
+                        os.remove(old_image_path)
+
+            # Update/ubah layanan
+            db.layanan.update_one({"_id": ObjectId(_id)}, {"$set": doc})
+            return redirect(url_for("admin_layananFotografi"))
+
+    id = ObjectId(_id)
+    data = list(db.layanan.find({"_id": id}))
+    return render_template('admin/layananFotografi_ubah.html', data=data, layanan_exists=layanan_exists)
+
+
+
 
 # User - Katalog Layanan
 @app.route("/katalog_layanan")
@@ -142,14 +198,49 @@ def katalog_layanan():
 
 
 
-
+def tanggal_id(dt: datetime) -> str:
+    """
+    Ubah datetime ⇢ string "01 Januari 2025".
+    Jatuh-bakal ke locale default jika `id_ID` tidak tersedia.
+    """
+    try:
+        locale.setlocale(locale.LC_TIME, "id_ID.UTF-8")
+    except locale.Error:
+        # Server tak punya locale Indonesia? Pakai default EN lalu ganti manual.
+        bulan_map = {
+            "January": "Januari", "February": "Februari", "March": "Maret",
+            "April": "April", "May": "Mei", "June": "Juni",
+            "July": "Juli", "August": "Agustus", "September": "September",
+            "October": "Oktober", "November": "November", "December": "Desember",
+        }
+        en = dt.strftime("%d %B %Y")
+        for en_bulan, id_bulan in bulan_map.items():
+            en = en.replace(en_bulan, id_bulan)
+        return en
+    return dt.strftime("%d %B %Y")
 
 # Admin - Paket Fotografi
 @app.route('/admin_paketFotografi')
 def admin_paketFotografi():
-    paket=list(db.paket.find())
-    return render_template('admin/paketFotografi.html',
-paket=paket, current_route=request.path)
+    paket = list(db.paket.find())
+    layanan_map = {str(l['_id']): l['nama'] for l in db.layanan.find()}
+
+    # Tambahkan nama layanan ke dalam setiap dokumen paket
+    for p in paket:
+        layanan_id = str(p.get('layanan_id'))
+        p['layanan'] = layanan_map.get(layanan_id, 'Tidak ditemukan')
+
+    return render_template('admin/paketFotografi.html', paket=paket, current_route=request.path)
+
+@app.route("/admin_paketFotografi_toggle/<id>", methods=["POST"])
+def admin_paketFotografi_toggle(id):
+    data = request.get_json()
+    status_baru = bool(data.get("status", True))
+    db.paket.update_one(
+        { "_id": ObjectId(id) },
+        { "$set": { "status": status_baru } }
+    )
+    return jsonify({ "ok": True })
 
 
 @app.route('/admin_paketFotografi_tambah', methods=['GET','POST'])
@@ -171,15 +262,19 @@ def admin_paketFotografi_tambah():
             # Ganti tanda '–' (en dash) jadi ' to ' supaya seragam
             periode = periode.replace('–', ' to ').replace('—', ' to ')
             if ' to ' in periode:
-                tanggal_mulai_str, tanggal_selesai_str = periode.split(' to ')
+                mulai_str, selesai_str = [
+                    s.strip() for s in periode.split(" to ")
+                ]
             else:
-                tanggal_mulai_str = tanggal_selesai_str = periode
+                 mulai_str = selesai_str = periode.strip()
 
+            for_parse = "%d %B %Y"           # misal: 01 Januari 2025
             try:
-                tanggal_mulai = datetime.strptime(tanggal_mulai_str.strip(), "%d %B %Y")
-                tanggal_selesai = datetime.strptime(tanggal_selesai_str.strip(), "%d %B %Y")
-            except Exception as e:
-                print("Error parsing date:", e)
+                tanggal_mulai   = datetime.strptime(mulai_str, for_parse)
+                tanggal_selesai = datetime.strptime(selesai_str, for_parse)
+                periode_str     = f"{tanggal_id(tanggal_mulai)} - {tanggal_id(tanggal_selesai)}"
+            except ValueError:
+                pass                            # biarkan periode_str = periode_raw
 
         # Buat dokumen paket
         doc = {
@@ -193,6 +288,7 @@ def admin_paketFotografi_tambah():
                 'mulai': tanggal_mulai,
                 'selesai': tanggal_selesai
             },
+            "status": True,   # paket aktif secara default
             'created_at': datetime.utcnow()
         }
         db.paket.insert_one(doc)
@@ -214,9 +310,70 @@ def check_nama_paket():
     else:
         return jsonify({'exists': False})
 
-@app.route('/admin_paketFotografi_ubah')
-def admin_paketFotografi_ubah():
-    return render_template('admin/paketFotografi_ubah.html')
+@app.route('/admin_paketFotografi_ubah/<_id>', methods=['GET', 'POST'])
+def admin_paketFotografi_ubah(_id):
+    paket_exists = False
+
+    if request.method == 'POST':
+        id = request.form['_id']
+        nama = request.form['nama']
+        layanan_id = request.form['layanan']
+        harga = int(request.form['harga'])
+        deposit = int(request.form['deposit'])
+        keuntungan = request.form['keuntungan']
+        tim_kerja = request.form['tim_kerja']
+        periode = request.form['periode']
+
+        # Parsing tanggal dari input periode
+        tanggal_mulai = tanggal_selesai = None
+        if periode:
+            periode = periode.replace('–', ' to ').replace('—', ' to ')
+            if ' to ' in periode:
+                mulai_str, selesai_str = [s.strip() for s in periode.split(' to ')]
+            else:
+                mulai_str = selesai_str = periode.strip()
+
+            for_parse = "%d %B %Y"
+            try:
+                tanggal_mulai = datetime.strptime(mulai_str, for_parse)
+                tanggal_selesai = datetime.strptime(selesai_str, for_parse)
+            except ValueError:
+                pass  # Jika parsing gagal, biarkan tetap None
+
+         # Periksa apakah Nama paket sudah ada, kecuali paket yang sedang diubah
+        existing_paket = db.paket.find_one({'nama': nama, '_id': {'$ne': ObjectId(id)}})
+        if existing_paket:
+            paket_exists = True
+        else:
+            doc = {
+                'nama': nama,
+                'layanan_id': ObjectId(layanan_id),
+                'harga': harga,
+                'deposit': deposit,
+                'keuntungan': keuntungan,
+                'tim_kerja': tim_kerja,
+                'periode': {
+                    'mulai': tanggal_mulai,
+                    'selesai': tanggal_selesai
+                },
+                "status": True   # paket aktif secara default
+            }
+
+            db.paket.update_one({'_id': ObjectId(_id)}, {'$set': doc})
+            return redirect(url_for('admin_paketFotografi'))
+
+    id = ObjectId(_id)
+    data = db.paket.find_one({"_id": id})
+    layanan = list(db.layanan.find())
+
+    # Format ulang periode jika ada
+    periode_str = ''
+    if data.get('periode') and data['periode'].get('mulai') and data['periode'].get('selesai'):
+        mulai = data['periode']['mulai']
+        selesai = data['periode']['selesai']
+        periode_str = f"{tanggal_id(mulai)} to {tanggal_id(selesai)}"
+
+    return render_template('admin/paketFotografi_ubah.html', data=data, layanan=layanan, paket_exists=paket_exists, periode_str=periode_str)
 
 # User - Lihat Paket
 @app.route('/lihat_paket/<layanan_id>')
@@ -226,20 +383,21 @@ def lihat_paket(layanan_id):
     if not layanan:
         return "Layanan tidak ditemukan", 404
 
-    # Cari paket yang terkait dengan layanan
-    paket_list = list(db.paket.find({'layanan_id': ObjectId(layanan_id)}))
+    # Hanya ambil paket yang aktif
+    paket_list = list(db.paket.find({
+        'layanan_id': ObjectId(layanan_id),
+        'status': True  # hanya paket dengan status aktif
+    }))
 
-    # Ubah format tanggal periode supaya mudah tampil di template
-    for paket in paket_list:
-        if 'periode' in paket and paket['periode']:
-            mulai = paket['periode'].get('mulai')
-            selesai = paket['periode'].get('selesai')
+    # Pastikan setiap item punya .periode_str
+    for p in paket_list:
+        if not p.get("periode_str"):
+            mulai   = p.get("periode", {}).get("mulai")
+            selesai = p.get("periode", {}).get("selesai")
             if mulai and selesai:
-                paket['periode_str'] = f"{mulai.strftime('%d %B %Y')} - {selesai.strftime('%d %B %Y')}"
+                p["periode_str"] = f"{tanggal_id(mulai)} - {tanggal_id(selesai)}"
             else:
-                paket['periode_str'] = "Tidak ada periode"
-        else:
-            paket['periode_str'] = "Tidak ada periode"
+                p["periode_str"] = "Tidak ada periode"
 
     return render_template('user/lihat_paket.html', layanan=layanan, paket_list=paket_list)
 

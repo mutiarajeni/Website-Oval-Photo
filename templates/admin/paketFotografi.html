@@ -26,67 +26,114 @@ block content %}
           <table id="dataTable" class="table align-items-center mb-0">
             <thead>
               <tr>
+                <th
+                  class="text-center text-dark fs-7 fw-bold"
+                  style="width: 50px"
+                ></th>
                 <th class="text-center text-dark fs-7 fw-bold">Nama Paket</th>
                 <th class="text-center text-dark fs-7 fw-bold">Layanan</th>
                 <th class="text-center text-dark fs-7 fw-bold">Harga Paket</th>
                 <th class="text-center text-dark fs-7 fw-bold">Deposit</th>
                 <th class="text-center text-dark fs-7 fw-bold">Keuntungan</th>
                 <th class="text-center text-dark fs-7 fw-bold">Tim Pekerja</th>
+                <th class="text-center text-dark fs-7 fw-bold">
+                  Periode Paket
+                </th>
                 <th class="text-center text-dark fs-7 fw-bold">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {% for product in products %}
+              {% for paket in paket %}
               <tr>
-                <td>
-                  <div class="d-flex px-2 py-1">
-                    <h6 class="mb-0 text-sm" style="width: 30px">
-                      {{ loop.index }}.
-                    </h6>
+                <td class="text-center align-middle">{{ loop.index }}.</td>
 
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">{{ product.nama }}</h6>
-                    </div>
-                  </div>
-                </td>
-                <td class="align-middle text-center text-sm">
-                  <span
-                    class="badge badge-sm {% if product.stok > 0 %}bg-gradient-success custom-width{% else %}bg-gradient-danger{% endif %}"
-                  >
-                    {% if product.stok > 0 %} Ada {% else %} Tidak ada {% endif
-                    %}
+                <td class="text-center align-middle">
+                  <span class="mb-0" style="font-weight: normal">
+                    {{ paket.nama }}
                   </span>
                 </td>
-                <td class="align-middle text-center text-sm">
-                  <span class="text-xs font-weight-bold"
-                    >{{ product.satuan }}</span
-                  >
+
+                <td class="text-center align-middle">
+                  <span class="mb-0" style="font-weight: normal">
+                    {{ paket.layanan }}
+                  </span>
                 </td>
-                <td class="align-middle text-center text-sm">
-                  <span class="text-xs font-weight-bold"
-                    >Rp {{ product.harga }}</span
-                  >
+
+                <td class="text-center align-middle">
+                  <span class="mb-0" style="font-weight: normal">
+                    Rp {{ "{:,}".format(paket.harga) | replace(',', '.') }}
+                  </span>
                 </td>
-                <td class="align-middle text-center">
+
+                <td class="text-center align-middle">
+                  <span class="mb-0" style="font-weight: normal">
+                    Rp {{ "{:,}".format(paket.deposit) | replace(',', '.') }}
+                  </span>
+                </td>
+
+                <td class="text-center align-middle">
                   <span
-                    class="text-secondary text-xs font-weight-bold"
-                    title="{{ product.deskripsi }}"
-                    >{{ product.deskripsi[:20] }}{% if product.deskripsi|length
-                    > 20 %}...{% endif %}</span
+                    class="mb-0"
+                    style="font-weight: normal"
+                    title="{{ paket.keuntungan }}"
                   >
+                    {{ paket.keuntungan[:20] }}{% if paket.keuntungan|length >
+                    20 %}...{% endif %}
+                  </span>
                 </td>
-                <td class="align-middle text-center">
-                  <a
-                    class="btn btn-link text-danger text-gradient px-3 mb-0"
-                    href="javascript:void(0);"
-                    onclick="konfirmasiHapus('{{ product._id }}')"
-                    ><i class="material-icons text-sm me-2">delete</i>Hapus</a
+
+                <td class="text-center align-middle">
+                  <span
+                    class="mb-0"
+                    style="font-weight: normal"
+                    title="{{ paket.tim_pekerja }}"
                   >
-                  <a
-                    class="btn btn-link text-dark px-3 mb-0"
-                    href="/admin_layananFotografi_ubah"
-                    ><i class="material-icons text-sm me-2">edit</i>Ubah</a
-                  >
+                    {{ paket.tim_kerja[:20] }}{% if paket.tim_pekerja|length >
+                    20 %}...{% endif %}
+                  </span>
+                </td>
+
+                <td class="text-center align-middle">
+                  <span class="mb-0" style="font-weight: normal">
+                    {% if paket.periode.mulai and paket.periode.selesai %} {{
+                    paket.periode.mulai.strftime("%d %B %Y") }} - {{
+                    paket.periode.selesai.strftime("%d %B %Y") }} {% else %}
+                    Tidak ditentukan {% endif %}
+                  </span>
+                </td>
+
+                <td class="text-center align-middle">
+                  <!-- Toggle Aktif -->
+                  <div class="d-inline-flex align-items-center me-4">
+                    <div class="form-check form-switch mb-0">
+                      <input
+                        class="form-check-input toggle-hijau"
+                        type="checkbox"
+                        id="toggleAktif{{ paket._id }}"
+                        {%
+                        if
+                        paket.status
+                        %}checked{%
+                        endif
+                        %}
+                        onchange="konfirmasiStatus('{{ paket._id }}', this.checked)"
+                      />
+                      <span id="statusLabel{{ paket._id }}">
+                        {{ "Aktif" if paket.status else "Tidak Aktif" }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Tombol Ubah -->
+                  <div class="d-inline-flex align-items-center">
+                    <a
+                      href="/admin_paketFotografi_ubah/{{ paket._id }}"
+                      class="text-dark d-flex align-items-center text-decoration-none"
+                    >
+                      <i class="material-icons me-1">edit</i>
+                      <span class="mb-0" style="font-weight: normal">Ubah</span>
+                    </a>
+                  </div>
                 </td>
               </tr>
               {% endfor %}
@@ -98,19 +145,72 @@ block content %}
   </div>
 </div>
 
+<!-- STYLE -->
+<style>
+  .form-check-input.toggle-hijau:checked {
+    background-color: #00c851;
+    border-color: #00c851;
+  }
+
+  .form-check-input.toggle-hijau:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 200, 81, 0.25);
+  }
+</style>
+
+<!-- SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  function konfirmasiHapus(productId) {
+  function konfirmasiStatus(id, statusBaru) {
+    const toggle = document.getElementById("toggleAktif" + id);
+    const label = document.getElementById("statusLabel" + id);
+
+    // Kembalikan toggle ke posisi sebelumnya dulu
+    toggle.checked = !statusBaru;
+
     Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Anda tidak akan bisa mengembalikannya!",
+      title: statusBaru ? "Aktifkan paket?" : "Nonaktifkan paket?",
+      text: statusBaru
+        ? "Paket fotografi akan diaktifkan."
+        : "Paket fotografi akan dinonaktifkan.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, hapus!",
+      confirmButtonText: "Ya, lanjutkan",
+      cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "/deleteProduct/" + productId;
+        // Update toggle dan label
+        toggle.checked = statusBaru;
+        label.textContent = statusBaru ? "Aktif" : "Tidak Aktif";
+
+        // Kirim ke server
+        fetch(`/admin_paketFotografi_toggle/${id}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: statusBaru }),
+        })
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "Berhasil",
+              text: statusBaru
+                ? "Paket berhasil diaktifkan."
+                : "Paket berhasil dinonaktifkan.",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          })
+          .catch(() => {
+            Swal.fire({
+              icon: "error",
+              title: "Gagal",
+              text: "Terjadi kesalahan saat mengubah status.",
+            });
+            // Kembalikan toggle ke posisi awal jika gagal
+            toggle.checked = !statusBaru;
+            label.textContent = !statusBaru ? "Aktif" : "Tidak Aktif";
+          });
       }
     });
   }
