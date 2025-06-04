@@ -9,37 +9,46 @@ Photo {% endblock %} {% block content %}
         </div>
       </div>
 
+      {% for p in pesanan %}
       <section class="bg-white rounded mt-4 p-4 d-flex flex-column gap-4">
         <div class="d-flex justify-content-end gap-6 fw-bold text-dark me-4">
           <div>
             <span>Tanggal Pemesanan</span>
             <p class="mt-1 fw-normal text-black" style="font-size: 12px">
-              20 April 2025
+              {{ p.tanggal_pemesanan }}
             </p>
           </div>
           <div>
             <span>Status</span>
-            <select
-              class="form-select form-select-sm mt-1 w-auto text-muted"
-              style="
-                min-width: 200px;
-                border-radius: 5px;
-                border: 1px solid #ced4da;
-                box-shadow: none;
-                outline: none;
-                font-size: 12px;
-                padding: 8px;
-              "
+            <form
+              method="POST"
+              action="{{ url_for('admin_pesanan_update', pesanan_id=p._id) }}"
+              class="d-flex align-items-center gap-2"
+              id="updateOrderForm-{{ p._id }}"
             >
-              <option selected>Belum Pemotretan</option>
-              <option>Sudah Pemotretan</option>
-              <option>Sudah Kirim File & Album</option>
-            </select>
+              <select
+                name="status_pesanan"
+                class="form-select form-select-sm w-auto text-muted"
+                style="font-size: 12px; min-width: 200px"
+              >
+                {% set status_list = [ 'Menunggu Konfirmasi', 'Belum Bayar
+                Deposit', 'Belum Pemotretan', 'Sudah Pemotretan', 'Belum Kirim
+                File & Album', 'Sudah Kirim File & Album', 'Gagal
+                Dikonfirmasi', 'Gagal Bayar Deposit', 'Selesai' ] %} {% for
+                status in status_list %}
+                <option
+                  value="{{ status }}"
+                  {% if p.status_pesanan == status %}selected{% endif %}
+                >
+                  {{ status }}
+                </option>
+                {% endfor %}
+              </select>
+              </form>
           </div>
         </div>
 
         <div class="row small">
-          <!-- Informasi Klien -->
           <div
             class="col-md-6"
             style="max-width: 400px; margin-left: 10px; color: black"
@@ -53,7 +62,7 @@ Photo {% endblock %} {% block content %}
                 <i class="bi bi-person-fill" style="font-size: 14px"></i>
                 <div>
                   <p class="text-black mb-1 fs-6 fw-normal">Nama Klien</p>
-                  <p class="fw-bold fs-6 mb-0">Aira Sofia</p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.nama_klien }}</p>
                 </div>
               </div>
 
@@ -61,15 +70,17 @@ Photo {% endblock %} {% block content %}
                 <i class="bi bi-people-fill" style="font-size: 14px"></i>
                 <div>
                   <p class="text-black mb-1 fs-6 fw-normal">Nama Orang Tua</p>
-                  <p class="fw-bold fs-6 mb-0">Adam Sofi</p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.nama_orang_tua }}</p>
                 </div>
               </div>
 
               <div class="d-flex align-items-start gap-2">
                 <i class="bi bi-envelope-fill" style="font-size: 14px"></i>
                 <div>
-                  <p class="text-black mb-1 fs-6 fw-normal">Email</p>
-                  <p class="fw-bold fs-6 mb-0">airasofia@gmail.com</p>
+                  <p class="text-black mb-1 fs-6 fw-normal">
+                    Alamat Email Klien
+                  </p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.email_klien }}</p>
                 </div>
               </div>
 
@@ -79,7 +90,7 @@ Photo {% endblock %} {% block content %}
                   <p class="text-black mb-1 fs-6 fw-normal">
                     No. Telepon Orang Tua
                   </p>
-                  <p class="fw-bold fs-6 mb-0">+62 822-6970-8711</p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.telepon_orang_tua }}</p>
                 </div>
               </div>
 
@@ -89,42 +100,39 @@ Photo {% endblock %} {% block content %}
                   <p class="text-black mb-1 fs-6 fw-normal">
                     No. Telepon Klien
                   </p>
-                  <p class="fw-bold fs-6 mb-0">+62 822-7081-9812</p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.telepon_klien }}</p>
                 </div>
               </div>
 
               <div class="d-flex align-items-start gap-2">
                 <i class="bi bi-whatsapp" style="font-size: 14px"></i>
                 <div>
-                  <p class="text-black mb-1 fs-6 fw-normal">
-                    No. WhatsApp Klien
-                  </p>
-                  <p class="fw-bold fs-6 mb-0">+62 822-7081-9812</p>
+                  <p class="text-black mb-1 fs-6 fw-normal">WhatsApp Klien</p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.whatsapp_klien }}</p>
                 </div>
               </div>
 
               <div class="d-flex align-items-start gap-2">
                 <i class="bi bi-instagram" style="font-size: 14px"></i>
                 <div>
-                  <p class="text-black mb-1 fs-6 fw-normal">Instagram</p>
-                  <p class="fw-bold fs-6 mb-0">@aira.sofia</p>
+                  <p class="text-black mb-1 fs-6 fw-normal">Instagram Klien</p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.instagram_klien }}</p>
                 </div>
               </div>
 
               <div class="d-flex align-items-start gap-2">
                 <i class="bi bi-facebook" style="font-size: 14px"></i>
                 <div>
-                  <p class="text-black mb-1 fs-6 fw-normal">Facebook</p>
-                  <p class="fw-bold fs-6 mb-0">Aira Sofia</p>
+                  <p class="text-black mb-1 fs-6 fw-normal">Facebook Klien</p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.facebook_klien }}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Informasi Pesanan -->
           <div
             class="col-md-6"
-            style="max-width: 250px; margin-left: 10px; color: black"
+            style="max-width: 300px; margin-left: 10px; color: black"
           >
             <h5 class="text-black text-capitalize ps-1 mb-3 mt-4">
               Informasi Pesanan
@@ -135,7 +143,9 @@ Photo {% endblock %} {% block content %}
                 <i class="bi bi-camera-fill" style="font-size: 14px"></i>
                 <div>
                   <p class="text-black mb-1 fs-6 fw-normal">Layanan</p>
-                  <p class="fw-bold fs-6 mb-0">Wedding</p>
+                  <p class="fw-bold fs-6 mb-0">
+                    {{ p.layanan }} ({{ p.paket }})
+                  </p>
                 </div>
               </div>
             </div>
@@ -147,18 +157,26 @@ Photo {% endblock %} {% block content %}
                   style="font-size: 14px"
                 ></i>
                 <div>
-                  <p class="text-black mb-1 fs-6 fw-normal">Tanggal Acara</p>
-                  <p class="fw-bold fs-6 mb-0">16 Mei 2025</p>
+                  <p class="text-black mb-1 fs-6 fw-normal">Waktu Acara</p>
+                  <p class="fw-bold fs-6 mb-0">
+                    {{ p.jam_acara }} WIB, {{p.tanggal_mulai_acara}} -
+                    {{p.tanggal_selesai_acara}}
+                  </p>
                 </div>
               </div>
             </div>
 
             <div class="mb-4">
               <div class="d-flex align-items-start gap-2">
-                <i class="bi bi-clock-fill" style="font-size: 14px"></i>
+                <i class="bi bi-geo-alt-fill" style="font-size: 16px"></i>
                 <div>
-                  <p class="text-black mb-1 fs-6 fw-normal">Jam Acara</p>
-                  <p class="fw-bold fs-6 mb-0">09:00 WIB</p>
+                  <p class="text-black mb-1 fs-6 fw-normal">
+                    Lokasi Acara berada di luar Kab. Labuhanbatu Selatan
+                  </p>
+                  <p class="fw-bold fs-6 mb-0">
+                    {% if p.lokasi_luar_labuhanbatu %}Ya{% else %}Tidak{% endif
+                    %}
+                  </p>
                 </div>
               </div>
             </div>
@@ -168,7 +186,17 @@ Photo {% endblock %} {% block content %}
                 <i class="bi bi-geo-alt-fill" style="font-size: 14px"></i>
                 <div>
                   <p class="text-black mb-1 fs-6 fw-normal">Lokasi Acara</p>
-                  <p class="fw-bold fs-6 mb-0">Jl. Lintas Sumatera Cikampak</p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.lokasi }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-geo-alt-fill" style="font-size: 14px"></i>
+                <div>
+                  <p class="text-black mb-1 fs-6 fw-normal">Alamat Lokasi</p>
+                  <p class="fw-bold fs-6 mb-0">{{ p.alamat_lokasi_acara }}</p>
                 </div>
               </div>
             </div>
@@ -179,20 +207,18 @@ Photo {% endblock %} {% block content %}
                 <div>
                   <p class="text-black mb-1 fs-6 fw-normal">Link Maps</p>
                   <p class="fw-bold fs-6 mb-0 text-break">
-                    https://maps.app.goo.gl/uk2Dwv5CymgAAfzu9maps.app.goo.gl/uk2Dwv5CymgAAfzu9
+                    {{ p.link_maps_acara }}
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Informasi Lainnya -->
-          <div class="col-md-6" style="max-width: 300px; margin-left: 10px">
+          <div class="col-md-6" style="max-width: 400px; margin-left: 10px">
             <h5 class="text-black text-capitalize ps-1 mb-3 mt-4">
               Informasi Lainnya
             </h5>
 
-            <!-- Surat Izin -->
             <div class="mb-4">
               <div class="d-flex align-items-start gap-2"></div>
               <label class="form-label fs-6">
@@ -202,21 +228,23 @@ Photo {% endblock %} {% block content %}
                 ></i
                 >Surat Izin Lokasi
               </label>
-              <div class="d-flex align-items-center bg-light p-2 rounded ms-4">
+              {% if p.surat_izin_lokasi %}
+              <div class="d-flex align-items-center bg-light p-2 rounded">
                 <i
                   class="bi bi-file-earmark-pdf-fill text-danger me-2 fs-5"
                 ></i>
                 <a
-                  href="https://example.com/surat-izin-penggunaan-tempat.pdf"
+                  href="{{ url_for('static', filename='suratIzin/' ~ p.surat_izin_lokasi) }}"
                   target="_blank"
-                  class="text-decoration-underline fs-6"
+                  class="text-decoration-underline"
+                  >{{ p.surat_izin_lokasi }}</a
                 >
-                  Surat izin penggunaan tempat.pdf
-                </a>
               </div>
+              {% else %}
+              <p class="text-muted">Tidak ada file</p>
+              {% endif %}
             </div>
 
-            <!-- Biaya Trasportasi -->
             <div class="mb-4">
               <label class="form-label fs-6">
                 <i class="bi bi-cash me-2" style="font-size: 14px"></i>Biaya
@@ -229,16 +257,17 @@ Photo {% endblock %} {% block content %}
                 pattern="[0-9]*"
                 oninput="formatNumberInput(event)"
                 class="form-control form-control-sm ms-4 w-95"
-                placeholder="0"
                 style="
                   border-radius: 5px;
                   border: 1px solid #ced4da;
                   font-size: 12px;
                 "
+                name="biaya_transportasi"
+                value="{{ '{:,.0f}'.format(p.biaya_transportasi_akomodasi) if p.biaya_transportasi_akomodasi is not none else '0' }}"
+                form="updateOrderForm-{{ p._id }}"
               />
             </div>
 
-            <!-- Catatan -->
             <div class="mb-4">
               <label class="form-label fs-6">
                 <i class="bi bi-sticky-fill me-2" style="font-size: 14px"></i
@@ -253,10 +282,13 @@ Photo {% endblock %} {% block content %}
                   font-size: 12px;
                   height: 100px;
                 "
-              ></textarea>
+                name="catatan"
+                form="updateOrderForm-{{ p._id }}"
+              >
+{{ p.catatan | default('') }}</textarea
+              >
             </div>
 
-            <!-- Link Google Drive -->
             <div class="mb-4">
               <label class="form-label fs-6">
                 <i class="bi bi-link-45deg me-2" style="font-size: 14px"></i
@@ -271,27 +303,49 @@ Photo {% endblock %} {% block content %}
                   font-size: 12px;
                   height: 100px;
                 "
-              ></textarea>
+                name="link_google_drive"
+                form="updateOrderForm-{{ p._id }}"
+              >
+{{ p.link_google_drive | default('') }}</textarea
+              >
             </div>
           </div>
         </div>
 
-        <!-- Tombol Aksi -->
         <div class="d-flex justify-content-between align-items-center mt-3">
-          <button
+          <a
+            href="/admin_pesanan"
             class="btn btn-outline-dark me-2 fw-normal"
             style="text-transform: none; font-size: 1rem"
+            >Kembali</a
           >
-            Kembali
-          </button>
           <div class="text-end mt-3">
+            <form method="POST" action="{{ url_for('admin_kirim_pengingat') }}">
+              <input type="hidden" name="email_klien" value="{{ p.email_klien }}" />
+              <input
+                type="hidden"
+                name="whatsapp_klien"
+                value="{{ p.whatsapp_klien }}"
+              />
+              <input
+                type="hidden"
+                name="status_pesanan"
+                value="{{ p.status_pesanan }}"
+              />
+              <input type="hidden" name="nama_klien" value="{{ p.nama_klien }}" />
+              <input type="hidden" name="pesanan_id_for_redirect" value="{{ p._id }}">
+
+              <button
+                type="submit"
+                class="btn btn-dark fw-normal text-white"
+                style="text-transform: none; font-size: 1rem"
+              >
+                Kirim Pengingat
+              </button>
+            </form>
             <button
-              class="btn btn-dark fw-normal text-white"
-              style="text-transform: none; font-size: 1rem"
-            >
-              Kirim Pengingat
-            </button>
-            <button
+              type="button"
+              id="saveButton-{{ p._id }}"
               class="btn btn-outline-dark me-2 fw-normal"
               style="text-transform: none; font-size: 1rem"
             >
@@ -300,21 +354,52 @@ Photo {% endblock %} {% block content %}
           </div>
         </div>
       </section>
+      {% endfor %}
     </div>
   </div>
 
   <script>
-    function formatNumberInput(e) {
-      const input = e.target;
-      let value = input.value.replace(/\D/g, "");
-      if (value === "") {
-        input.value = "";
-        return;
-      }
-      value = parseInt(value, 10).toLocaleString("id-ID");
-      input.value = value;
+  function formatNumberInput(e) {
+    const input = e.target;
+    let value = input.value.replace(/\D/g, "");
+    if (value === "") {
+      input.value = "";
+      return;
     }
-  </script>
+    value = parseInt(value, 10).toLocaleString("id-ID");
+    input.value = value;
+  }
 
-  {% endblock %}
-</div>
+  document.querySelectorAll('[id^="saveButton-"]').forEach(button => {
+    button.addEventListener('click', function () {
+      const pesananId = this.id.replace('saveButton-', '');
+      const form = document.getElementById(`updateOrderForm-${pesananId}`);
+
+      Swal.fire({
+        title: "Konfirmasi Simpan?",
+        text: "Apakah Anda yakin ingin menyimpan perubahan pada pesanan ini?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Simpan!",
+        cancelButtonText: "Batal",
+      }).then((result) => {
+       if (result.isConfirmed) {
+          Swal.fire({
+            title: "Berhasil!",
+            text: "Perubahan pesanan berhasil disimpan.",
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            willClose: () => {
+              form.submit();
+            },
+          });
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}

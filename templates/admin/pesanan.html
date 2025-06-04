@@ -25,6 +25,10 @@ block content %}
           <table id="dataTable" class="table align-items-center mb-0">
             <thead>
               <tr>
+                <th
+                  class="text-center text-dark fs-7 fw-bold"
+                  style="width: 50px"
+                ></th>
                 <th class="text-center text-dark fs-7 fw-bold">Nama Klien</th>
                 <th class="text-center text-dark fs-7 fw-bold">Layanan</th>
                 <th class="text-center text-dark fs-7 fw-bold">Waktu Acara</th>
@@ -33,63 +37,53 @@ block content %}
               </tr>
             </thead>
             <tbody>
-              {% for product in products %}
+              {% for pesanan in pesanan %}
               <tr>
-                <td>
-                  <div class="d-flex px-2 py-1">
-                    <h6 class="mb-0 text-sm" style="width: 30px">
-                      {{ loop.index }}.
-                    </h6>
-                    <div>
-                      <img
-                        src="../static/images/imgProducts/{{ product.gambar }}"
-                        class="avatar avatar-sm me-3 border-radius-lg"
-                        alt="user1"
-                      />
-                    </div>
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">{{ product.nama }}</h6>
-                    </div>
+                <td class="text-center align-middle">{{ loop.index }}.</td>
+
+                <td class="text-center align-middle">
+                  <span class="mb-0" style="font-weight: normal"
+                    >{{ pesanan.nama_klien }}</span
+                  >
+                </td>
+                <td class="text-center align-middle">
+                  <span class="mb-0" style="font-weight: normal"
+                    >{{ pesanan.layanan }}</span
+                  >
+                </td>
+                <td class="text-center align-middle">
+                  <span class="mb-0" style="font-weight: normal"
+                    >{{ pesanan.jam_acara }} WIB,
+                    {{pesanan.tanggal_mulai_acara}}-{{pesanan.tanggal_selesai_acara}}</span
+                  >
+                </td>
+                <td class="text-center align-middle">
+                  <span class="mb-0" style="font-weight: normal"
+                    >{{ pesanan.status_pesanan }}</span
+                  >
+                </td>
+                <td class="text-center align-middle">
+                  <div class="d-flex justify-content-center gap-4">
+                    <!-- Tombol Detail -->
+                    <a
+                      href="/admin_pesanan_detail"
+                      class="text-decoration-none d-flex align-items-center"
+                      style="color: #1a73e8"
+                    >
+                      <i class="material-icons me-1">visibility</i>
+                      <span style="font-weight: normal">Detail</span>
+                    </a>
+
+                    <!-- Tombol Kirim Pengingat -->
+                    <a
+                      href="#"
+                      class="text-decoration-none d-flex align-items-center"
+                      style="color: #f4b400"
+                    >
+                      <i class="material-icons me-1">notifications</i>
+                      <span style="font-weight: normal">Kirim Pengingat</span>
+                    </a>
                   </div>
-                </td>
-                <td class="align-middle text-center text-sm">
-                  <span
-                    class="badge badge-sm {% if product.stok > 0 %}bg-gradient-success custom-width{% else %}bg-gradient-danger{% endif %}"
-                  >
-                    {% if product.stok > 0 %} Ada {% else %} Tidak ada {% endif
-                    %}
-                  </span>
-                </td>
-                <td class="align-middle text-center text-sm">
-                  <span class="text-xs font-weight-bold"
-                    >{{ product.satuan }}</span
-                  >
-                </td>
-                <td class="align-middle text-center text-sm">
-                  <span class="text-xs font-weight-bold"
-                    >Rp {{ product.harga }}</span
-                  >
-                </td>
-                <td class="align-middle text-center">
-                  <span
-                    class="text-secondary text-xs font-weight-bold"
-                    title="{{ product.deskripsi }}"
-                    >{{ product.deskripsi[:20] }}{% if product.deskripsi|length
-                    > 20 %}...{% endif %}</span
-                  >
-                </td>
-                <td class="align-middle text-center">
-                  <a
-                    class="btn btn-link text-danger text-gradient px-3 mb-0"
-                    href="javascript:void(0);"
-                    onclick="konfirmasiHapus('{{ product._id }}')"
-                    ><i class="material-icons text-sm me-2">delete</i>Hapus</a
-                  >
-                  <a
-                    class="btn btn-link text-dark px-3 mb-0"
-                    href="/admin_layananFotografi_ubah"
-                    ><i class="material-icons text-sm me-2">edit</i>Ubah</a
-                  >
                 </td>
               </tr>
               {% endfor %}
@@ -101,21 +95,4 @@ block content %}
   </div>
 </div>
 
-<script>
-  function konfirmasiHapus(productId) {
-    Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Anda tidak akan bisa mengembalikannya!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, hapus!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = "/deleteProduct/" + productId;
-      }
-    });
-  }
-</script>
 {% endblock %}
