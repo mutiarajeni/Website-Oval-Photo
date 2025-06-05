@@ -15,7 +15,7 @@ Photo {% endblock %} {% block content %}
           <div>
             <span>Tanggal Pemesanan</span>
             <p class="mt-1 fw-normal text-black" style="font-size: 12px">
-              {{ p.tanggal_pemesanan }}
+              {{ p.tanggal_pemesanan_formatted }}
             </p>
           </div>
           <div>
@@ -159,8 +159,8 @@ Photo {% endblock %} {% block content %}
                 <div>
                   <p class="text-black mb-1 fs-6 fw-normal">Waktu Acara</p>
                   <p class="fw-bold fs-6 mb-0">
-                    {{ p.jam_acara }} WIB, {{p.tanggal_mulai_acara}} -
-                    {{p.tanggal_selesai_acara}}
+                    {{ p.jam_acara }} WIB, {{p.tanggal_mulai_acara_formatted}} -
+                    {{p.tanggal_selesai_acara_formatted}}
                   </p>
                 </div>
               </div>
@@ -320,29 +320,7 @@ Photo {% endblock %} {% block content %}
             >Kembali</a
           >
           <div class="text-end mt-3">
-            <form method="POST" action="{{ url_for('admin_kirim_pengingat') }}">
-              <input type="hidden" name="email_klien" value="{{ p.email_klien }}" />
-              <input
-                type="hidden"
-                name="whatsapp_klien"
-                value="{{ p.whatsapp_klien }}"
-              />
-              <input
-                type="hidden"
-                name="status_pesanan"
-                value="{{ p.status_pesanan }}"
-              />
-              <input type="hidden" name="nama_klien" value="{{ p.nama_klien }}" />
-              <input type="hidden" name="pesanan_id_for_redirect" value="{{ p._id }}">
-
-              <button
-                type="submit"
-                class="btn btn-dark fw-normal text-white"
-                style="text-transform: none; font-size: 1rem"
-              >
-                Kirim Pengingat
-              </button>
-            </form>
+            
             <button
               type="button"
               id="saveButton-{{ p._id }}"

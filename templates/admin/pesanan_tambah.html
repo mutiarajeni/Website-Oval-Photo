@@ -380,13 +380,15 @@ Photo {% endblock %} {% block content %}
                           onchange="displayLokasiPrice();"
                           required
                         >
-                          <option value="">Pilih Lokasi</option>
+                          <option value="" disabled>
+                            Pilih Lokasi Sendiri
+                          </option>
                           {% for lokasi in lokasi_list %}
                           <option value="{{ lokasi._id|string }}">
                             {{ lokasi.nama }}
                           </option>
                           {% endfor %}
-                          <option value="pilih_lokasi_sendiri">
+                          <option value="pilih_lokasi_sendiri" selected>
                             Pilih Lokasi Sendiri
                           </option>
                         </select>
