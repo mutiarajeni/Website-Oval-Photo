@@ -234,6 +234,17 @@ def admin_paketFotografi():
         layanan_id = str(p.get('layanan_id'))
         p['layanan'] = layanan_map.get(layanan_id, 'Tidak ditemukan')
 
+        mulai = p.get('tanggal_mulai')
+        selesai = p.get('tanggal_selesai')
+
+        if isinstance(mulai, datetime) and isinstance(selesai, datetime):
+            p['tanggal_mulai_formatted'] = tanggal_id(mulai)
+            p['tanggal_selesai_formatted'] = tanggal_id(selesai)
+        else:
+            p['tanggal_mulai_formatted'] = "Tanggal tidak tersedia"
+            p['tanggal_selesai_formatted'] = "Tanggal tidak tersedia"
+
+
     return render_template('admin/paketFotografi.html', paket=paket, current_route=request.path)
 
 @app.route("/admin_paketFotografi_toggle/<id>", methods=["POST"])
@@ -249,38 +260,23 @@ def admin_paketFotografi_toggle(id):
 
 @app.route('/admin_paketFotografi_tambah', methods=['GET','POST'])
 def admin_paketFotografi_tambah():
-    paket_exists=False
-    
-    if request.method=='POST':
+    paket_exists = False
+
+    if request.method == 'POST':
         nama = request.form['nama']
         layanan_id = request.form['layanan']
         harga = int(request.form['harga'])
         deposit = int(request.form['deposit'])
         keuntungan = request.form['keuntungan']
         tim_kerja = request.form['tim_kerja']
-        periode = request.form['periode']
+        tanggal_mulai_str = request.form['tanggal_mulai']
+        tanggal_selesai_str = request.form['tanggal_selesai']
 
-         # Parsing tanggal dari periode input (flatpickr dengan mode range: "dd MMMM yyyy to dd MMMM yyyy")
-        tanggal_mulai = tanggal_selesai = None
-        if periode:
-            # Ganti tanda '–' (en dash) jadi ' to ' supaya seragam
-            periode = periode.replace('–', ' to ').replace('—', ' to ')
-            if ' to ' in periode:
-                mulai_str, selesai_str = [
-                    s.strip() for s in periode.split(" to ")
-                ]
-            else:
-                 mulai_str = selesai_str = periode.strip()
+        # Konversi tanggal
+        tanggal_mulai = datetime.strptime(tanggal_mulai_str, '%Y-%m-%d')
+        tanggal_selesai= datetime.strptime(tanggal_selesai_str, '%Y-%m-%d')
 
-            for_parse = "%d %B %Y"           # misal: 01 Januari 2025
-            try:
-                tanggal_mulai   = datetime.strptime(mulai_str, for_parse)
-                tanggal_selesai = datetime.strptime(selesai_str, for_parse)
-                periode_str     = f"{tanggal_id(tanggal_mulai)} - {tanggal_id(tanggal_selesai)}"
-            except ValueError:
-                pass                            # biarkan periode_str = periode_raw
-
-        # Buat dokumen paket
+        # Simpan ke dalam dokumen
         doc = {
             'nama': nama,
             'layanan_id': ObjectId(layanan_id),
@@ -288,17 +284,17 @@ def admin_paketFotografi_tambah():
             'deposit': deposit,
             'keuntungan': keuntungan,
             'tim_kerja': tim_kerja,
-            'periode': {
-                'mulai': tanggal_mulai,
-                'selesai': tanggal_selesai
-            },
-            "status": True,   # paket aktif secara default
+            'tanggal_mulai': tanggal_mulai,
+            'tanggal_selesai': tanggal_selesai,
+            "status": True,
             'created_at': datetime.utcnow()
         }
         db.paket.insert_one(doc)
         return redirect(url_for("admin_paketFotografi"))
+
     layanan = list(db.layanan.find())
     return render_template('admin/paketFotografi_tambah.html', layanan=layanan, paket_exists=paket_exists)
+
 
 @app.route('/check_nama_paket', methods=['POST'])
 def check_nama_paket():
@@ -326,23 +322,11 @@ def admin_paketFotografi_ubah(_id):
         deposit = int(request.form['deposit'])
         keuntungan = request.form['keuntungan']
         tim_kerja = request.form['tim_kerja']
-        periode = request.form['periode']
+        tanggal_mulai_str = request.form['tanggal_mulai']
+        tanggal_selesai_str = request.form['tanggal_selesai']
 
-        # Parsing tanggal dari input periode
-        tanggal_mulai = tanggal_selesai = None
-        if periode:
-            periode = periode.replace('–', ' to ').replace('—', ' to ')
-            if ' to ' in periode:
-                mulai_str, selesai_str = [s.strip() for s in periode.split(' to ')]
-            else:
-                mulai_str = selesai_str = periode.strip()
-
-            for_parse = "%d %B %Y"
-            try:
-                tanggal_mulai = datetime.strptime(mulai_str, for_parse)
-                tanggal_selesai = datetime.strptime(selesai_str, for_parse)
-            except ValueError:
-                pass  # Jika parsing gagal, biarkan tetap None
+        tanggal_mulai = datetime.strptime(tanggal_mulai_str, '%Y-%m-%d')
+        tanggal_selesai = datetime.strptime(tanggal_selesai_str, '%Y-%m-%d')
 
          # Periksa apakah Nama paket sudah ada, kecuali paket yang sedang diubah
         existing_paket = db.paket.find_one({'nama': nama, '_id': {'$ne': ObjectId(id)}})
@@ -356,10 +340,8 @@ def admin_paketFotografi_ubah(_id):
                 'deposit': deposit,
                 'keuntungan': keuntungan,
                 'tim_kerja': tim_kerja,
-                'periode': {
-                    'mulai': tanggal_mulai,
-                    'selesai': tanggal_selesai
-                },
+                'tanggal_mulai': tanggal_mulai,
+                'tanggal_selesai': tanggal_selesai,
                 "status": True   # paket aktif secara default
             }
 
@@ -370,22 +352,30 @@ def admin_paketFotografi_ubah(_id):
     data = db.paket.find_one({"_id": id})
     layanan = list(db.layanan.find())
 
-    # Format ulang periode jika ada
-    periode_str = ''
-    if data.get('periode') and data['periode'].get('mulai') and data['periode'].get('selesai'):
-        mulai = data['periode']['mulai']
-        selesai = data['periode']['selesai']
-        periode_str = f"{tanggal_id(mulai)} to {tanggal_id(selesai)}"
+    formatted_tanggal_mulai = ""
+    formatted_tanggal_selesai = ""
 
-    return render_template('admin/paketFotografi_ubah.html', data=data, layanan=layanan, paket_exists=paket_exists, periode_str=periode_str)
+    if data and 'tanggal_mulai' in data and isinstance(data['tanggal_mulai'], datetime):
+        formatted_tanggal_mulai = data['tanggal_mulai'].strftime("%Y-%m-%d")
+
+    if data and 'tanggal_selesai' in data and isinstance(data['tanggal_selesai'], datetime):
+        formatted_tanggal_selesai = data['tanggal_selesai'].strftime("%Y-%m-%d")
+
+
+    return render_template('admin/paketFotografi_ubah.html',
+                           data=data,
+                           layanan=layanan,
+                           paket_exists=paket_exists,
+                           formatted_tanggal_mulai=formatted_tanggal_mulai,
+                           formatted_tanggal_selesai=formatted_tanggal_selesai)
+
+
 
 # User - Lihat Paket
 @app.route('/lihat_paket/<layanan_id>')
 def lihat_paket(layanan_id):
     # Cari layanan berdasarkan id
     layanan = db.layanan.find_one({'_id': ObjectId(layanan_id)})
-    if not layanan:
-        return "Layanan tidak ditemukan", 404
 
     # Hanya ambil paket yang aktif
     paket_list = list(db.paket.find({
@@ -393,15 +383,16 @@ def lihat_paket(layanan_id):
         'status': True  # hanya paket dengan status aktif
     }))
 
-    # Pastikan setiap item punya .periode_str
     for p in paket_list:
-        if not p.get("periode_str"):
-            mulai   = p.get("periode", {}).get("mulai")
-            selesai = p.get("periode", {}).get("selesai")
-            if mulai and selesai:
-                p["periode_str"] = f"{tanggal_id(mulai)} - {tanggal_id(selesai)}"
-            else:
-                p["periode_str"] = "Tidak ada periode"
+        mulai = p.get('tanggal_mulai')
+        selesai = p.get('tanggal_selesai')
+
+        if isinstance(mulai, datetime) and isinstance(selesai, datetime):
+            p['tanggal_mulai_formatted'] = tanggal_id(mulai)
+            p['tanggal_selesai_formatted'] = tanggal_id(selesai)
+        else:
+            p['tanggal_mulai_formatted'] = "Tanggal tidak tersedia"
+            p['tanggal_selesai_formatted'] = "Tanggal tidak tersedia"
 
     return render_template('user/lihat_paket.html', layanan=layanan, paket_list=paket_list)
 
@@ -636,11 +627,9 @@ def admin_pesanan_tambah():
             tanggal_mulai_acara = datetime.strptime(tanggal_mulai_acara_str, '%Y-%m-%d')
             tanggal_selesai_acara = datetime.strptime(tanggal_selesai_acara_str, '%Y-%m-%d')
 
-            # --- Recalculate costs on backend for security/validation ---
-            # This is crucial as frontend calculations can be manipulated.
-            # Backend should always be the source of truth for financial data.
+            
 
-            # Get Paket Price and Deposit
+            # Get harga paket dan deposit
             selected_paket = db.paket.find_one({'_id': ObjectId(paket_id)})
             if not selected_paket:
                 raise ValueError("Paket tidak ditemukan.")
@@ -678,11 +667,6 @@ def admin_pesanan_tambah():
             # Recalculate Total Harga and Sisa Bayar on backend
             recalculated_total_harga = harga_paket + biaya_tambahan_hari + biaya_lokasi + biaya_transportasi
             recalculated_sisa_bayar = recalculated_total_harga - deposit_paket
-
-            # Optional: Add a check if frontend total matches backend total (within a small tolerance)
-            # if abs(recalculated_total_harga - total_harga) > 0.01:
-            #     print(f"Warning: Frontend total ({total_harga}) doesn't match backend total ({recalculated_total_harga})")
-            #     # You might want to raise an error or log this discrepancy
 
             # Handle upload Surat Izin Lokasi (Opsional)
             surat_izin_lokasi_filename = None
@@ -760,34 +744,49 @@ def admin_pesanan_tambah():
 
 @app.route('/admin_pesanan_detail')
 def admin_pesanan_detail():
-    pesanan = list(db.pesanan.find())
+    pesanan_id = request.args.get('pesanan_id')
 
-    # Buat map nama layanan, paket, dan lokasi berdasarkan _id
-    layanan_map = {str(l['_id']): l['nama'] for l in db.layanan.find()}
-    paket_map = {str(l['_id']): l['nama'] for l in db.paket.find()}
-    lokasi_map = {str(l['_id']): l['nama'] for l in db.lokasi.find()}
+    # Tambahkan pengecekan ini
+    if not pesanan_id:
+        flash("ID Pesanan tidak ditemukan.", "danger")
+        return redirect(url_for('admin_pesanan'))
 
-    # Tambahkan nama layanan ke dalam setiap dokumen pesanan
-    for p in pesanan:
+    try:
+        pesanan = db.pesanan.find_one({'_id': ObjectId(pesanan_id)})
+
+        # Pengecekan jika pesanan tidak ditemukan di database
+        if not pesanan:
+            flash(f"Pesanan dengan ID '{pesanan_id}' tidak ditemukan.", "danger")
+            return redirect(url_for('admin_pesanan'))
+
+        # Buat map nama layanan, paket, dan lokasi berdasarkan _id
+        layanan_map = {str(l['_id']): l['nama'] for l in db.layanan.find()}
+        paket_map = {str(l['_id']): l['nama'] for l in db.paket.find()}
+        lokasi_map = {str(l['_id']): l['nama'] for l in db.lokasi.find()}
+
         # Konversi ObjectId pesanan ke string untuk digunakan di URL/form
-        p['_id'] = str(p['_id'])
+        pesanan['_id'] = str(pesanan['_id'])
 
         # Layanan
-        layanan_id = str(p.get('layanan_id', ''))
-        p['layanan'] = layanan_map.get(layanan_id, 'Tidak ditemukan')
+        layanan_id = str(pesanan.get('layanan_id', ''))
+        pesanan['layanan'] = layanan_map.get(layanan_id, 'Tidak ditemukan')
 
         # Paket
-        paket_id = str(p.get('paket_id', ''))
-        p['paket'] = paket_map.get(paket_id, 'Tidak ditemukan')
+        paket_id = str(pesanan.get('paket_id', ''))
+        pesanan['paket'] = paket_map.get(paket_id, 'Tidak ditemukan')
 
         # Lokasi (bisa None atau kosong jika input manual)
-        lokasi_id = str(p.get('lokasi_id', ''))
+        lokasi_id = str(pesanan.get('lokasi_id', ''))
         if lokasi_id and lokasi_id != "None":
-            p['lokasi'] = lokasi_map.get(lokasi_id, 'Tidak ditemukan')
+            pesanan['lokasi'] = lokasi_map.get(lokasi_id, 'Tidak ditemukan')
         else:
-            p['lokasi'] = '(Lokasi Manual)' if p.get('alamat_lokasi_acara') else 'Tidak tersedia'
+            pesanan['lokasi'] = '(Lokasi Manual)' if pesanan.get('alamat_lokasi_acara') else 'Tidak tersedia'
 
-    return render_template('admin/pesanan_detail.html', pesanan=pesanan, current_route=request.path)
+        return render_template('admin/pesanan_detail.html', pesanan=[pesanan], current_route=request.path)
+
+    except Exception as e:
+        flash(f"Terjadi kesalahan saat mengambil detail pesanan: {e}", "danger")
+        return redirect(url_for('admin_pesanan'))
 
 
 @app.route('/admin_pesanan_update/<pesanan_id>', methods=['POST'])

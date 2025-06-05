@@ -95,10 +95,8 @@ block content %}
 
                 <td class="text-center align-middle">
                   <span class="mb-0" style="font-weight: normal">
-                    {% if paket.periode.mulai and paket.periode.selesai %} {{
-                    paket.periode.mulai.strftime("%d %B %Y") }} - {{
-                    paket.periode.selesai.strftime("%d %B %Y") }} {% else %}
-                    Tidak ditentukan {% endif %}
+                    {{ paket.tanggal_mulai_formatted }} - {{
+                    paket.tanggal_selesai_formatted }}
                   </span>
                 </td>
 

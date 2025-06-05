@@ -120,33 +120,46 @@ Photo {% endblock %} {% block content %}
                     <td><label for="periode">Periode Paket</label></td>
                     <td>
                       <div
-                        class="input-group input-group-outline"
-                        style="max-width: 400px; border-radius: 5px"
+                        style="
+                          display: flex;
+                          gap: 10px;
+                          align-items: center;
+                          max-width: 500px;
+                        "
                       >
                         <input
-                          type="text"
+                          type="date"
                           class="form-control"
-                          id="periode"
-                          name="periode"
-                          placeholder="Pilih rentang tanggal"
+                          name="tanggal_mulai"
+                          id="tanggal_mulai"
                           required
-                        />
-                        <span
-                          id="calendar-icon"
                           style="
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            padding-left: 8px;
-                            color: #000000;
-                            position: relative;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            padding: 6px 10px;
+                            width: 140px;
                           "
-                        >
-                          <i
-                            class="bi bi-calendar3"
-                            style="font-size: 1.5rem"
-                          ></i>
-                        </span>
+                          placeholder="Tanggal Mulai"
+                          onchange="checkFormValidity();"
+                        />
+
+                        <span>-</span>
+
+                        <input
+                          type="date"
+                          class="form-control"
+                          name="tanggal_selesai"
+                          id="tanggal_selesai"
+                          required
+                          style="
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            padding: 6px 10px;
+                            width: 140px;
+                          "
+                          placeholder="Tanggal Selesai"
+                          onchange="checkFormValidity();"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -177,49 +190,6 @@ Photo {% endblock %} {% block content %}
   </div>
 </div>
 
-<!-- Flatpickr CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-/>
-
-<!-- Flatpickr JS dan Locale -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
-
-<script>
-  const flatpickrInstance = flatpickr("#periode", {
-    mode: "range",
-    dateFormat: "d F Y",
-    locale: "id",
-    rangeSeparator: " to ",
-    allowInput: true,
-    onOpen: function (selectedDates, dateStr, instance) {
-      setTimeout(() => {
-        const calendarIcon = document.getElementById("calendar-icon");
-        const calendar = document.querySelector(".flatpickr-calendar");
-        const iconRect = calendarIcon.getBoundingClientRect();
-
-        calendar.style.position = "absolute";
-        calendar.style.top = iconRect.bottom + window.scrollY + "px";
-        calendar.style.left = iconRect.right + 10 + "px";
-        calendar.style.zIndex = 9999;
-      }, 10);
-    },
-  });
-
-  // Klik ikon untuk membuka kalender
-  document
-    .getElementById("calendar-icon")
-    .addEventListener("click", function () {
-      flatpickrInstance.open();
-    });
-</script>
-
 <script>
   // Memeriksa apakah form sudah diisi semua
   let isNameDuplicate = false;
@@ -231,11 +201,21 @@ Photo {% endblock %} {% block content %}
     const deposit = document.getElementById("deposit").value.trim();
     const keuntungan = document.getElementById("keuntungan").value.trim();
     const tim = document.getElementById("tim_kerja").value.trim();
-    const periode = document.getElementById("periode").value.trim();
+    const tanggalMulai = document.getElementById("tanggal_mulai").value.trim();
+    const tanggalSelesai = document
+      .getElementById("tanggal_selesai")
+      .value.trim();
     const submitButton = document.getElementById("submitButton");
 
     const isFilled =
-      nama && layanan && harga && deposit && keuntungan && tim && periode;
+      nama &&
+      layanan &&
+      harga &&
+      deposit &&
+      keuntungan &&
+      tim &&
+      tanggalMulai &&
+      tanggalSelesai;
 
     // Tombol submit aktif hanya jika form lengkap dan nama tidak duplikat
     submitButton.disabled = !(isFilled && !isNameDuplicate);
@@ -283,7 +263,8 @@ Photo {% endblock %} {% block content %}
       "deposit",
       "keuntungan",
       "tim_kerja",
-      "periode",
+      "tanggal_mulai",
+      "tanggal_selesai",
     ];
 
     inputs.forEach((id) => {

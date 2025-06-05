@@ -58,7 +58,8 @@
             </button>
             <!--  Periode PAKET  -->
             <p class="validity-paket">
-              Berlaku dari {{ paket.periode_str or '-' }}
+              Berlaku dari {{ paket.tanggal_mulai_formatted }} - {{
+              paket.tanggal_selesai_formatted }}
             </p>
             <a href="/faqbb" class="faq-link-paket" role="button" tabindex="0">
               <i class="bi bi-question-circle-fill"></i>

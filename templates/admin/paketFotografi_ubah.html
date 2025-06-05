@@ -132,33 +132,46 @@ Photo {% endblock %} {% block content %}
                     <td><label for="periode">Periode Paket</label></td>
                     <td>
                       <div
-                        class="input-group input-group-outline"
-                        style="max-width: 400px; border-radius: 5px"
+                        style="
+                          display: flex;
+                          gap: 10px;
+                          align-items: center;
+                          max-width: 500px;
+                        "
                       >
                         <input
-                          type="text"
+                          type="date"
                           class="form-control"
-                          id="periode"
-                          name="periode"
-                          placeholder="Pilih rentang tanggal"
+                          name="tanggal_mulai"
+                          id="tanggal_mulai"
                           required
-                        />
-                        <span
-                          id="calendar-icon"
+                          value="{{ formatted_tanggal_mulai }}"
                           style="
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            padding-left: 8px;
-                            color: #000000;
-                            position: relative;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            padding: 6px 10px;
+                            width: 140px;
                           "
-                        >
-                          <i
-                            class="bi bi-calendar3"
-                            style="font-size: 1.5rem"
-                          ></i>
-                        </span>
+                          onchange="checkFormValidity();"
+                        />
+
+                        <span>-</span>
+
+                        <input
+                          type="date"
+                          class="form-control"
+                          name="tanggal_selesai"
+                          id="tanggal_selesai"
+                          required
+                          value="{{ formatted_tanggal_selesai }}"
+                          style="
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            padding: 6px 10px;
+                            width: 140px;
+                          "
+                          onchange="checkFormValidity();"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -189,49 +202,6 @@ Photo {% endblock %} {% block content %}
   </div>
 </div>
 
-<!-- Flatpickr CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-/>
-
-<!-- Flatpickr JS dan Locale -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
-
-<script>
-  const flatpickrInstance = flatpickr("#periode", {
-    mode: "range",
-    dateFormat: "d F Y",
-    locale: "id",
-    rangeSeparator: " to ",
-    allowInput: true,
-    onOpen: function (selectedDates, dateStr, instance) {
-      setTimeout(() => {
-        const calendarIcon = document.getElementById("calendar-icon");
-        const calendar = document.querySelector(".flatpickr-calendar");
-        const iconRect = calendarIcon.getBoundingClientRect();
-
-        calendar.style.position = "absolute";
-        calendar.style.top = iconRect.bottom + window.scrollY + "px";
-        calendar.style.left = iconRect.right + 10 + "px";
-        calendar.style.zIndex = 9999;
-      }, 10);
-    },
-  });
-
-  // Klik ikon untuk membuka kalender
-  document
-    .getElementById("calendar-icon")
-    .addEventListener("click", function () {
-      flatpickrInstance.open();
-    });
-</script>
-
 <script>
   // Menjalankan script setelah seluruh dokumen dimuat
   document.addEventListener("DOMContentLoaded", function () {
@@ -242,7 +212,8 @@ Photo {% endblock %} {% block content %}
     const depositInput = document.getElementById("deposit");
     const keuntunganInput = document.getElementById("keuntungan");
     const timInput = document.getElementById("tim_kerja");
-    const periodeInput = document.getElementById("periode");
+    const tanggalMulai = document.getElementById("tanggal_mulai");
+    const tanggalSelesai = document.getElementById("tanggal_selesai");
     const nameError = document.getElementById("nameError");
     const submitBtn = document.getElementById("submitButton");
 
@@ -254,7 +225,8 @@ Photo {% endblock %} {% block content %}
       deposit: depositInput.value.trim(),
       keuntungan: keuntunganInput.value.trim(),
       tim: timInput.value.trim(),
-      periode: periodeInput.value.trim(),
+      tanggalMulai: tanggalMulai.value.trim(),
+      tanggalSelesai: tanggalSelesai.value.trim(),
     };
 
     // Fungsi untuk mengecek apakah ada perubahan dari nilai awal
@@ -266,7 +238,8 @@ Photo {% endblock %} {% block content %}
         depositInput.value.trim() !== originalValues.deposit ||
         keuntunganInput.value.trim() !== originalValues.keuntungan ||
         timInput.value.trim() !== originalValues.tim ||
-        periodeInput.value.trim() !== originalValues.periode
+        tanggalMulai.value.trim() !== originalValues.tanggalMulai ||
+        tanggalSelesai.value.trim() !== originalValues.tanggalSelesai
       );
     };
 
@@ -279,7 +252,8 @@ Photo {% endblock %} {% block content %}
         depositInput.value.trim() !== "" &&
         keuntunganInput.value.trim() !== "" &&
         timInput.value.trim() !== "" &&
-        periodeInput.value.trim() !== ""
+        tanggalMulai.value.trim() !== "" &&
+        tanggalSelesai.value.trim() !== ""
       );
     };
 
@@ -323,7 +297,8 @@ Photo {% endblock %} {% block content %}
       depositInput,
       keuntunganInput,
       timInput,
-      periodeInput,
+      tanggalMulai,
+      tanggalSelesai,
     ].forEach((input) => {
       input.addEventListener("input", checkNameAndToggleButton);
     });
