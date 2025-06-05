@@ -11,7 +11,6 @@ Photo {% endblock %} {% block content %}
 
       <div class="card-body px-4 pb-4">
         <div class="row">
-          <!-- Kolom Form -->
           <div class="col-md-8">
             <form
               id="tambahGaleriForm"
@@ -141,11 +140,11 @@ Photo {% endblock %} {% block content %}
             </form>
           </div>
 
-          <!-- Kolom Preview -->
           <div
             class="col-md-4 d-flex align-items-center justify-content-center bg-light rounded"
+            style="min-height: 300px; flex-wrap: wrap; gap: 10px; padding: 15px"
           >
-            <div id="preview" class="text-muted text-center">
+            <div id="preview" class="text-muted text-center w-100">
               Foto akan tampil disini
             </div>
           </div>
@@ -162,50 +161,107 @@ Photo {% endblock %} {% block content %}
     const preview = document.getElementById("preview");
     const submitButton = document.getElementById("submitButton");
 
-    let selectedFiles = [];
+    // Menggunakan Set untuk menyimpan file yang dipilih, otomatis menghindari duplikasi
+    let selectedFiles = new Set();
 
+    // Fungsi untuk memperbarui elemen input file yang tersembunyi
     function updateFileInput() {
       const dataTransfer = new DataTransfer();
       selectedFiles.forEach((file) => dataTransfer.items.add(file));
       inputGambar.files = dataTransfer.files;
     }
 
+    // Fungsi untuk menampilkan preview gambar
     function previewImages() {
-      preview.innerHTML = "";
-      if (selectedFiles.length === 0) {
+      preview.innerHTML = ""; // Bersihkan preview yang lama
+      if (selectedFiles.size === 0) {
         preview.textContent = "Foto akan tampil disini";
         return;
+      }
+
+      // Pastikan teks placeholder dihilangkan jika ada gambar
+      const placeholder = preview.querySelector(".text-muted.text-center");
+      if (placeholder) {
+        placeholder.remove();
       }
 
       selectedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.onload = function (e) {
+          const imgContainer = document.createElement("div");
+          imgContainer.className = "position-relative d-inline-block m-1"; // Untuk positioning tombol hapus
+          imgContainer.style.width = "100px"; // Ukuran thumbnail fixed
+          imgContainer.style.height = "100px"; // Ukuran thumbnail fixed
+          imgContainer.style.display = "flex"; // Gunakan flexbox untuk centering gambar
+          imgContainer.style.justifyContent = "center";
+          imgContainer.style.alignItems = "center";
+          imgContainer.style.overflow = "hidden"; // Sembunyikan bagian yang keluar dari batas container
+
           const img = document.createElement("img");
           img.src = e.target.result;
-          img.className = "img-fluid rounded mb-2";
-          preview.appendChild(img);
+          img.className = "rounded"; // Hapus img-fluid karena kita atur ukuran secara manual
+          img.style.objectFit = "contain"; // Penting: Pastikan seluruh gambar terlihat tanpa terpotong
+          img.style.maxWidth = "100%"; // Batasi lebar gambar agar tidak melebihi container
+          img.style.maxHeight = "100%"; // Batasi tinggi gambar agar tidak melebihi container
+          img.style.width = "auto"; // Biarkan lebar menyesuaikan rasio aspek
+          img.style.height = "auto"; // Biarkan tinggi menyesuaikan rasio aspek
+
+          const deleteButton = document.createElement("button");
+          deleteButton.className =
+            "btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle p-0";
+          deleteButton.style.width = "24px";
+          deleteButton.style.height = "24px";
+          deleteButton.style.lineHeight = "1";
+          deleteButton.style.fontSize = "0.75rem";
+          deleteButton.innerHTML = "&times;"; // Simbol 'x'
+          deleteButton.onclick = (e) => {
+            e.stopPropagation(); // Mencegah event klik menyebar ke dropArea
+            removeFile(file);
+          };
+
+          imgContainer.appendChild(img);
+          imgContainer.appendChild(deleteButton);
+          preview.appendChild(imgContainer);
         };
         reader.readAsDataURL(file);
       });
     }
 
+    // Fungsi untuk menghapus file dari daftar
+    function removeFile(fileToRemove) {
+      selectedFiles.delete(fileToRemove);
+      updateFileInput();
+      previewImages();
+      checkFormFilled();
+    }
+
+    // Fungsi untuk mengecek apakah form sudah terisi
     function checkFormFilled() {
       const kategori = document.getElementById("kategori").value.trim();
       const layanan = document.getElementById("layananSelect").value.trim();
       const lokasi = document.getElementById("lokasiSelect").value.trim();
-      const gambarAda = selectedFiles.length > 0;
+      const gambarAda = selectedFiles.size > 0;
       submitButton.disabled = !(kategori && gambarAda && (layanan || lokasi));
     }
 
-    inputGambar.addEventListener("change", () => {
-      selectedFiles = Array.from(inputGambar.files);
+    // Event listener untuk input file
+    inputGambar.addEventListener("change", (e) => {
+      // Tambahkan file baru ke Set yang sudah ada
+      Array.from(e.target.files).forEach((file) => selectedFiles.add(file));
       updateFileInput();
       previewImages();
       checkFormFilled();
+      // Penting: Reset nilai input file agar event 'change' terpicu lagi
+      // jika pengguna memilih file yang sama di kemudian hari.
+      e.target.value = "";
     });
 
-    dropArea.addEventListener("click", () => inputGambar.click());
+    // Event listener untuk mengklik dropArea
+    dropArea.addEventListener("click", () => {
+      inputGambar.click(); // Memicu klik pada input file
+    });
 
+    // Event listener untuk drag and drop (mencegah default behavior)
     ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
       dropArea.addEventListener(eventName, (e) => {
         e.preventDefault();
@@ -213,14 +269,17 @@ Photo {% endblock %} {% block content %}
       });
     });
 
+    // Event listener untuk highlight area saat drag
     dropArea.addEventListener("dragover", () => {
       dropArea.classList.add("border-primary");
     });
 
+    // Event listener untuk menghilangkan highlight saat drag leave
     dropArea.addEventListener("dragleave", () => {
       dropArea.classList.remove("border-primary");
     });
 
+    // Event listener saat file di-drop
     dropArea.addEventListener("drop", (e) => {
       dropArea.classList.remove("border-primary");
 
@@ -229,19 +288,22 @@ Photo {% endblock %} {% block content %}
       );
       if (files.length === 0) return;
 
-      // Gabungkan file baru dengan file lama
-      selectedFiles = selectedFiles.concat(files);
+      // Gabungkan file baru dengan file yang sudah ada
+      files.forEach((file) => selectedFiles.add(file));
       updateFileInput();
       previewImages();
       checkFormFilled();
     });
 
+    // Event listener untuk perubahan pada dropdown kategori, layanan, dan lokasi
     ["kategori", "layananSelect", "lokasiSelect"].forEach((id) => {
       document.getElementById(id).addEventListener("change", checkFormFilled);
     });
 
+    // Panggil checkFormFilled saat DOM selesai dimuat untuk set state awal button
     checkFormFilled();
 
+    // Event listener untuk submit form dengan SweetAlert
     document
       .getElementById("tambahGaleriForm")
       .addEventListener("submit", function (event) {
