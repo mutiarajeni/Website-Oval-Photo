@@ -1,6 +1,6 @@
 <nav class="navbar fixed-top navbar-expand-lg">
-  <a href="/masuk" class="navbar-logo"
-    ><img
+  <a href="/" class="navbar-logo">
+    <img
       src="{{ url_for('static', filename='img/logo.png') }}"
       alt="Logo"
       height="50"
@@ -36,64 +36,162 @@
   </div>
 
   <div class="navbar-extra">
-    <!-- Tombol ikon user -->
-    <a
-      href="#"
-      aria-label="User menu"
-      class="user-icon"
-      id="user-icon"
-      aria-expanded="false"
-      aria-haspopup="true"
-      onclick="navbarToggle(event)"
-    >
-      <i class="bi bi-person-circle"></i>
-    </a>
+    <div id="auth-section" class="d-flex align-items-center"></div>
 
-    <!-- Hamburger Menu -->
     <a href="#" id="hamburger-menu"><i class="bi bi-list"></i></a>
 
-    <!-- Dropdown dari ikon profil -->
     <div
       id="navbar-dropdown"
       class="navbar-dropdown"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="user-icon"
-    >
-      <a href="/profil" class="navbar-item" role="menuitem">
-        <i class="bi bi-person navbar-icon"></i>
-        <span>Profil</span>
-      </a>
-      <a href="/ripe_menunggukonfirmasi" class="navbar-item" role="menuitem">
-        <i class="bi bi-card-list navbar-icon"></i>
-        <span>Riwayat Pemesanan</span>
-      </a>
-      <a href="#" class="navbar-item" role="menuitem">
-        <i class="bi bi-box-arrow-right navbar-icon"></i>
-        <span>Keluar</span>
-      </a>
-    </div>
+    ></div>
   </div>
 
   <script>
-    function navbarToggle(event) {
-      event.preventDefault();
-      event.stopPropagation(); // agar tidak tertutup langsung
-      const menu = document.getElementById("navbar-dropdown");
-      const button = document.getElementById("user-icon");
-      const isShown = menu.classList.contains("show");
-      menu.classList.toggle("show", !isShown);
-      button.setAttribute("aria-expanded", String(!isShown));
+    // Fungsi untuk merender bagian otentikasi (Masuk / Profil)
+    function renderAuthSection() {
+      const authSection = document.getElementById("auth-section");
+      const dropdown = document.getElementById("navbar-dropdown");
+      const storedUsername = localStorage.getItem("username"); // Ambil username dari localStorage
+
+      let isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; // Baca status login dari localStorage
+
+      // Hapus konten sebelumnya
+      authSection.innerHTML = "";
+      dropdown.classList.remove("show"); // Pastikan dropdown tersembunyi
+
+      if (isLoggedIn) {
+        // Tampilan setelah login (ikon profil)
+        const userIconButton = document.createElement("a");
+        userIconButton.href = "#";
+        userIconButton.ariaLabel = "User menu";
+        userIconButton.className = "user-icon";
+        userIconButton.id = "user-icon";
+        userIconButton.setAttribute("aria-expanded", "false");
+        userIconButton.setAttribute("aria-haspopup", "true");
+        userIconButton.onclick = (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          dropdown.classList.toggle("show");
+          userIconButton.setAttribute(
+            "aria-expanded",
+            String(dropdown.classList.contains("show"))
+          );
+        };
+        const userIconBi = document.createElement("i");
+        userIconBi.className = "bi bi-person-circle";
+        userIconButton.appendChild(userIconBi);
+        authSection.appendChild(userIconButton);
+
+        // Isi konten dropdown
+        dropdown.innerHTML = `
+                ${
+                  storedUsername
+                    ? `<p style="padding: 0.5rem 1rem; margin-bottom: 0; color: #555; font-size: 0.9em; font-weight: bold;">Halo, ${storedUsername}!</p><hr style="margin: 0.2rem 0; border-top: 1px solid #eee;">`
+                    : ""
+                }
+                <a href="/profil" class="navbar-item" role="menuitem">
+                    <i class="bi bi-person navbar-icon"></i>
+                    <span>Profil</span>
+                </a>
+                <a href="/ripe_menunggu_konfirmasi" class="navbar-item" role="menuitem">
+                    <i class="bi bi-card-list navbar-icon"></i>
+                    <span>Riwayat Pemesanan</span>
+                </a>
+                <a href="#" id="logout-button" class="navbar-item" role="menuitem">
+                    <i class="bi bi-box-arrow-right navbar-icon"></i>
+                    <span>Keluar</span>
+                </a>
+            `;
+
+        // Tambahkan event listener untuk menutup dropdown saat klik di luar
+        document.removeEventListener("click", closeDropdownOnOutsideClick);
+        document.addEventListener("click", closeDropdownOnOutsideClick);
+
+        // Tambahkan event listener untuk tombol "Keluar" di dropdown
+        const logoutButton = document.getElementById("logout-button");
+        if (logoutButton) {
+          logoutButton.addEventListener("click", async (e) => {
+            e.preventDefault();
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("username");
+
+            try {
+              const response = await fetch("/logout", { method: "GET" });
+              if (response.ok) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Berhasil!",
+                  text: "Anda telah keluar.",
+                  showConfirmButton: false,
+                  timer: 1000,
+                }).then(() => {
+                  window.location.href = "/masuk";
+                });
+              } else {
+                throw new Error("Logout failed on server.");
+              }
+            } catch (error) {
+              console.error("Logout error:", error);
+              Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text: "Gagal logout dari server. Silakan coba lagi.",
+              }).then(() => {
+                window.location.href = "/masuk";
+              });
+            }
+            renderAuthSection();
+          });
+        }
+      } else {
+        // Tampilan sebelum login (link Masuk)
+        const loginLink = document.createElement("a");
+        loginLink.href = "/masuk";
+        loginLink.className = "btn-login"; // <--- PERUBAHAN DI SINI: Gunakan kelas 'btn-login'
+        loginLink.textContent = "Masuk";
+        authSection.appendChild(loginLink);
+      }
     }
 
-    // Klik di luar menu dan ikon = tutup dropdown
-    document.addEventListener("click", (e) => {
-      const menu = document.getElementById("navbar-dropdown");
-      const button = document.getElementById("user-icon");
-      if (!button.contains(e.target) && !menu.contains(e.target)) {
-        menu.classList.remove("show");
-        button.setAttribute("aria-expanded", "false");
+    // Fungsi terpisah untuk menutup dropdown
+    function closeDropdownOnOutsideClick(e) {
+      const userIconButton = document.getElementById("user-icon");
+      const dropdown = document.getElementById("navbar-dropdown");
+      if (
+        userIconButton &&
+        dropdown &&
+        !userIconButton.contains(e.target) &&
+        !dropdown.contains(e.target)
+      ) {
+        dropdown.classList.remove("show");
+        userIconButton.setAttribute("aria-expanded", "false");
       }
-    });
+    }
+
+    // JavaScript untuk hamburger menu
+    const hamburgerMenu = document.getElementById("hamburger-menu");
+    const navbarNav = document.querySelector(".navbar-nav");
+
+    if (hamburgerMenu && navbarNav) {
+      hamburgerMenu.addEventListener("click", function (e) {
+        e.preventDefault();
+        navbarNav.classList.toggle("active");
+      });
+
+      document.addEventListener("click", function (e) {
+        if (
+          !hamburgerMenu.contains(e.target) &&
+          !navbarNav.contains(e.target)
+        ) {
+          navbarNav.classList.remove("active");
+        }
+      });
+    }
+
+    // Panggil fungsi renderAuthSection saat DOM selesai dimuat
+    document.addEventListener("DOMContentLoaded", renderAuthSection);
   </script>
 </nav>

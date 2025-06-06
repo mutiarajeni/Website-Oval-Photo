@@ -1,95 +1,152 @@
-{% extends "admin/base_admin.html" %} {% block title %} Photo {% endblock %} {%
-block content %}
+{% extends "admin/base_admin.html" %} {% block title %} Daftar Galeri Foto {%
+endblock %} {% block content %}
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
         <div class="bg-admin shadow-dark border-radius-lg pt-4 pb-3">
           <div class="row">
-            <div class="col-6 d-flex align-items-center">
-              <h5 class="text-white text-capitalize ps-3">Galeri</h5>
+            <div class="col-md-6 d-flex align-items-center">
+              <h5 class="text-white text-capitalize ps-3">
+                Daftar Galeri Foto
+              </h5>
             </div>
-             <div class="col-6 text-end">
+            <div class="col-md-6 text-end pe-3">
               <a
                 class="btn btn-light btn-sm text-capitalize mb-0 me-4 fs-6 fw-normal"
-                href="/admin_galeri_tambah"
-                ><i class="material-icons text-dark me-1 fs-4">add</i
-                >&nbsp;&nbsp;Tambah Galeri</a
+                href="{{ url_for('admin_galeri_tambah') }}"
               >
+                <i class="material-icons text-dark me-1 fs-4">add</i>
+                &nbsp;&nbsp;Tambah Galeri
+              </a>
             </div>
           </div>
         </div>
       </div>
+
       <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
-          <table id="dataTable" class="table align-items-center mb-0">
+          <table id="dataTableGaleri" class="table align-items-center mb-0">
             <thead>
               <tr>
-                <tr>
-                <th class="text-center text-dark fs-7 fw-bold">Kategori</th>
-                <th class="text-center text-dark fs-7 fw-bold">
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  style="width: 5%"
+                >
+                  No.
+                </th>
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  style="width: 15%"
+                >
+                  Thumbnail
+                </th>
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Kategori
+                </th>
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
                   Layanan
                 </th>
-                <th class="text-center text-dark fs-7 fw-bold">Lokasi</th>
-                <th class="text-center text-dark fs-7 fw-bold">Aksi</th>
-              </tr>
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Lokasi
+                </th>
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  style="width: 20%"
+                >
+                  Aksi
+                </th>
               </tr>
             </thead>
             <tbody>
-              {% for product in products %}
-              <tr>
-                <td>
-                  <div class="d-flex px-2 py-1">
-                    <h6 class="mb-0 text-sm" style="width: 30px">
-                      {{ loop.index }}.
-                    </h6>
-
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">{{ product.nama }}</h6>
-                    </div>
-                  </div>
+              {% if galeri_items %} {% for item in galeri_items %}
+              <tr id="row-galeri-{{ item._id }}">
+                <td class="text-center align-middle">
+                  <p class="text-xs font-weight-bold mb-0">{{ loop.index }}</p>
                 </td>
-                <td class="align-middle text-center text-sm">
-                  <span
-                    class="badge badge-sm {% if product.stok > 0 %}bg-gradient-success custom-width{% else %}bg-gradient-danger{% endif %}"
-                  >
-                    {% if product.stok > 0 %} Ada {% else %} Tidak ada {% endif
-                    %}
+                <td class="text-center align-middle">
+                  {% if item.thumbnail %}
+                  <img
+                    src="{{ url_for('static', filename='images/imgGaleri/' ~ item.thumbnail) }}"
+                    style="
+                      width: 80px;
+                      height: 60px;
+                      object-fit: cover;
+                      border-radius: 0.375rem;
+                    "
+                    alt="thumbnail galeri"
+                  />
+                  {% else %}
+                  <span class="text-xs text-secondary mb-0">N/A</span>
+                  {% endif %}
+                </td>
+                <td class="text-center align-middle">
+                  <span class="text-secondary text-xs font-weight-bold">
+                    {{ item.kategori | capitalize if item.kategori else '-' }}
                   </span>
                 </td>
-                <td class="align-middle text-center text-sm">
-                  <span class="text-xs font-weight-bold"
-                    >{{ product.satuan }}</span
-                  >
+                <td class="text-center align-middle">
+                  <span class="text-secondary text-xs font-weight-bold">
+                    {{ item.nama_layanan_display }}
+                  </span>
                 </td>
-                <td class="align-middle text-center text-sm">
-                  <span class="text-xs font-weight-bold"
-                    >Rp {{ product.harga }}</span
-                  >
+                <td class="text-center align-middle">
+                  <span class="text-secondary text-xs font-weight-bold">
+                    {{ item.nama_lokasi_display }}
+                  </span>
                 </td>
-                <td class="align-middle text-center">
-                  <span
-                    class="text-secondary text-xs font-weight-bold"
-                    title="{{ product.deskripsi }}"
-                    >{{ product.deskripsi[:20] }}{% if product.deskripsi|length
-                    > 20 %}...{% endif %}</span
+                <td class="text-center align-middle">
+                  <div
+                    class="d-inline-flex align-items-center me-3"
+                    style="min-width: 90px"
                   >
-                </td>
-                <td class="align-middle text-center">
+                    <div class="form-check form-switch ps-0 mb-0">
+                      <input
+                        class="form-check-input ms-auto toggle-galeri-status"
+                        type="checkbox"
+                        id="toggleStatusGaleri{{ item._id }}"
+                        {%
+                        if
+                        item.status
+                        %}checked{%
+                        endif
+                        %}
+                        onchange="konfirmasiUbahStatusGaleri('{{ item._id }}', this.checked)"
+                      />
+                      <label
+                        class="form-check-label text-xs text-secondary font-weight-bold mb-0 ms-1"
+                        for="toggleStatusGaleri{{ item._id }}"
+                        id="labelStatusGaleri{{ item._id }}"
+                      >
+                        {{ "Aktif" if item.status else "Nonaktif" }}
+                      </label>
+                    </div>
+                  </div>
+
                   <a
-                    class="btn btn-link text-danger text-gradient px-3 mb-0"
-                    href="javascript:void(0);"
-                    onclick="konfirmasiHapus('{{ product._id }}')"
-                    ><i class="material-icons text-sm me-2">delete</i>Hapus</a
+                    href="{{ url_for('admin_galeri_ubah', item_id=item._id) }}"
+                    class="text-secondary font-weight-bold text-xs me-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Ubah Galeri"
                   >
-                  <a
-                    class="btn btn-link text-dark px-3 mb-0"
-                    href="/admin_galeri_ubah"
-                    ><i class="material-icons text-sm me-2">edit</i>Ubah</a
-                  >
+                    <i class="material-icons opacity-10">edit</i>
+                  </a>
                 </td>
               </tr>
-              {% endfor %}
+              {% endfor %} {% else %}
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">
+                  Belum ada data galeri untuk ditampilkan.
+                </td>
+              </tr>
+              {% endif %}
             </tbody>
           </table>
         </div>
@@ -98,21 +155,122 @@ block content %}
   </div>
 </div>
 
+<style>
+  .form-check.form-switch .form-check-input {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+  }
+  .form-check.form-switch .form-check-input:checked {
+    background-color: #4caf50;
+    border-color: #4caf50;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+  }
+  .form-check.form-switch .form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+    border-color: #4caf50;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+  }
+  .table td,
+  .table th {
+    vertical-align: middle !important;
+  }
+  [data-bs-toggle="tooltip"] {
+    cursor: pointer;
+  }
+</style>
+
 <script>
-  function konfirmasiHapus(productId) {
+  // Pastikan SweetAlert2 sudah dimuat
+  document.addEventListener("DOMContentLoaded", function () {
+    var tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    var tooltipList = tooltipTriggerList
+      .map(function (tooltipTriggerEl) {
+        if (
+          typeof bootstrap !== "undefined" &&
+          typeof bootstrap.Tooltip === "function"
+        ) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        }
+        return null;
+      })
+      .filter(Boolean);
+  });
+
+  function konfirmasiUbahStatusGaleri(itemId, statusBaru) {
+    const toggle = document.getElementById("toggleStatusGaleri" + itemId);
+    const label = document.getElementById("labelStatusGaleri" + itemId);
+
+    if (toggle) {
+      toggle.checked = !statusBaru;
+    }
+
     Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Anda tidak akan bisa mengembalikannya!",
-      icon: "warning",
+      title: statusBaru ? "Aktifkan item galeri?" : "Nonaktifkan item galeri?",
+      text: statusBaru
+        ? "Item galeri ini akan bisa ditampilkan."
+        : "Item galeri ini tidak akan bisa ditampilkan.",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, hapus!",
+      confirmButtonColor: statusBaru ? "#4CAF50" : "#f44336",
+      cancelButtonColor: "#7b809a",
+      confirmButtonText: "Ya, lanjutkan!",
+      cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "/deleteProduct/" + productId;
+        fetch(`/admin_galeri_toggle_status/${itemId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: statusBaru }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((errData) => {
+                let errorMessage =
+                  errData && errData.message
+                    ? errData.message
+                    : `HTTP error! Status: ${response.status}`;
+                throw new Error(errorMessage);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.success) {
+              if (toggle) toggle.checked = statusBaru;
+              if (label) label.textContent = statusBaru ? "Aktif" : "Nonaktif";
+              Swal.fire({
+                icon: "success",
+                title: "Berhasil!",
+                text:
+                  data.message ||
+                  (statusBaru
+                    ? "Status galeri diaktifkan."
+                    : "Status galeri dinonaktifkan."),
+                timer: 1500,
+                showConfirmButton: false,
+              });
+            } else {
+              if (toggle) toggle.checked = !statusBaru;
+              Swal.fire({
+                icon: "error",
+                title: "Gagal",
+                text: data.message || "Gagal mengubah status.",
+              });
+            }
+          })
+          .catch((error) => {
+            console.error("Error saat mengubah status galeri:", error);
+            if (toggle) toggle.checked = !statusBaru;
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Terjadi kesalahan: " + error.message,
+            });
+          });
       }
     });
   }
 </script>
+
 {% endblock %}

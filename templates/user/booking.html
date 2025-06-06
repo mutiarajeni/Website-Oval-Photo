@@ -708,6 +708,8 @@
         cancelButtonText: "Periksa Dulu",
       }).then((result) => {
         if (result.isConfirmed) {
+          // User clicked "Sudah Yakin"
+          // Show success message and then submit the form
           Swal.fire({
             title: "Pesanan kamu berhasil terkirim!",
             text: "Tunggu selama 1 x 24 jam hingga pesanan kamu dikonfirmasi. Setelah itu segera lakukan pembayaran deposit ya! ",
@@ -715,9 +717,9 @@
             timerProgressBar: true,
             timer: 4000, // Show for 4 seconds
             showConfirmButton: false, // No confirm button
-            didClose: () => {
+            willClose: () => {
               // Now, actually submit the form after the success message closes
-              form.submit();
+              form.submit(); // <--- MOVED THIS LINE HERE
             },
           });
         }

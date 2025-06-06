@@ -1,59 +1,93 @@
-{% extends "user/base_user.html" %} {% block title %} Login | Oval Photo 
+{% extends "user/base_user.html" %} {% block title %} Login | Oval Photo
 {%endblock %} {% block content %}
 
-
 <div class="container-login">
-  <!-- Logo-->
   <div class="login-logo">
-    <img src="static/img/logo.png" alt="Logo">
+    <img src="static/img/logo.png" alt="Logo" />
     <h2 class="mb-0">Oval Photo</h2>
   </div>
-    
-  <!-- Lupa Card -->
+
   <div class="login-card">
-    <form id="loginForm">
+    <form id="lupaPasswordForm">
       <h2 class="login-title">Lupa Kata Sandi?</h2>
       <p class="login-subtitle">
-        Tidak perlu khawatir! Masukkan alamat email yang kamu gunakan untuk membuat akun ini. Kami akan mengirimkan email dengan tautan untuk mengubah kata sandi kamu.
+        Tidak perlu khawatir! Masukkan alamat email yang kamu gunakan untuk
+        membuat akun ini. Kami akan mengirimkan email dengan tautan untuk
+        mengubah kata sandi kamu.
       </p>
 
       <div class="mb-3">
-        <label for="username" class="form-label">Alamat Email</label>
+        <label for="emailInput" class="form-label">Alamat Email</label>
         <input
-          type="text"
+          type="email"
           class="form-control"
-          id="username"
+          id="emailInput"
           placeholder="Masukkan alamat email kamu"
           required
         />
       </div>
-
-      <button type="submit" class="btn-masuk" id="masukButton" disabled>
+      <button type="submit" class="btn-masuk" id="kirimButton" disabled>
         Kirim
       </button>
-
     </form>
   </div>
 </div>
-    
 
-<!-- Scripts -->
 <script>
-  const username = document.getElementById("username");
-  const masukButton = document.getElementById("masukButton");
+  const emailInput = document.getElementById("emailInput"); // Changed ID
+  const kirimButton = document.getElementById("kirimButton"); // Changed ID
+  const lupaPasswordForm = document.getElementById("lupaPasswordForm"); // Changed ID
 
   function validateForm() {
-    masukButton.disabled = !(username.value.trim());
-    masukButton.style.cursor = masukButton.disabled ? "not-allowed" : "pointer";
-    masukButton.style.backgroundColor = masukButton.disabled
+    kirimButton.disabled = !emailInput.value.trim();
+    kirimButton.style.cursor = kirimButton.disabled ? "not-allowed" : "pointer";
+    kirimButton.style.backgroundColor = kirimButton.disabled
       ? "#d1d5db"
       : "#2563eb";
   }
 
-  username.addEventListener("input", validateForm);
-</script>
-    
+  emailInput.addEventListener("input", validateForm);
 
+  // Handle forgot password form submission
+  lupaPasswordForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = emailInput.value.trim();
+
+    try {
+      const response = await fetch("/api/lupa_kataSandi", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil!",
+          text: data.message,
+          showConfirmButton: true, // Keep confirm button to allow user to acknowledge
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.error("Error during forgot password request:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Terjadi kesalahan koneksi. Silakan coba lagi.",
+      });
+    }
+  });
+</script>
 
 {% endblock %}
-    

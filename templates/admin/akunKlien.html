@@ -1,5 +1,5 @@
-{% extends "admin/base_admin.html" %} {% block title %} Photo {% endblock %} {%
-block content %}
+{% extends "admin/base_admin.html" %} {% block title %} Daftar Akun Klien {%
+endblock %} {% block content %}
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -18,11 +18,8 @@ block content %}
           <table id="dataTable" class="table align-items-center mb-0">
             <thead>
               <tr>
-                <th
-                  class="text-center text-dark fs-7 fw-bold"
-                  style="width: 50px"
-                ></th>
-                <th class="text-center text-dark fs-7 fw-bold">Nama</th>
+                <th class="text-center text-dark fs-7 fw-bold">No.</th>
+                <th class="text-center text-dark fs-7 fw-bold">Klien</th>
                 <th class="text-center text-dark fs-7 fw-bold">
                   Nama Pengguna
                 </th>
@@ -30,63 +27,32 @@ block content %}
               </tr>
             </thead>
             <tbody>
-              {% for product in products %}
+              {% for user in users %}
               <tr>
+                <td class="text-center text-sm">
+                  <h6 class="mb-0 text-sm">{{ loop.index }}.</h6>
+                </td>
                 <td>
                   <div class="d-flex px-2 py-1">
-                    <h6 class="mb-0 text-sm" style="width: 30px">
-                      {{ loop.index }}.
-                    </h6>
                     <div>
                       <img
-                        src="../static/images/imgProducts/{{ product.gambar }}"
+                        src="{{ user.profile_picture_url }}"
                         class="avatar avatar-sm me-3 border-radius-lg"
-                        alt="user1"
+                        alt="Foto Profil Klien"
                       />
                     </div>
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">{{ product.nama }}</h6>
+                      <h6 class="mb-0 text-sm">{{ user.full_name }}</h6>
                     </div>
                   </div>
                 </td>
                 <td class="align-middle text-center text-sm">
-                  <span
-                    class="badge badge-sm {% if product.stok > 0 %}bg-gradient-success custom-width{% else %}bg-gradient-danger{% endif %}"
-                  >
-                    {% if product.stok > 0 %} Ada {% else %} Tidak ada {% endif
-                    %}
-                  </span>
-                </td>
-                <td class="align-middle text-center text-sm">
                   <span class="text-xs font-weight-bold"
-                    >{{ product.satuan }}</span
+                    >{{ user.username }}</span
                   >
                 </td>
                 <td class="align-middle text-center text-sm">
-                  <span class="text-xs font-weight-bold"
-                    >Rp {{ product.harga }}</span
-                  >
-                </td>
-                <td class="align-middle text-center">
-                  <span
-                    class="text-secondary text-xs font-weight-bold"
-                    title="{{ product.deskripsi }}"
-                    >{{ product.deskripsi[:20] }}{% if product.deskripsi|length
-                    > 20 %}...{% endif %}</span
-                  >
-                </td>
-                <td class="align-middle text-center">
-                  <a
-                    class="btn btn-link text-danger text-gradient px-3 mb-0"
-                    href="javascript:void(0);"
-                    onclick="konfirmasiHapus('{{ product._id }}')"
-                    ><i class="material-icons text-sm me-2">delete</i>Hapus</a
-                  >
-                  <a
-                    class="btn btn-link text-dark px-3 mb-0"
-                    href="/admin_layananFotografi_ubah"
-                    ><i class="material-icons text-sm me-2">edit</i>Ubah</a
-                  >
+                  <span class="text-xs font-weight-bold">{{ user.email }}</span>
                 </td>
               </tr>
               {% endfor %}
@@ -97,5 +63,33 @@ block content %}
     </div>
   </div>
 </div>
+
+<script>
+  function konfirmasiHapus(userId, userName) {
+    if (confirm(`Apakah Anda yakin ingin menghapus akun klien ${userName}?`)) {
+      fetch(`/api/admin/hapus_klien/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // Tambahkan header otentikasi admin jika diperlukan
+          // 'Authorization': 'Bearer <ADMIN_TOKEN>'
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert(data.message);
+            location.reload(); // Muat ulang halaman untuk menampilkan data terbaru
+          } else {
+            alert("Gagal menghapus klien: " + data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("Terjadi kesalahan saat menghubungi server.");
+        });
+    }
+  }
+</script>
 
 {% endblock %}

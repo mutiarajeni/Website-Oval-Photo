@@ -1,9 +1,10 @@
-{% extends "user/base_user.html" %}{% block content %}
-<!-- Header -->
+{% extends "user/base_user.html" %} {% block content %}
 <header class="header">
   <div class="header-content text-center">
     <h1>Galeri Oval Photo</h1>
-    <p>Abadikan momen istimewa kamu dan lihatlah karya foto kami di Galeri Oval!</p>
+    <p>
+      Abadikan momen istimewa kamu dan lihatlah karya foto kami di Galeri Oval!
+    </p>
   </div>
 </header>
 
@@ -12,35 +13,45 @@
   <div>
     <label for="kategori">Kategori</label>
     <select id="kategori" name="kategori" aria-describedby="kategoriGaleri">
-      <option>Select Item</option>
+      <option value="all">Semua Kategori</option>
+      <!-- Opsi akan diisi oleh JavaScript -->
     </select>
   </div>
   <div>
     <label for="pilihan-kategori">Pilihan Kategori</label>
-    <select id="pilihan-kategori" name="pilihan-kategori" disabled aria-describedby="pilihanKategoriGaleri">
-      <option>Select Item</option>
+    <select
+      id="pilihan-kategori"
+      name="pilihan-kategori"
+      disabled
+      aria-describedby="pilihanKategoriGaleri"
+    >
+      <option value="all">Pilih Kategori Dahulu</option>
+      <!-- Opsi akan diisi oleh JavaScript -->
     </select>
   </div>
 </section>
 
-
 <!-- Gallery -->
 <div class="subutama-container" role="main">
-  <!-- Description Box -->
-<section class="description" aria-label="Description details">
-  <h2>Deskripsi</h2>
-  
-  <div class="desc-grid">
-    <div>Nama Layanan</div><div>:</div>
-    <div>Lokasi</div><div>:</div>
-    <div>Maps</div><div>:</div>
-    <div>Biaya</div><div>:</div>
-  </div>
-</section>
-
+  <!-- Kotak Deskripsi -->
+  <section class="description" aria-label="Description details">
+    <h2>Deskripsi</h2>
+    <div class="desc-grid">
+      <div>Nama Layanan</div>
+      <div id="desc-nama-layanan">: -</div>
+      <div>Lokasi</div>
+      <div id="desc-lokasi">: -</div>
+      <div>Maps</div>
+      <div id="desc-maps">: -</div>
+      <div>Biaya</div>
+      <div id="desc-biaya">: -</div>
+    </div>
+  </section>
 
   <div class="gallery">
-    <div class="gallery-grid">
+    <div class="gallery-grid" id="gallery-grid">
+      <!-- Gambar default yang Anda inginkan tetap ada di sini -->
+      <!-- Gambar-gambar ini akan diganti oleh JavaScript setelah data API dimuat -->
       <img
         src="static/img/G1.jpg"
         alt="Couple posing in front of a flower wall"
@@ -61,10 +72,7 @@
         src="static/img/G2.jpg"
         alt="Couple posing in front of a flower wall side view"
       />
-      <img
-        src="static/img/G4.jpg"
-        alt="Couple posing under tree branches"
-      />
+      <img src="static/img/G4.jpg" alt="Couple posing under tree branches" />
       <img
         src="static/img/G6.jpg"
         alt="Group posing in traditional attire with decorations"
@@ -73,21 +81,193 @@
         src="static/img/G8.jpg"
         alt="Couple posing in front of decorative flowers"
       />
-      <img
-        src="static/img/G9.jpg"
-        alt="Group posing indomaret"
-      />
-      <img
-        src="static/img/G10.jpg"
-        alt="Couple wedding"
-      />
+      <img src="static/img/G9.jpg" alt="Group posing indomaret" />
+      <img src="static/img/G10.jpg" alt="Couple wedding" />
     </div>
-    
   </div>
-
 </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const kategoriSelect = document.getElementById("kategori");
+    const pilihanKategoriSelect = document.getElementById("pilihan-kategori");
+    const galleryGrid = document.getElementById("gallery-grid");
+    const descNamaLayanan = document.getElementById("desc-nama-layanan");
+    const descLokasi = document.getElementById("desc-lokasi");
+    const descMaps = document.getElementById("desc-maps");
+    const descBiaya = document.getElementById("desc-biaya");
 
+    let kategoriOptions = [];
+    let pilihanKategoriOptions = {};
 
+    function formatRupiah(amount) {
+      if (
+        amount === null ||
+        amount === undefined ||
+        amount === "" ||
+        amount === "N/A"
+      ) {
+        return "N/A";
+      }
+      const cleanedAmount = String(amount)
+        .replace(/[^0-9.,]/g, "")
+        .replace(",", ".");
+      const numericAmount = parseFloat(cleanedAmount);
 
+      if (isNaN(numericAmount)) {
+        return "N/A";
+      }
+
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(numericAmount);
+    }
+
+    async function fetchFilterOptions() {
+      try {
+        const response = await fetch("/api/kategori_options");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        kategoriOptions = data.kategori;
+        pilihanKategoriOptions = data.pilihan_kategori;
+
+        kategoriSelect.innerHTML = "";
+        kategoriOptions.forEach((option) => {
+          const opt = document.createElement("option");
+          opt.value = option.value;
+          opt.textContent = option.text;
+          kategoriSelect.appendChild(opt);
+        });
+
+        pilihanKategoriSelect.disabled = true;
+        pilihanKategoriSelect.innerHTML =
+          '<option value="all">Pilih Kategori Dahulu</option>';
+
+        fetchGalleryPhotos();
+      } catch (error) {
+        console.error("Error fetching filter options:", error);
+      }
+    }
+
+    function populatePilihanKategori() {
+      const selectedKategori = kategoriSelect.value;
+      pilihanKategoriSelect.innerHTML = "";
+
+      if (selectedKategori === "all") {
+        pilihanKategoriSelect.disabled = true;
+        pilihanKategoriSelect.innerHTML =
+          '<option value="all">Pilih Kategori Dahulu</option>';
+      } else {
+        pilihanKategoriSelect.disabled = false;
+        const options = pilihanKategoriOptions[selectedKategori];
+        if (options) {
+          options.forEach((option) => {
+            const opt = document.createElement("option");
+            opt.value = option.value;
+            opt.textContent = option.text;
+            pilihanKategoriSelect.appendChild(opt);
+          });
+        } else {
+          pilihanKategoriSelect.innerHTML =
+            '<option value="all">Tidak ada pilihan</option>';
+        }
+      }
+      fetchGalleryPhotos();
+    }
+
+    async function fetchGalleryPhotos() {
+      const selectedKategori = kategoriSelect.value;
+      const selectedPilihanKategori = pilihanKategoriSelect.value;
+
+      let url = `/api/galeri_data?kategori=${selectedKategori}`;
+      if (selectedKategori !== "all" && selectedPilihanKategori !== "all") {
+        url += `&pilihan_kategori=${selectedPilihanKategori}`;
+      }
+
+      console.log(
+        "Mengambil foto dengan Kategori:",
+        selectedKategori,
+        "Pilihan Kategori:",
+        selectedPilihanKategori
+      );
+      console.log("URL API:", url);
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        console.log("Data respons API:", data);
+
+        galleryGrid.innerHTML = ""; // Bersihkan gambar-gambar yang ada
+
+        if (data.gallery_items && data.gallery_items.length > 0) {
+          data.gallery_items.forEach((item) => {
+            if (item.gambar && item.gambar.length > 0) {
+              item.gambar.forEach((imageFilename) => {
+                // Pastikan imageFilename adalah string non-kosong sebelum membuat <img>
+                if (
+                  imageFilename &&
+                  typeof imageFilename === "string" &&
+                  imageFilename.trim() !== ""
+                ) {
+                  const img = document.createElement("img");
+                  img.src = `/static/images/imgGaleri/${imageFilename}`;
+                  img.alt = `Foto galeri ${item.kategori || ""} - ${
+                    item.nama_layanan_display || item.nama_lokasi_display || ""
+                  }`;
+                  galleryGrid.appendChild(img);
+                } else {
+                  console.warn(
+                    "Skipping image due to empty or invalid filename:",
+                    imageFilename,
+                    "for item:",
+                    item
+                  );
+                }
+              });
+            }
+          });
+        } else {
+          galleryGrid.innerHTML =
+            "<p>Tidak ada foto yang tersedia untuk filter ini.</p>";
+        }
+
+        descNamaLayanan.textContent = `: ${data.description_data.nama_layanan}`;
+        descLokasi.textContent = `: ${data.description_data.lokasi}`;
+        descMaps.innerHTML = `: ${
+          data.description_data.maps &&
+          data.description_data.maps !== "N/A" &&
+          data.description_data.maps !== "-"
+            ? `<a href="${data.description_data.maps}" target="_blank">Lihat di Peta</a>`
+            : "-"
+        }`;
+        descBiaya.textContent = `: ${formatRupiah(
+          data.description_data.biaya
+        )}`;
+      } catch (error) {
+        console.error("Error fetching gallery photos:", error);
+        galleryGrid.innerHTML =
+          "<p>Terjadi kesalahan saat memuat foto galeri.</p>";
+        descNamaLayanan.textContent = ": -";
+        descLokasi.textContent = ": -";
+        descMaps.innerHTML = ": -";
+        descBiaya.textContent = ": -";
+      }
+    }
+
+    kategoriSelect.addEventListener("change", populatePilihanKategori);
+    pilihanKategoriSelect.addEventListener("change", fetchGalleryPhotos);
+
+    fetchFilterOptions();
+  });
+</script>
 {% endblock %}

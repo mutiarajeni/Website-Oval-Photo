@@ -1,0 +1,342 @@
+{% extends "admin/base_admin.html" %}
+{% block title %} Ubah Gambar Galeri | Oval Photo {% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-admin shadow-dark border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Ubah Gambar Galeri</h6>
+        </div>
+      </div>
+
+      <div class="card-body px-4 pb-4">
+        {# Pesan flash akan ditampilkan di sini setelah redirect #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} text-white" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% if error_message %}
+            <div class="alert alert-danger text-white" role="alert">
+                {{ error_message }}
+            </div>
+        {% endif %}
+        <div class="row">
+          <div class="col-md-8">
+            <form
+              id="ubahGaleriForm"
+              method="POST"
+              action="{{ url_for('admin_galeri_ubah', item_id=gallery_item._id) }}"
+              enctype="multipart/form-data"
+              novalidate
+            >
+              <table class="table table-no-border">
+                <tbody>
+                  <tr>
+                    <td><label for="kategori_disabled">Kategori</label></td>
+                    <td>
+                      <div class="input-group input-group-outline is-filled" style="max-width: 500px">
+                        <select class="form-control" id="kategori_disabled" name="kategori_disabled" disabled>
+                          <option value="layanan" {% if gallery_item.kategori == 'layanan' %}selected{% endif %}>Layanan</option>
+                          <option value="lokasi" {% if gallery_item.kategori == 'lokasi' %}selected{% endif %}>Lokasi</option>
+                          {% if gallery_item.kategori != 'layanan' and gallery_item.kategori != 'lokasi' %}
+                          <option value="{{ gallery_item.kategori }}" selected>{{ gallery_item.kategori | capitalize }}</option>
+                          {% endif %}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="layananSelect_disabled">Layanan</label></td>
+                    <td>
+                      <div class="input-group input-group-outline is-filled">
+                        <select class="form-control" id="layananSelect_disabled" name="layanan_disabled" disabled>
+                          <option value="">
+                            {% if gallery_item.kategori != 'layanan' %}- (Tidak relevan untuk kategori ini) -
+                            {% else %}Pilih Layanan
+                            {% endif %}
+                          </option>
+                          {% for layanan_opt in layanan_all %}
+                          <option value="{{ layanan_opt._id }}"
+                                  {% if gallery_item.id_layanan and gallery_item.id_layanan|string == layanan_opt._id|string %}selected{% endif %}>
+                            {{ layanan_opt.nama }}
+                          </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="lokasiSelect_disabled">Lokasi</label></td>
+                    <td>
+                      <div class="input-group input-group-outline is-filled">
+                        <select class="form-control" id="lokasiSelect_disabled" name="lokasi_disabled" disabled>
+                               <option value="">
+                                {% if gallery_item.kategori != 'lokasi' %}- (Tidak relevan untuk kategori ini) -
+                                {% else %}Pilih Lokasi
+                                {% endif %}
+                              </option>
+                              {% for lokasi_opt in lokasi_all %}
+                              <option value="{{ lokasi_opt._id }}"
+                                      {% if gallery_item.id_lokasi and gallery_item.id_lokasi|string == lokasi_opt._id|string %}selected{% endif %}>
+                                {{ lokasi_opt.nama }}
+                              </option>
+                              {% endfor %}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label>Gambar</label></td>
+                    <td>
+                      <p class="text-xs text-muted mb-1">Anda hanya dapat mengubah gambar untuk item galeri ini.</p>
+                      <div class="input-group input-group-outline" style="max-width: 500px">
+                        <div class="card">
+                          <div class="card-body">
+                            <div
+                              id="drop-area"
+                              class="border rounded d-flex justify-content-center align-items-center"
+                              style="cursor: pointer; min-height: 100px; margin-top: 10px;"
+                            >
+                              <div class="content text-center">
+                                <i class="material-icons opacity-10" style="font-size: 38px">cloud_upload</i>
+                                <p class="mt-2 text-xs">Upload foto baru atau drag & drop</p>
+                              </div>
+                            </div>
+                            <input
+                              type="file"
+                              id="gambarBaru"
+                              name="gambar_baru[]"
+                              multiple
+                              accept="image/*"
+                              class="d-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div id="deletedImagesContainer">
+              </div>
+
+              <div class="text-end mt-3">
+                <a href="{{ url_for('admin_galeri') }}" class="btn btn-outline-dark me-2 fw-normal" style="text-transform: none; font-size: 1rem">
+                  Batal
+                </a>
+                <button type="submit" class="btn btn-dark fw-normal" style="text-transform: none; font-size: 1rem" id="submitButton">
+                  Simpan Perubahan Gambar
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="col-md-4 bg-light rounded p-3" style="min-height: 300px;">
+            <h6 class="text-center mb-3">Preview Gambar</h6>
+            <p class="text-center text-muted text-xs" id="existingImagesHelpText">Klik silang (X) pada gambar untuk menghapusnya dari galeri ini.</p>
+            <div id="previewAreaExisting" class="d-flex flex-wrap justify-content-center align-items-start" style="gap: 10px; margin-bottom: 20px;">
+                {% if gallery_item.gambar %}
+                    {% for image_name in gallery_item.gambar %}
+                    <div class="existing-image-preview position-relative" data-filename="{{ image_name }}" style="width: 100px; height: 100px;">
+                        <img src="{{ url_for('static', filename='images/imgGaleri/' ~ image_name) }}"
+                             alt="Gambar {{ loop.index }}"
+                             class="img-thumbnail"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle p-0 delete-existing-image-btn"
+                                 style="width: 24px; height: 24px; line-height: 1; font-size: 0.75rem; transform: translate(25%, -25%);"
+                                 title="Hapus gambar ini">&times;</button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <hr id="previewSeparator"/>
+            <p class="text-center text-muted text-xs" id="previewNewText">Preview foto baru akan tampil disini:</p>
+            <div id="previewAreaNew" class="d-flex flex-wrap justify-content-center align-items-start" style="gap: 10px;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const inputGambarBaru = document.getElementById("gambarBaru");
+  const dropArea = document.getElementById("drop-area");
+  const previewAreaNew = document.getElementById("previewAreaNew");
+  const previewNewText = document.getElementById("previewNewText");
+  const submitButton = document.getElementById("submitButton");
+  const deletedImagesContainer = document.getElementById("deletedImagesContainer");
+  const previewAreaExisting = document.getElementById("previewAreaExisting");
+  const noExistingImagesText = document.getElementById("noExistingImagesText"); // Ini belum ada di HTML, kita bisa buat dinamis atau pakai yang ada
+  const existingImagesHelpText = document.getElementById("existingImagesHelpText");
+  const previewSeparator = document.getElementById("previewSeparator");
+
+  let newSelectedFiles = new Set();
+  // Hitung jumlah gambar yang ada saat ini di DOM
+  let existingImageCount = previewAreaExisting.querySelectorAll('.existing-image-preview').length;
+
+  // Fungsi untuk memperbarui tampilan bagian preview gambar lama
+  function updateExistingImagesDisplay() {
+    if (existingImageCount === 0) {
+      if (existingImagesHelpText) existingImagesHelpText.style.display = 'none';
+      if (previewSeparator) previewSeparator.style.display = 'none';
+    } else {
+      if (existingImagesHelpText) existingImagesHelpText.style.display = 'block';
+      if (previewSeparator) previewSeparator.style.display = 'block';
+    }
+    updatePreviewTextAndSeparator(); // Panggil fungsi baru untuk mengelola teks dan pemisah
+    checkFormFilled();
+  }
+
+  // Fungsi baru untuk mengelola teks preview dan pemisah secara lebih fleksibel
+  function updatePreviewTextAndSeparator() {
+    const totalImages = existingImageCount + newSelectedFiles.size;
+
+    if (totalImages === 0) {
+      previewNewText.textContent = "Belum ada gambar.";
+      previewNewText.classList.add("mt-0");
+      previewSeparator.style.display = 'none'; // Sembunyikan pemisah jika tidak ada gambar sama sekali
+      if (existingImagesHelpText) existingImagesHelpText.style.display = 'none'; // Sembunyikan juga help text
+    } else if (newSelectedFiles.size === 0 && existingImageCount > 0) {
+      previewNewText.textContent = "Preview foto baru akan tampil disini:";
+      previewNewText.classList.remove("mt-0");
+      previewSeparator.style.display = 'block'; // Tampilkan pemisah jika ada gambar lama
+      if (existingImagesHelpText) existingImagesHelpText.style.display = 'block'; // Tampilkan help text
+    } else if (newSelectedFiles.size > 0 && existingImageCount === 0) {
+      previewNewText.textContent = `Preview foto baru (${newSelectedFiles.size} file):`;
+      previewNewText.classList.remove("mt-0");
+      previewSeparator.style.display = 'none'; // Sembunyikan pemisah jika hanya ada gambar baru
+      if (existingImagesHelpText) existingImagesHelpText.style.display = 'none'; // Sembunyikan help text
+    } else { // Ada gambar lama dan gambar baru
+      previewNewText.textContent = `Preview foto baru (${newSelectedFiles.size} file):`;
+      previewNewText.classList.remove("mt-0");
+      previewSeparator.style.display = 'block'; // Tampilkan pemisah
+      if (existingImagesHelpText) existingImagesHelpText.style.display = 'block'; // Tampilkan help text
+    }
+  }
+
+
+  // --- Logika untuk File BARU ---
+  function updateNewFileInput() {
+    const dataTransfer = new DataTransfer();
+    newSelectedFiles.forEach((file) => dataTransfer.items.add(file));
+    inputGambarBaru.files = dataTransfer.files;
+  }
+
+  function previewNewImages() {
+    previewAreaNew.innerHTML = "";
+    if (newSelectedFiles.size === 0) {
+      updatePreviewTextAndSeparator(); // Perbarui tampilan jika tidak ada gambar baru
+      return;
+    }
+
+    newSelectedFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imgContainer = document.createElement("div");
+        imgContainer.className = "position-relative d-inline-block m-1";
+        imgContainer.style.width = "80px";
+        imgContainer.style.height = "80px";
+
+        const img = document.createElement("img");
+        img.src = e.target.result;
+        img.className = "img-thumbnail";
+        img.style.cssText = "width: 100%; height: 100%; object-fit: cover;";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "btn btn-warning btn-sm position-absolute top-0 end-0 rounded-circle p-0";
+        deleteButton.style.cssText = "width: 20px; height: 20px; line-height: 0.8; font-size: 0.65rem; transform: translate(25%, -25%);";
+        deleteButton.innerHTML = "&times;";
+        deleteButton.title = "Hapus foto baru ini";
+        deleteButton.onclick = (evt) => {
+          evt.stopPropagation();
+          removeNewFile(file);
+        };
+        imgContainer.appendChild(img);
+        imgContainer.appendChild(deleteButton);
+        previewAreaNew.appendChild(imgContainer);
+      };
+      reader.readAsDataURL(file);
+    });
+    updatePreviewTextAndSeparator(); // Perbarui tampilan setelah menambahkan gambar baru
+    checkFormFilled();
+  }
+
+  function removeNewFile(fileToRemove) {
+    newSelectedFiles.delete(fileToRemove);
+    updateNewFileInput();
+    previewNewImages();
+  }
+
+  inputGambarBaru.addEventListener("change", (e) => {
+    Array.from(e.target.files).forEach((file) => newSelectedFiles.add(file));
+    updateNewFileInput();
+    previewNewImages();
+    e.target.value = "";
+  });
+
+  dropArea.addEventListener("click", () => inputGambarBaru.click());
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+    dropArea.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (eventName === "dragenter" || eventName === "dragover") dropArea.classList.add("border-primary");
+      else dropArea.classList.remove("border-primary");
+    });
+  });
+
+  dropArea.addEventListener("drop", (e) => {
+    const files = Array.from(e.dataTransfer.files).filter((file) => file.type.startsWith("image/"));
+    if (files.length === 0) return;
+    files.forEach((file) => newSelectedFiles.add(file));
+    updateNewFileInput();
+    previewNewImages();
+  });
+
+  // --- Logika untuk File LAMA (Existing) ---
+  function handleDeleteExistingImage(event) {
+    const button = event.target.closest('.delete-existing-image-btn');
+    if(!button) return;
+
+    const imageContainer = button.closest('.existing-image-preview');
+    const filename = imageContainer.dataset.filename;
+
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'deleted_images[]';
+    hiddenInput.value = filename;
+    deletedImagesContainer.appendChild(hiddenInput);
+
+    imageContainer.remove();
+    existingImageCount--;
+    console.log(`Ditandai untuk dihapus: ${filename}. Sisa gambar lama: ${existingImageCount}`);
+    updateExistingImagesDisplay(); // Panggil untuk memperbarui tampilan
+  }
+
+  document.querySelectorAll('.delete-existing-image-btn').forEach(button => {
+    button.addEventListener('click', handleDeleteExistingImage);
+  });
+
+  // --- Validasi Form dan Submit Button ---
+  function checkFormFilled() {
+    const hasImages = existingImageCount > 0 || newSelectedFiles.size > 0;
+    submitButton.disabled = !hasImages;
+    console.log("Tombol Simpan Perubahan Gambar disabled:", submitButton.disabled);
+  }
+
+  // Panggil saat DOM load untuk inisialisasi tampilan
+  updateExistingImagesDisplay();
+});
+</script>
+{% endblock %}

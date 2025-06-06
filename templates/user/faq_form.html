@@ -1,6 +1,5 @@
 {% extends "user/base_user.html" %}{% block content %}
 
-<!-- Header -->
 <header class="header">
   <div class="header-content text-center">
     <h1>FAQ <br>(Frequently Asked Questions)</h1>
@@ -14,15 +13,27 @@
   </div>
 </header>
 
-<!--Isi-->
 <div class="subutama-container" role="main">
   <h1 class="formfaq-title">Formulir Pertanyaan</h1>
     <p class="formfaq-description">
-      Silahkan isikan formulir pemesanan di bawah ini untuk mengirimkan pertanyaan kamu. Harap tunggu 1x24 jam untuk mendapatkan jawaban dari pertanyaan tersebut. Pastikan untuk selalu melihat perbaruan 'FAQ' terbaru di halaman ini.
+      Silahkan isikan formulir di bawah ini untuk mengirimkan pertanyaan kamu. Harap tunggu 1x24 jam untuk mendapatkan jawaban dari pertanyaan tersebut. Pastikan untuk selalu melihat perbaruan 'FAQ' terbaru di halaman ini.
     </p>
 
+    {# Menampilkan pesan flash dari Flask (untuk error) #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible text-white" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-  <form class="formlayanan-form" id="formlayanan" action="#" method="POST" novalidate>
+  <form class="formlayanan-form" id="formlayanan" action="/formfaq" method="POST" novalidate>
     <div class="formlayanan-row">
       
       <div>
@@ -32,9 +43,10 @@
         <input
           type="text"
           id="formlayanan-nama-klien"
-          name="nama-klien"
+          name="nama_klien"
           placeholder="Masukkan nama lengkap kamu"
           class="formlayanan-input formlayanan-required"
+          value="{{ data_input.nama_klien if data_input else '' }}"
           required
         />
       </div>
@@ -49,125 +61,149 @@
           name="email"
           placeholder="Masukkan email klien"
           class="formlayanan-input formlayanan-required"
+          value="{{ data_input.email if data_input else '' }}"
           required
         />
         <p class="formlayanan-text-xs">Contoh: ovalphoto@gmail.com</p>
       </div>
 
       <div style ="grid-column: 1 / -1;">
-        <label for="formlayanan-alamat-lokasi" class="formlayanan-label">
+        <label for="formlayanan-pertanyaan" class="formlayanan-label">
           Pertanyaan<span class="formlayanan-required">*</span>
         </label>
         <textarea
-          id="formlayanan-alamat-lokasi"
-          name="alamat-lokasi"
+          id="formlayanan-pertanyaan"
+          name="pertanyaan_user"
           rows="5"
           placeholder="Masukan pertanyaan kamu di sini"
           class="formlayanan-textarea formlayanan-required"
           required
-        ></textarea>
+        >{{ data_input.pertanyaan_user if data_input else '' }}</textarea>
     </div>
 
     </div>
+
+    {# --- BAGIAN YANG DIPINDAHKAN --- #}
+    {# Pindahkan div.formlayanan-buttons ke DALAM tag <form> #}
+    <div class="formlayanan-buttons">
+      <button
+        type="button"
+        class="formlayanan-btn formlayanan-btn-kembali"
+        onclick="window.location.href='/faqbb'"
+      >
+        Kembali
+      </button>
+
+      <button
+        type="submit"
+        id="formlayanan-submitBtn"
+        class="formlayanan-btn formlayanan-btn-pesan"
+        disabled
+      >
+        Kirim
+      </button>
+    </div>
+    {# --- AKHIR BAGIAN YANG DIPINDAHKAN --- #}
 
   </form>
 
 </div>
 
+{# Script ini sekarang berada di luar div.subutama-container yang membungkus form, tapi masih dalam body #}
+<script>
+  (() => {
+    const form = document.getElementById('formlayanan');
+    const submitBtn = document.getElementById('formlayanan-submitBtn');
+    const requiredFields = form.querySelectorAll('.formlayanan-required');
+    const emailInput = document.getElementById('formlayanan-email');
+    const pertanyaanInput = document.getElementById('formlayanan-pertanyaan');
 
-<!--Button Pesan & Kembali-->
-<div class="subutama-container" role="main">
-  <div class="formlayanan-buttons">
-    <button
-      type="button"
-      class="formlayanan-btn formlayanan-btn-kembali"
-      onclick="window.location.href='/faqbb'"
-    >
-      Kembali
-    </button>
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
 
-    <button
-      type="submit"
-      id="formlayanan-submitBtn"
-      class="formlayanan-btn formlayanan-btn-pesan"
-      disabled
-    >
-      Kirim
-    </button>
-
-  </div>
-  
-  <script>
-    (() => {
-      const form = document.getElementById('formlayanan');
-      const submitBtn = document.getElementById('formlayanan-submitBtn');
-      const requiredFields = form.querySelectorAll('.formlayanan-required');
-
-      function checkRequiredFields() {
-        let allFilled = true;
-
-        // For radio groups, track names checked
-        const radioNames = new Set();
-        requiredFields.forEach(field => {
-          if (field.type === 'radio') {
-            radioNames.add(field.name);
-          }
-        });
-
-        // Check radios by group name
-        for (const name of radioNames) {
-          const radios = form.querySelectorAll(`input[name="${name}"]`);
-          const isChecked = Array.from(radios).some(radio => radio.checked);
-          if (!isChecked) {
-            allFilled = false;
-            break;
-          }
-        }
-
-        if (allFilled) {
-          // Check other fields except radios
-          requiredFields.forEach(field => {
-            if (field.type !== 'radio') {
-              if (field.tagName === 'SELECT') {
-                if (!field.value || field.value === "") {
-                  allFilled = false;
-                }
-              } else if (field.tagName === 'TEXTAREA' || field.tagName === 'INPUT') {
-                if (!field.value.trim()) {
-                  allFilled = false;
-                }
-              }
-            }
-          });
-        }
-
-        if (allFilled) {
-          submitBtn.disabled = false;
-          submitBtn.classList.add('active');
-        } else {
-          submitBtn.disabled = true;
-          submitBtn.classList.remove('active');
-        }
-      }
+    function checkRequiredFields() {
+      let allFilled = true;
 
       requiredFields.forEach(field => {
-        if (field.type === 'radio') {
-          const radios = form.querySelectorAll(`input[name="${field.name}"]`);
-          radios.forEach(radio => {
-            radio.addEventListener('change', checkRequiredFields);
-          });
-        } else {
-          field.addEventListener('input', checkRequiredFields);
-          field.addEventListener('change', checkRequiredFields);
+        if (field.tagName === 'TEXTAREA' || field.tagName === 'INPUT') {
+          if (!field.value.trim()) {
+            allFilled = false;
+          }
         }
       });
 
-      checkRequiredFields();
-    })();
+      if (emailInput && emailInput.value.trim() !== '' && !validateEmail(emailInput.value.trim())) {
+          allFilled = false;
+      }
 
-  </script>
+      if (pertanyaanInput && pertanyaanInput.value.trim() === '') {
+          allFilled = false;
+      }
 
-</div>
+      if (allFilled) {
+        submitBtn.disabled = false;
+        submitBtn.classList.add('active');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('active');
+      }
+      return allFilled;
+    }
 
+    requiredFields.forEach(field => {
+      field.addEventListener('input', checkRequiredFields);
+      field.addEventListener('change', checkRequiredFields);
+    });
+    if (emailInput) {
+        emailInput.addEventListener('input', checkRequiredFields);
+    }
+
+    document.addEventListener('DOMContentLoaded', checkRequiredFields);
+
+    document.getElementById('formlayanan').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const form = this;
+
+      if (!checkRequiredFields()) {
+          Swal.fire({
+              title: 'Validasi Gagal',
+              text: 'Harap isi semua kolom yang wajib diisi dan periksa format email.',
+              icon: 'error',
+              confirmButtonText: 'Oke'
+          });
+          return;
+      }
+
+      Swal.fire({
+        title: 'Konfirmasi Pengiriman',
+        text: 'Apakah kamu yakin ingin mengirim pertanyaan ini?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Iya, yakin!',
+        cancelButtonText: 'Tidak'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Mengirim...",
+            text: "Pertanyaan kamu sedang diproses.",
+            icon: "info",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          form.submit();
+        }
+      });
+    });
+
+  })();
+</script>
 
 {% endblock %}

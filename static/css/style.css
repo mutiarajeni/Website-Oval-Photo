@@ -109,6 +109,23 @@ body {
   z-index: 20;
 }
 
+/* Tombol Masuk */
+.navbar .btn-login {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--color);
+  color: #fff;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.navbar .btn-login:hover {
+  background-color: #6a95e0; /* Warna sedikit lebih gelap saat hover */
+}
+
 /* Desain Dropdown */
 .navbar-dropdown {
   position: absolute;

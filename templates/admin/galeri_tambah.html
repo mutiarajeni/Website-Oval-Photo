@@ -17,6 +17,7 @@ Photo {% endblock %} {% block content %}
               method="POST"
               action="/admin_galeri_tambah"
               enctype="multipart/form-data"
+              novalidate
             >
               <table class="table table-no-border">
                 <tbody>
@@ -41,7 +42,7 @@ Photo {% endblock %} {% block content %}
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr id="layananRow">
                     <td><label for="layananSelect">Layanan</label></td>
                     <td>
                       <div class="input-group input-group-outline">
@@ -49,19 +50,18 @@ Photo {% endblock %} {% block content %}
                           class="form-control"
                           id="layananSelect"
                           name="layanan"
-                          required
                         >
                           <option value="">Pilih Layanan</option>
-                          {% for layanan in layanan %}
-                          <option value="{{ layanan._id }}">
-                            {{ layanan.nama }}
+                          {% for layanan_item in layanan %}
+                          <option value="{{ layanan_item._id }}">
+                            {{ layanan_item.nama }}
                           </option>
                           {% endfor %}
                         </select>
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr id="lokasiRow">
                     <td><label for="lokasiSelect">Lokasi</label></td>
                     <td>
                       <div class="input-group input-group-outline">
@@ -69,12 +69,11 @@ Photo {% endblock %} {% block content %}
                           class="form-control"
                           id="lokasiSelect"
                           name="lokasi"
-                          required
                         >
                           <option value="">Pilih Lokasi</option>
-                          {% for lokasi in lokasi %}
-                          <option value="{{ lokasi._id }}">
-                            {{ lokasi.nama }}
+                          {% for lokasi_item in lokasi %}
+                          <option value="{{ lokasi_item._id }}">
+                            {{ lokasi_item.nama }}
                           </option>
                           {% endfor %}
                         </select>
@@ -156,69 +155,75 @@ Photo {% endblock %} {% block content %}
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    // --- Get DOM Elements ---
+    const tambahGaleriForm = document.getElementById("tambahGaleriForm");
     const inputGambar = document.getElementById("gambar");
     const dropArea = document.getElementById("drop-area");
     const preview = document.getElementById("preview");
     const submitButton = document.getElementById("submitButton");
+    const kategoriSelect = document.getElementById("kategori");
+    const layananSelect = document.getElementById("layananSelect");
+    const lokasiSelect = document.getElementById("lokasiSelect");
 
-    // Menggunakan Set untuk menyimpan file yang dipilih, otomatis menghindari duplikasi
+    // ID untuk TR tidak lagi krusial untuk show/hide, tapi bisa dipertahankan jika digunakan untuk hal lain
+    // const layananRow = document.getElementById("layananRow");
+    // const lokasiRow = document.getElementById("lokasiRow");
+
+    // --- State ---
     let selectedFiles = new Set();
 
-    // Fungsi untuk memperbarui elemen input file yang tersembunyi
+    // --- Helper Functions ---
     function updateFileInput() {
+      console.log(
+        "[DEBUG] updateFileInput called. selectedFiles.size:",
+        selectedFiles.size
+      );
       const dataTransfer = new DataTransfer();
       selectedFiles.forEach((file) => dataTransfer.items.add(file));
       inputGambar.files = dataTransfer.files;
+      console.log(
+        "[DEBUG] inputGambar.files length after update:",
+        inputGambar.files.length
+      );
     }
 
-    // Fungsi untuk menampilkan preview gambar
     function previewImages() {
-      preview.innerHTML = ""; // Bersihkan preview yang lama
+      console.log(
+        "[DEBUG] previewImages called. selectedFiles.size:",
+        selectedFiles.size
+      );
+      preview.innerHTML = "";
       if (selectedFiles.size === 0) {
         preview.textContent = "Foto akan tampil disini";
         return;
       }
-
-      // Pastikan teks placeholder dihilangkan jika ada gambar
-      const placeholder = preview.querySelector(".text-muted.text-center");
-      if (placeholder) {
-        placeholder.remove();
-      }
-
       selectedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.onload = function (e) {
           const imgContainer = document.createElement("div");
-          imgContainer.className = "position-relative d-inline-block m-1"; // Untuk positioning tombol hapus
-          imgContainer.style.width = "100px"; // Ukuran thumbnail fixed
-          imgContainer.style.height = "100px"; // Ukuran thumbnail fixed
-          imgContainer.style.display = "flex"; // Gunakan flexbox untuk centering gambar
-          imgContainer.style.justifyContent = "center";
-          imgContainer.style.alignItems = "center";
-          imgContainer.style.overflow = "hidden"; // Sembunyikan bagian yang keluar dari batas container
-
+          imgContainer.className = "position-relative d-inline-block m-1";
+          imgContainer.style.cssText =
+            "width: 100px; height: 100px; display: flex; justify-content: center; align-items: center; overflow: hidden;";
           const img = document.createElement("img");
           img.src = e.target.result;
-          img.className = "rounded"; // Hapus img-fluid karena kita atur ukuran secara manual
-          img.style.objectFit = "contain"; // Penting: Pastikan seluruh gambar terlihat tanpa terpotong
-          img.style.maxWidth = "100%"; // Batasi lebar gambar agar tidak melebihi container
-          img.style.maxHeight = "100%"; // Batasi tinggi gambar agar tidak melebihi container
-          img.style.width = "auto"; // Biarkan lebar menyesuaikan rasio aspek
-          img.style.height = "auto"; // Biarkan tinggi menyesuaikan rasio aspek
-
+          img.className = "rounded";
+          img.style.cssText =
+            "object-fit: contain; max-width: 100%; max-height: 100%; width: auto; height: auto;";
           const deleteButton = document.createElement("button");
+          deleteButton.type = "button";
           deleteButton.className =
             "btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle p-0";
-          deleteButton.style.width = "24px";
-          deleteButton.style.height = "24px";
-          deleteButton.style.lineHeight = "1";
-          deleteButton.style.fontSize = "0.75rem";
-          deleteButton.innerHTML = "&times;"; // Simbol 'x'
-          deleteButton.onclick = (e) => {
-            e.stopPropagation(); // Mencegah event klik menyebar ke dropArea
+          deleteButton.style.cssText =
+            "width: 24px; height: 24px; line-height: 1; font-size: 0.75rem;";
+          deleteButton.innerHTML = "&times;";
+          deleteButton.onclick = (event) => {
+            event.stopPropagation();
+            console.log(
+              "[DEBUG] Tombol hapus gambar diklik untuk file:",
+              file.name
+            );
             removeFile(file);
           };
-
           imgContainer.appendChild(img);
           imgContainer.appendChild(deleteButton);
           preview.appendChild(imgContainer);
@@ -227,113 +232,240 @@ Photo {% endblock %} {% block content %}
       });
     }
 
-    // Fungsi untuk menghapus file dari daftar
     function removeFile(fileToRemove) {
+      console.log("[DEBUG] removeFile dipanggil untuk:", fileToRemove.name);
       selectedFiles.delete(fileToRemove);
       updateFileInput();
       previewImages();
       checkFormFilled();
     }
 
-    // Fungsi untuk mengecek apakah form sudah terisi
     function checkFormFilled() {
-      const kategori = document.getElementById("kategori").value.trim();
-      const layanan = document.getElementById("layananSelect").value.trim();
-      const lokasi = document.getElementById("lokasiSelect").value.trim();
+      const kategoriValue = kategoriSelect.value.trim();
+      const layananValue = layananSelect.value.trim();
+      const lokasiValue = lokasiSelect.value.trim();
       const gambarAda = selectedFiles.size > 0;
-      submitButton.disabled = !(kategori && gambarAda && (layanan || lokasi));
+
+      let subKategoriTerisi = false;
+      if (kategoriValue === "layanan") {
+        subKategoriTerisi = !layananSelect.disabled && !!layananValue;
+      } else if (kategoriValue === "lokasi") {
+        subKategoriTerisi = !lokasiSelect.disabled && !!lokasiValue;
+      } else if (!kategoriValue) {
+        subKategoriTerisi = false;
+      }
+
+      console.log("[DEBUG] --- checkFormFilled Dipanggil ---");
+      console.log(
+        "[DEBUG] Kategori:",
+        `"${kategoriValue}"`,
+        ", Terisi:",
+        !!kategoriValue
+      );
+      console.log(
+        "[DEBUG] Layanan:",
+        `"${layananValue}"`,
+        ", Terisi:",
+        !!layananValue,
+        "Disabled:",
+        layananSelect.disabled
+      );
+      console.log(
+        "[DEBUG] Lokasi:",
+        `"${lokasiValue}"`,
+        ", Terisi:",
+        !!lokasiValue,
+        "Disabled:",
+        lokasiSelect.disabled
+      );
+      console.log(
+        "[DEBUG] Ukuran selectedFiles:",
+        selectedFiles.size,
+        ", gambarAda:",
+        gambarAda
+      );
+      console.log("[DEBUG] Sub Kategori Terisi:", subKategoriTerisi);
+
+      const allConditionsMet =
+        !!kategoriValue && gambarAda && subKategoriTerisi;
+      console.log("[DEBUG] Semua kondisi terpenuhi:", allConditionsMet);
+
+      const previousButtonDisabledState = submitButton.disabled;
+      submitButton.disabled = !allConditionsMet;
+      console.log(
+        "[DEBUG] submitButton.disabled (properti DOM setelah update):",
+        document.getElementById("submitButton").disabled
+      );
+
+      if (
+        previousButtonDisabledState &&
+        !submitButton.disabled &&
+        submitButton.style.display !== "none"
+      ) {
+        console.log(
+          "[DEBUG] Tombol baru diaktifkan, mencoba memaksa reflow untuk tombol submit..."
+        );
+        const originalDisplay = submitButton.style.display;
+        submitButton.style.display = "none";
+        void submitButton.offsetHeight;
+        submitButton.style.display = originalDisplay || "";
+        console.log("[DEBUG] Reflow dipaksa.");
+      }
+      console.log("[DEBUG] -----------------------------");
     }
 
-    // Event listener untuk input file
+    // --- Event Listeners Setup ---
+
+    kategoriSelect.addEventListener("change", function () {
+      const selectedKategori = this.value;
+
+      // Default: nonaktifkan kedua sub-kategori dan kosongkan nilainya
+      layananSelect.disabled = true;
+      layananSelect.value = "";
+
+      lokasiSelect.disabled = true;
+      lokasiSelect.value = "";
+
+      if (selectedKategori === "layanan") {
+        layananSelect.disabled = false; // Aktifkan layanan
+      } else if (selectedKategori === "lokasi") {
+        lokasiSelect.disabled = false; // Aktifkan lokasi
+      }
+      checkFormFilled(); // Periksa kembali validasi form
+    });
+
     inputGambar.addEventListener("change", (e) => {
-      // Tambahkan file baru ke Set yang sudah ada
+      console.log(
+        "[DEBUG] inputGambar 'change' event. File dipilih:",
+        e.target.files.length
+      );
       Array.from(e.target.files).forEach((file) => selectedFiles.add(file));
       updateFileInput();
       previewImages();
       checkFormFilled();
-      // Penting: Reset nilai input file agar event 'change' terpicu lagi
-      // jika pengguna memilih file yang sama di kemudian hari.
-      e.target.value = "";
+      // e.target.value = ""; // Tetap dikomentari
     });
 
-    // Event listener untuk mengklik dropArea
     dropArea.addEventListener("click", () => {
-      inputGambar.click(); // Memicu klik pada input file
+      console.log("[DEBUG] dropArea 'click' event, memicu inputGambar.click()");
+      inputGambar.click();
     });
 
-    // Event listener untuk drag and drop (mencegah default behavior)
     ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
       dropArea.addEventListener(eventName, (e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (eventName === "dragenter" || eventName === "dragover") {
+          dropArea.classList.add("border-primary");
+        } else if (eventName === "dragleave" || eventName === "drop") {
+          dropArea.classList.remove("border-primary");
+        }
       });
     });
 
-    // Event listener untuk highlight area saat drag
-    dropArea.addEventListener("dragover", () => {
-      dropArea.classList.add("border-primary");
-    });
-
-    // Event listener untuk menghilangkan highlight saat drag leave
-    dropArea.addEventListener("dragleave", () => {
-      dropArea.classList.remove("border-primary");
-    });
-
-    // Event listener saat file di-drop
     dropArea.addEventListener("drop", (e) => {
-      dropArea.classList.remove("border-primary");
-
+      console.log(
+        "[DEBUG] dropArea 'drop' event. File di-drop:",
+        e.dataTransfer.files.length
+      );
       const files = Array.from(e.dataTransfer.files).filter((file) =>
         file.type.startsWith("image/")
       );
-      if (files.length === 0) return;
-
-      // Gabungkan file baru dengan file yang sudah ada
+      if (files.length === 0) {
+        console.log("[DEBUG] Tidak ada file gambar yang ditemukan dari drop.");
+        return;
+      }
       files.forEach((file) => selectedFiles.add(file));
       updateFileInput();
       previewImages();
       checkFormFilled();
     });
 
-    // Event listener untuk perubahan pada dropdown kategori, layanan, dan lokasi
-    ["kategori", "layananSelect", "lokasiSelect"].forEach((id) => {
-      document.getElementById(id).addEventListener("change", checkFormFilled);
+    // Listener untuk layananSelect dan lokasiSelect (kategoriSelect sudah punya listener sendiri)
+    [layananSelect, lokasiSelect].forEach((selectElement) => {
+      selectElement.addEventListener("change", () => {
+        console.log(`[DEBUG] Dropdown '${selectElement.id}' berubah.`);
+        checkFormFilled();
+      });
     });
 
-    // Panggil checkFormFilled saat DOM selesai dimuat untuk set state awal button
-    checkFormFilled();
-
-    // Event listener untuk submit form dengan SweetAlert
-    document
-      .getElementById("tambahGaleriForm")
-      .addEventListener("submit", function (event) {
+    submitButton.addEventListener("click", function (event) {
+      console.log("[SIMPLIFIED DEBUG] --- Tombol SUBMIT DIKLIK LANGSUNG ---");
+      console.log(
+        "[SIMPLIFIED DEBUG] Properti disabled tombol SAAT DIKLIK:",
+        this.disabled
+      );
+      if (this.disabled) {
+        console.warn(
+          "[SIMPLIFIED DEBUG] Klik pada tombol, tapi tombol disabled. Mencegah default."
+        );
         event.preventDefault();
-        const form = this;
+      }
+      console.log(
+        "[SIMPLIFIED DEBUG] Membiarkan aksi default browser untuk tombol submit berjalan."
+      );
+    });
 
-        Swal.fire({
-          title: "Apakah kamu yakin?",
-          text: "Galeri akan ditambahkan.",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Ya, simpan!",
-          cancelButtonText: "Batal",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire({
-              title: "Berhasil!",
-              text: "Galeri berhasil ditambahkan.",
-              icon: "success",
-              timer: 2000,
-              timerProgressBar: true,
-              willClose: () => {
-                form.submit();
-              },
-            });
-          }
-        });
+    tambahGaleriForm.addEventListener("submit", function (event) {
+      console.log("[DEBUG] --- Event SUBMIT FORM terpicu ---");
+      console.log(
+        "[DEBUG] Properti disabled tombol saat form submit (cek DOM langsung):",
+        document.getElementById("submitButton").disabled
+      );
+      if (document.getElementById("submitButton").disabled) {
+        console.warn(
+          "[DEBUG] Event submit form dicegah karena tombol submit masih disabled di DOM."
+        );
+        event.preventDefault();
+        return;
+      }
+      event.preventDefault();
+      console.log(
+        "[DEBUG] Form submit: event.preventDefault() dipanggil, lanjut ke SweetAlert."
+      );
+      const form = this;
+      Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Galeri akan ditambahkan.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, simpan!",
+        cancelButtonText: "Batal",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log(
+            "[DEBUG] SweetAlert dikonfirmasi. Menyiapkan untuk submit form."
+          );
+          Swal.fire({
+            title: "Berhasil!",
+            text: "Galeri berhasil ditambahkan.",
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            willClose: () => {
+              console.log(
+                "[DEBUG] SweetAlert sukses akan ditutup. Memanggil form.submit() programatik."
+              );
+              form.submit();
+            },
+          });
+        } else {
+          console.log("[DEBUG] SweetAlert dibatalkan oleh user.");
+        }
       });
+    });
+
+    console.log(
+      "[DEBUG] DOMContentLoaded - Panggilan awal ke checkFormFilled."
+    );
+    // Atur state awal: nonaktifkan dropdown sub-kategori
+    layananSelect.disabled = true;
+    layananSelect.value = ""; // Pastikan nilai awal juga kosong
+    lokasiSelect.disabled = true;
+    lokasiSelect.value = ""; // Pastikan nilai awal juga kosong
+    checkFormFilled();
   });
 </script>
 

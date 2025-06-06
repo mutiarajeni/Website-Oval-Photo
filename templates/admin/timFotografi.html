@@ -1,5 +1,5 @@
-{% extends "admin/base_admin.html" %} {% block title %} Photo {% endblock %} {%
-block content %}
+{% extends "admin/base_admin.html" %} {% block title %} Tim Fotografi {%
+endblock %} {% block content %}
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -14,9 +14,10 @@ block content %}
               <a
                 class="btn btn-light btn-sm text-capitalize mb-0 me-4 fs-6 fw-normal"
                 href="/admin_timFotografi_tambah"
-                ><i class="material-icons text-dark me-1 fs-4">add</i
-                >&nbsp;&nbsp;Tambah Tim</a
               >
+                <i class="material-icons text-dark me-1 fs-4">add</i
+                >&nbsp;&nbsp;Tambah Tim
+              </a>
             </div>
           </div>
         </div>
@@ -30,65 +31,81 @@ block content %}
                 <th class="text-center text-dark fs-7 fw-bold">Nama</th>
                 <th class="text-center text-dark fs-7 fw-bold">No. Telepon</th>
                 <th class="text-center text-dark fs-7 fw-bold">Peran</th>
+                <th class="text-center text-dark fs-7 fw-bold">Status</th>
                 <th class="text-center text-dark fs-7 fw-bold">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {% for product in products %}
+              {% for anggota_tim in tim %}
               <tr>
                 <td>
-                  <div class="d-flex px-2 py-1">
+                  <div class="d-flex px-2 py-1 align-items-center">
                     <h6 class="mb-0 text-sm" style="width: 30px">
                       {{ loop.index }}.
                     </h6>
                     <div>
+                      {% if anggota_tim.gambar %}
                       <img
-                        src="../static/images/imgProducts/{{ product.gambar }}"
+                        src="{{ url_for('static', filename='images/imgTim/' + anggota_tim.gambar) }}"
                         class="avatar avatar-sm me-3 border-radius-lg"
-                        alt="user1"
+                        alt="{{ anggota_tim.nama }}"
                       />
-                    </div>
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">{{ product.nama }}</h6>
+                      {% else %}
+                      <img
+                        src="{{ url_for('static', filename='images/default_avatar.png') }}"
+                        class="avatar avatar-sm me-3 border-radius-lg"
+                        alt="Default Avatar"
+                      />
+                      {% endif %}
                     </div>
                   </div>
                 </td>
                 <td class="align-middle text-center text-sm">
-                  <span
-                    class="badge badge-sm {% if product.stok > 0 %}bg-gradient-success custom-width{% else %}bg-gradient-danger{% endif %}"
-                  >
-                    {% if product.stok > 0 %} Ada {% else %} Tidak ada {% endif
-                    %}
-                  </span>
-                </td>
-                <td class="align-middle text-center text-sm">
                   <span class="text-xs font-weight-bold"
-                    >{{ product.satuan }}</span
+                    >{{ anggota_tim.nama }}</span
                   >
                 </td>
                 <td class="align-middle text-center text-sm">
                   <span class="text-xs font-weight-bold"
-                    >Rp {{ product.harga }}</span
+                    >{{ anggota_tim.telepon }}</span
+                  >
+                </td>
+                <td class="align-middle text-center text-sm">
+                  <span class="text-xs font-weight-bold"
+                    >{{ anggota_tim.peran | join(', ') }}</span
                   >
                 </td>
                 <td class="align-middle text-center">
-                  <span
-                    class="text-secondary text-xs font-weight-bold"
-                    title="{{ product.deskripsi }}"
-                    >{{ product.deskripsi[:20] }}{% if product.deskripsi|length
-                    > 20 %}...{% endif %}</span
+                  <div
+                    class="form-check form-switch d-flex justify-content-center align-items-center"
                   >
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="flexSwitchCheckDefault-{{ anggota_tim._id }}"
+                      {%
+                      if
+                      anggota_tim.aktif
+                      %}checked{%
+                      endif
+                      %}
+                      onchange="toggleTimStatus('{{ anggota_tim._id }}', this)"
+                    />
+                    <label
+                      class="form-check-label ms-2"
+                      for="flexSwitchCheckDefault-{{ anggota_tim._id }}"
+                    >
+                      <span id="statusText-{{ anggota_tim._id }}">
+                        {% if anggota_tim.aktif %}Aktif{% else %}Nonaktif{%
+                        endif %}
+                      </span>
+                    </label>
+                  </div>
                 </td>
                 <td class="align-middle text-center">
-                  <a
-                    class="btn btn-link text-danger text-gradient px-3 mb-0"
-                    href="javascript:void(0);"
-                    onclick="konfirmasiHapus('{{ product._id }}')"
-                    ><i class="material-icons text-sm me-2">delete</i>Hapus</a
-                  >
                   <a
                     class="btn btn-link text-dark px-3 mb-0"
-                    href="/admin_layananFotografi_ubah"
+                    href="{{ url_for('admin_timFotografi_ubah', tim_id=anggota_tim._id) }}"
                     ><i class="material-icons text-sm me-2">edit</i>Ubah</a
                   >
                 </td>
@@ -103,18 +120,67 @@ block content %}
 </div>
 
 <script>
-  function konfirmasiHapus(productId) {
+  function toggleTimStatus(timId, checkboxElement) {
     Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Anda tidak akan bisa mengembalikannya!",
+      title: "Konfirmasi Perubahan Status",
+      text: `Anda yakin ingin ${
+        checkboxElement.checked ? "mengaktifkan" : "menonaktifkan"
+      } anggota tim ini?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, hapus!",
+      confirmButtonText: "Ya, Lanjutkan!",
+      cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "/deleteProduct/" + productId;
+        fetch("/toggle_tim_status/" + timId, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              const statusTextElement = document.getElementById(
+                `statusText-${timId}`
+              );
+              if (statusTextElement) {
+                statusTextElement.textContent = data.new_status
+                  ? "Aktif"
+                  : "Nonaktif";
+              }
+              Swal.fire(
+                "Berhasil!",
+                `Status tim telah diubah menjadi ${
+                  data.new_status ? "Aktif" : "Nonaktif"
+                }.`,
+                "success"
+              );
+            } else {
+              Swal.fire(
+                "Gagal!",
+                data.message || "Gagal mengubah status tim.",
+                "error"
+              );
+              // Kembalikan switch ke posisi semula jika gagal
+              checkboxElement.checked = !checkboxElement.checked;
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            Swal.fire(
+              "Error!",
+              "Terjadi kesalahan saat berkomunikasi dengan server.",
+              "error"
+            );
+            // Kembalikan switch ke posisi semula jika ada error jaringan
+            checkboxElement.checked = !checkboxElement.checked;
+          });
+      } else {
+        // Jika user membatalkan, kembalikan switch ke posisi semula
+        checkboxElement.checked = !checkboxElement.checked;
       }
     });
   }

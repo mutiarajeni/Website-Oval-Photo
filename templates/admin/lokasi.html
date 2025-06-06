@@ -1,5 +1,5 @@
-{% extends "admin/base_admin.html" %} {% block title %} Photo {% endblock %} {%
-block content %}
+{% extends "admin/base_admin.html" %} {% block title %}Kelola Lokasi{% endblock
+%} {% block content %}
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -12,7 +12,7 @@ block content %}
             <div class="col-6 text-end">
               <a
                 class="btn btn-light btn-sm text-capitalize mb-0 me-4 fs-6 fw-normal"
-                href="/admin_lokasi_tambah"
+                href="{{ url_for('admin_lokasi_tambah') }}"
                 ><i class="material-icons text-dark me-1 fs-4">add</i
                 >&nbsp;&nbsp;Tambah Lokasi</a
               >
@@ -25,65 +25,84 @@ block content %}
           <table id="dataTable" class="table align-items-center mb-0">
             <thead>
               <tr>
+                <th class="text-center text-dark fs-7 fw-bold"></th>
                 <th class="text-center text-dark fs-7 fw-bold">Nama Lokasi</th>
                 <th class="text-center text-dark fs-7 fw-bold">Alamat</th>
                 <th class="text-center text-dark fs-7 fw-bold">Link Maps</th>
                 <th class="text-center text-dark fs-7 fw-bold">Biaya</th>
                 <th class="text-center text-dark fs-7 fw-bold">Aksi</th>
+                {# Adjusted to include toggle here #}
               </tr>
             </thead>
             <tbody>
-              {% for product in products %}
+              {% for lokasi in lokasi %}
               <tr>
+                <td class="align-middle text-center">
+                  <h6 class="mb-0 text-sm">{{ loop.index }}.</h6>
+                </td>
                 <td>
-                  <div class="d-flex px-2 py-1">
-                    <h6 class="mb-0 text-sm" style="width: 30px">
-                      {{ loop.index }}.
-                    </h6>
-
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">{{ product.nama }}</h6>
-                    </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">{{ lokasi.nama }}</h6>
                   </div>
                 </td>
                 <td class="align-middle text-center text-sm">
-                  <span
-                    class="badge badge-sm {% if product.stok > 0 %}bg-gradient-success custom-width{% else %}bg-gradient-danger{% endif %}"
-                  >
-                    {% if product.stok > 0 %} Ada {% else %} Tidak ada {% endif
-                    %}
-                  </span>
-                </td>
-                <td class="align-middle text-center text-sm">
                   <span class="text-xs font-weight-bold"
-                    >{{ product.satuan }}</span
+                    >{{ lokasi.alamat | truncate(50, True) }}</span
                   >
                 </td>
                 <td class="align-middle text-center text-sm">
+                  <a
+                    href="{{ lokasi.link_maps }}"
+                    target="_blank"
+                    class="text-xs font-weight-bold"
+                    >Lihat Maps</a
+                  >
+                </td>
+                <td class="align-middle text-center text-sm">
                   <span class="text-xs font-weight-bold"
-                    >Rp {{ product.harga }}</span
+                    >Rp {{ "{:,.0f}".format(lokasi.biaya) }}</span
                   >
                 </td>
                 <td class="align-middle text-center">
-                  <span
-                    class="text-secondary text-xs font-weight-bold"
-                    title="{{ product.deskripsi }}"
-                    >{{ product.deskripsi[:20] }}{% if product.deskripsi|length
-                    > 20 %}...{% endif %}</span
+                  {# Toggle Switch HTML #}
+                  <div class="form-check form-switch d-inline-block me-3">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="toggleSwitch-{{ lokasi._id }}"
+                      {%
+                      if
+                      lokasi.is_active
+                      %}checked{%
+                      endif
+                      %}
+                      onclick="toggleStatus('{{ lokasi._id }}')"
+                    />
+                    <label
+                      class="form-check-label"
+                      for="toggleSwitch-{{ lokasi._id }}"
+                    >
+                      <span id="status-text-{{ lokasi._id }}"
+                        >{% if lokasi.is_active %}Aktif{% else %}Nonaktif{%
+                        endif %}</span
+                      >
+                    </label>
+                  </div>
+
+                  <a
+                    class="btn btn-link text-dark px-3 mb-0"
+                    href="{{ url_for('admin_lokasi_ubah', id=lokasi._id) }}"
+                    ><i class="material-icons text-sm me-2">edit</i>Ubah</a
                   >
-                </td>
-                <td class="align-middle text-center">
+
+                  <!--
                   <a
                     class="btn btn-link text-danger text-gradient px-3 mb-0"
                     href="javascript:void(0);"
-                    onclick="konfirmasiHapus('{{ product._id }}')"
+                    onclick="konfirmasiHapus('{{ lokasi._id }}')"
                     ><i class="material-icons text-sm me-2">delete</i>Hapus</a
                   >
-                  <a
-                    class="btn btn-link text-dark px-3 mb-0"
-                    href="/admin_lokasi_ubah"
-                    ><i class="material-icons text-sm me-2">edit</i>Ubah</a
-                  >
+                  -->
                 </td>
               </tr>
               {% endfor %}
@@ -95,8 +114,9 @@ block content %}
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  function konfirmasiHapus(productId) {
+  function konfirmasiHapus(lokasiId) {
     Swal.fire({
       title: "Apakah Anda yakin?",
       text: "Anda tidak akan bisa mengembalikannya!",
@@ -105,11 +125,50 @@ block content %}
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "/deleteProduct/" + productId;
+        window.location.href = "/delete_lokasi/" + lokasiId;
       }
     });
+  }
+
+  function toggleStatus(lokasiId) {
+    const toggleInput = document.getElementById(`toggleSwitch-${lokasiId}`);
+    const statusText = document.getElementById(`status-text-${lokasiId}`);
+
+    fetch(`/toggle_lokasi_status/${lokasiId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Update the text next to the toggle
+          statusText.textContent = data.new_status ? "Aktif" : "Nonaktif";
+          // Ensure the toggle state matches the new status from the backend
+          toggleInput.checked = data.new_status;
+          Swal.fire(
+            "Berhasil!",
+            `Lokasi berhasil di${
+              data.new_status ? "aktifkan" : "nonaktifkan"
+            }.`,
+            "success"
+          );
+        } else {
+          // Revert the toggle state if the backend operation failed
+          toggleInput.checked = !toggleInput.checked;
+          Swal.fire("Error!", data.message, "error");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // Revert the toggle state on network/fetch error
+        toggleInput.checked = !toggleInput.checked;
+        Swal.fire("Error!", "Terjadi kesalahan saat mengubah status.", "error");
+      });
   }
 </script>
 {% endblock %}

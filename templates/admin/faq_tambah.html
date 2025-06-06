@@ -1,5 +1,5 @@
-{% extends "admin/base_admin.html" %} {% block title %} Dashboard Admin | Oval
-Photo {% endblock %} {% block content %}
+{% extends "admin/base_admin.html" %} {% block title %}Tambah FAQ Admin{%
+endblock %} {% block content %}
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -11,12 +11,13 @@ Photo {% endblock %} {% block content %}
       <div class="card-body px-0 pb-2">
         <div class="table-responsive p-0">
           <div class="container mt-5">
-            {% if product_exists %}
+            {# Menampilkan pesan error dari backend jika ada #} {% if
+            error_message %}
             <div
               class="alert alert-danger alert-dismissible text-white"
               role="alert"
             >
-              Pertanyaan sudah ada.
+              {{ error_message }}
               <button
                 type="button"
                 class="btn-close text-lg py-3 opacity-10"
@@ -28,7 +29,7 @@ Photo {% endblock %} {% block content %}
             </div>
             {% endif %}
 
-            <form id="addProductForm" method="POST" action="/admin_faq_tambah">
+            <form id="addFaqForm" method="POST" action="/admin_faq_tambah">
               <table class="table table-no-border">
                 <tbody>
                   <tr>
@@ -40,7 +41,10 @@ Photo {% endblock %} {% block content %}
                           id="pertanyaan"
                           name="pertanyaan"
                           rows="5"
-                        ></textarea>
+                          required
+                        >
+{{ data_input.pertanyaan if data_input else '' }}</textarea
+                        >
                       </div>
                     </td>
                   </tr>
@@ -53,7 +57,10 @@ Photo {% endblock %} {% block content %}
                           id="jawaban"
                           name="jawaban"
                           rows="5"
-                        ></textarea>
+                          required
+                        >
+{{ data_input.jawaban if data_input else '' }}</textarea
+                        >
                       </div>
                     </td>
                   </tr>
@@ -64,8 +71,9 @@ Photo {% endblock %} {% block content %}
                   href="/admin_faq"
                   class="btn btn-outline-dark me-2 fw-normal"
                   style="text-transform: none; font-size: 1rem"
-                  >Kembali</a
                 >
+                  Kembali
+                </a>
                 <button
                   type="submit"
                   class="btn btn-dark fw-normal"
@@ -96,14 +104,16 @@ Photo {% endblock %} {% block content %}
     input.addEventListener("input", checkFormFilled);
   });
 
+  document.addEventListener("DOMContentLoaded", checkFormFilled);
+
   document
-    .getElementById("addProductForm")
+    .getElementById("addFaqForm")
     .addEventListener("submit", function (event) {
       event.preventDefault();
       var form = this;
 
       Swal.fire({
-        title: "Apakah kamu yakin?",
+        title: "Apakah Anda yakin?",
         text: "FAQ akan ditambahkan.",
         icon: "warning",
         showCancelButton: true,
@@ -113,14 +123,16 @@ Photo {% endblock %} {% block content %}
         cancelButtonText: "Tidak",
       }).then((result) => {
         if (result.isConfirmed) {
+          // Tampilkan SweetAlert sukses sebelum submit, jika submit akan berhasil
           Swal.fire({
             title: "Berhasil!",
             text: "FAQ berhasil ditambahkan.",
             icon: "success",
-            timer: 2000,
+            timer: 2000, // Otomatis menutup setelah 2 detik
             timerProgressBar: true,
-            willClose: () => {
-              form.submit();
+            didClose: () => {
+              // Akan dipanggil setelah SweetAlert tertutup
+              form.submit(); // Kirim form setelah SweetAlert sukses muncul dan tertutup
             },
           });
         }

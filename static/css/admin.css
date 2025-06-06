@@ -252,3 +252,11 @@ table th {
   color: #fff !important;
   cursor: not-allowed;
 }
+
+select.form-control:disabled {
+  background-color: #f9f9f9 !important;
+  color: #b0b0b0 !important;
+  border-color: #e0e0e0 !important;
+  opacity: 0.85 !important;
+  cursor: not-allowed;
+}

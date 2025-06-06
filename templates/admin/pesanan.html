@@ -75,9 +75,8 @@ block content %}
                     </a>
                     <!-- Tombol Kirim Pengingat -->
 
-                                                            {% set
-                    allowed_statuses = ['Belum Pemotretan', 'Sudah Pemotretan',
-                    'Sudah Kirim File & Album'] %}
+                    {% set allowed_statuses = ['Sudah Kirim File & Album',
+                    'Belum Pemotretan', 'Sudah Pemotretan'] %}
                     <a
                       href="#"
                       class="btn-kirim-pengingat text-decoration-none d-flex align-items-center {% if pesanan.status_pesanan not in allowed_statuses %}disabled{% endif %}"
