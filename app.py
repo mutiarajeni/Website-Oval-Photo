@@ -272,13 +272,35 @@ def admin_layananFotografi_ubah(_id):
 
 
 
-# User - Katalog Layanan
 @app.route("/katalog_layanan")
 def katalog_layanan():
-    layanan = list(db.layanan.find({ "status": True }))   # hanya yang aktif
+    layanan_list = list(db.layanan.find({ "status": True }))   # hanya layanan aktif
+
+    for layanan in layanan_list:
+        # Ambil paket aktif untuk setiap layanan
+        paket_list = list(db.paket.find({
+            'layanan_id': layanan['_id'],
+            'status': True
+        }))
+
+        # Format tanggal
+        for p in paket_list:
+            mulai = p.get('tanggal_mulai')
+            selesai = p.get('tanggal_selesai')
+
+            if isinstance(mulai, datetime) and isinstance(selesai, datetime):
+                p['tanggal_mulai_formatted'] = tanggal_id(mulai)
+                p['tanggal_selesai_formatted'] = tanggal_id(selesai)
+            else:
+                p['tanggal_mulai_formatted'] = "Tanggal tidak tersedia"
+                p['tanggal_selesai_formatted'] = "Tanggal tidak tersedia"
+
+        # Tambahkan paket_list ke dalam data layanan
+        layanan['paket_list'] = paket_list
+
     return render_template(
         "user/katalog_layanan.html",
-        layanan=layanan,
+        layanan=layanan_list,
         current_route=request.path
     )
 
